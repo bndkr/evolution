@@ -5,6 +5,8 @@ AlignAfterOpenBracket: Align
 BinPackArguments: false
 BinPackParameters: false
 IncludeBlocks: Merge
+BreakBeforeBraces: Allman
+AllowShortIfStatementsOnASingleLine: true
 ColumnLimit: 80
 IndentWidth: 2
 PointerAlignment: Left
