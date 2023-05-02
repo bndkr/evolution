@@ -98,10 +98,10 @@ int main(int, char**)
   {
     for (uint32_t x = 0; x < imageWidth * 4; x += 4)
     {
-      for (uint32_t off = 0; off < 4; off++)
-      {
-        imageBuffer[y * (imageWidth * 4) + x + off] = 255;
-      }
+      imageBuffer[y * (imageWidth * 4) + x] = 0;
+      imageBuffer[y * (imageWidth * 4) + x + 1] = 255;
+      imageBuffer[y * (imageWidth * 4) + x + 2] = 255;
+      imageBuffer[y * (imageWidth * 4) + x + 3] = 255;
     }
   }
   // create a texture
@@ -130,13 +130,34 @@ int main(int, char**)
   while (!glfwWindowShouldClose(window))
   {
     glfwPollEvents();
-
     // Start the Dear ImGui frame
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
     ImGui::Begin("Image");
+
+    for (uint32_t y = 0; y < imageHeight; y++)
+    {
+      for (uint32_t x = 0; x < imageWidth * 4; x += 4)
+      {
+        imageBuffer[y * (imageWidth * 4) + x] = 0;
+        imageBuffer[y * (imageWidth * 4) + x + 1] = 0;
+        imageBuffer[y * (imageWidth * 4) + x + 2] = 255;
+        imageBuffer[y * (imageWidth * 4) + x + 3] = 255;
+      }
+    }
+
+    glTexSubImage2D(GL_TEXTURE_2D,
+                    0,
+                    0,
+                    0,
+                    imageWidth,
+                    imageHeight,
+                    GL_RGBA,
+                    GL_UNSIGNED_BYTE,
+                    imageBuffer);
+
     ImGui::Image((void*)(intptr_t)textureID, ImVec2(imageWidth, imageHeight));
     ImGui::End();
 

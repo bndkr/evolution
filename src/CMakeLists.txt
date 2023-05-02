@@ -3,6 +3,7 @@ add_executable(${exe_name})
 add_subdirectory(imgui)
 set(${exe_name}_srcs
   main.cpp
+  utils.cpp
 )
 target_include_directories(${exe_name} PUBLIC ${GLFW3_INCLUDE_DIR})
 target_include_directories(${exe_name} PUBLIC ${GLEW_INCLUDE_DIR})
