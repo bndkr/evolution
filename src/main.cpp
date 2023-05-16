@@ -1,8 +1,3 @@
-// Dear ImGui: standalone example application for GLFW + OpenGL 3, using programmable pipeline
-// (GLFW is a cross-platform general purpose library for handling windows, inputs, OpenGL/Vulkan/Metal graphics context creation, etc.)
-// If you are new to Dear ImGui, read documentation from the docs/ folder + read the top of imgui.cpp.
-// Read online: https://github.com/ocornut/imgui/tree/master/docs
-
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
@@ -11,50 +6,24 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 
-// [Win32] Our example includes a copy of glfw3.lib pre-compiled with VS2010 to maximize ease of testing and compatibility with old VS compilers.
-// To link with VS2010-era libraries, VS2015+ requires linking with legacy_stdio_definitions.lib, which we do using this pragma.
-// Your own project should not be affected, as you are likely to link with a newer binary of GLFW that is adequate for your version of Visual Studio.
-#if defined(_MSC_VER) && (_MSC_VER >= 1900) && !defined(IMGUI_DISABLE_WIN32_FUNCTIONS) 
-#pragma comment(lib, "legacy_stdio_definitions")
-#endif
-
-static void glfw_error_callback(int error, const char* description)
+static void glfwErrorCallback(int error, const char* description)
 {
   std::cerr << "GLFW Error " << error << ": " << description << std::endl;
 }
 
-// Main code
 int main(int, char**)
 {
-  glfwSetErrorCallback(glfw_error_callback);
+  glfwSetErrorCallback(glfwErrorCallback);
   if (!glfwInit()) return 1;
 
-    // Decide GL+GLSL versions
-#if defined(IMGUI_IMPL_OPENGL_ES2)
-  // GL ES 2.0 + GLSL 100
-  const char* glsl_version = "#version 100";
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 2);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_ES_API);
-#elif defined(__APPLE__)
-  // GL 3.2 + GLSL 150
-  const char* glsl_version = "#version 150";
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
-  glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // 3.2+ only
-  glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);           // Required on Mac
-#else
   // GL 3.0 + GLSL 130
   const char* glsl_version = "#version 130";
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-  // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);  // 3.2+
-  // only glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // 3.0+ only
-#endif
 
   // Create window with graphics context
   GLFWwindow* window = glfwCreateWindow(
-    1280, 720, "Dear ImGui GLFW+OpenGL3 example", nullptr, nullptr);
+    1280, 720, "Evolution Game Engine", nullptr, nullptr);
   if (!window) return 1;
 
   glfwMakeContextCurrent(window);
@@ -84,47 +53,8 @@ int main(int, char**)
   ImGui_ImplOpenGL3_Init(glsl_version);
 
   // Our state
-  bool show_demo_window = true;
-  ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-
-  // create image
-  typedef uint8_t byte;
-  const int imageHeight = 512;
-  const int imageWidth = 1024;
-
-  
-  byte* imageBuffer = new byte[imageHeight * imageWidth * 4]{};
-  for (uint32_t y = 0; y < imageHeight; y++)
-  {
-    for (uint32_t x = 0; x < imageWidth * 4; x += 4)
-    {
-      imageBuffer[y * (imageWidth * 4) + x] = 0;
-      imageBuffer[y * (imageWidth * 4) + x + 1] = 255;
-      imageBuffer[y * (imageWidth * 4) + x + 2] = 255;
-      imageBuffer[y * (imageWidth * 4) + x + 3] = 255;
-    }
-  }
-  // create a texture
-  GLuint textureID = 0;
-  glGenTextures(1, &textureID);
-  glBindTexture(GL_TEXTURE_2D, textureID);
-
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-  glPixelStorei(GL_UNPACK_ROW_LENGTH, 0);
-
-
-  glTexImage2D(GL_TEXTURE_2D,
-               0,
-               GL_RGBA8,
-               imageWidth,
-               imageHeight,
-               0,
-               GL_RGBA,
-               GL_UNSIGNED_BYTE,
-               imageBuffer);
+  bool showDemoWindow = true;
+  ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   // Main loop
   while (!glfwWindowShouldClose(window))
@@ -135,44 +65,20 @@ int main(int, char**)
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("Image");
-
-    for (uint32_t y = 0; y < imageHeight; y++)
-    {
-      for (uint32_t x = 0; x < imageWidth * 4; x += 4)
-      {
-        imageBuffer[y * (imageWidth * 4) + x] = 0;
-        imageBuffer[y * (imageWidth * 4) + x + 1] = 0;
-        imageBuffer[y * (imageWidth * 4) + x + 2] = 255;
-        imageBuffer[y * (imageWidth * 4) + x + 3] = 255;
-      }
-    }
-
-    glTexSubImage2D(GL_TEXTURE_2D,
-                    0,
-                    0,
-                    0,
-                    imageWidth,
-                    imageHeight,
-                    GL_RGBA,
-                    GL_UNSIGNED_BYTE,
-                    imageBuffer);
-
-    ImGui::Image((void*)(intptr_t)textureID, ImVec2(imageWidth, imageHeight));
-    ImGui::End();
 
 
-    if (show_demo_window) ImGui::ShowDemoWindow(&show_demo_window);
+
+    if (showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
 
     // Rendering
     ImGui::Render();
-    int display_w, display_h;
-    glfwGetFramebufferSize(window, &display_w, &display_h);
-    glViewport(0, 0, display_w, display_h);
-    glClearColor(clear_color.x * clear_color.w,
-                 clear_color.y * clear_color.w,
-                 clear_color.z * clear_color.w,
-                 clear_color.w);
+    int displayWidth, displayHeight;
+    glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+    glViewport(0, 0, displayWidth, displayHeight);
+    glClearColor(clearColor.x * clearColor.w,
+                 clearColor.y * clearColor.w,
+                 clearColor.z * clearColor.w,
+                 clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
