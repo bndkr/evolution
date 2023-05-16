@@ -12,4 +12,6 @@ IndentWidth: 2
 PointerAlignment: Left
 AllowShortFunctionsOnASingleLine: Empty
 AlwaysBreakAfterReturnType: None
+FixNamespaceComments: true
+NamespaceIndentation: All
 ...

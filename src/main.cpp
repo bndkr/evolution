@@ -1,10 +1,14 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
-#include <iostream>
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
+
+#include <vector>
+#include <iostream>
+
+#include "Render.hpp"
 
 static void glfwErrorCallback(int error, const char* description)
 {
@@ -40,7 +44,6 @@ int main(int, char**)
   IMGUI_CHECKVERSION();
   ImGui::CreateContext();
   ImGuiIO& io = ImGui::GetIO();
-  (void)io;
   io.ConfigFlags |=
     ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
   io.ConfigFlags |=
@@ -56,31 +59,40 @@ int main(int, char**)
   bool showDemoWindow = true;
   ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+  std::vector<float> triangle{ -.5f, .5f, 0.f, .5f, .5f, -.5f };
+
+  evolution::generateVertexBuffer(
+    triangle.data(), triangle.size() * sizeof(float), evolution::StaticDraw);
+  evolution::vertexBufferAttributes();
+
+  // specify shader
+  auto shader = evolution::createShader(evolution::defaultVertexShaderSrc,
+                                        evolution::defaultFragmentShaderSrc);
+
   // Main loop
   while (!glfwWindowShouldClose(window))
   {
-    glfwPollEvents();
-    // Start the Dear ImGui frame
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    // glfwPollEvents();
+    // ImGui_ImplOpenGL3_NewFrame();
+    // ImGui_ImplGlfw_NewFrame();
+    // ImGui::NewFrame();
 
+    glClear(GL_COLOR_BUFFER_BIT);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
-
-
-    if (showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
+    // if (showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
 
     // Rendering
-    ImGui::Render();
-    int displayWidth, displayHeight;
-    glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
-    glViewport(0, 0, displayWidth, displayHeight);
-    glClearColor(clearColor.x * clearColor.w,
-                 clearColor.y * clearColor.w,
-                 clearColor.z * clearColor.w,
-                 clearColor.w);
-    glClear(GL_COLOR_BUFFER_BIT);
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    // ImGui::Render();
+    // int displayWidth, displayHeight;
+    // glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+    // glViewport(0, 0, displayWidth, displayHeight);
+    // glClearColor(clearColor.x * clearColor.w,
+    //              clearColor.y * clearColor.w,
+    //              clearColor.z * clearColor.w,
+    //              clearColor.w);
+    // glClear(GL_COLOR_BUFFER_BIT);
+    // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(window);
   }
