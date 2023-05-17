@@ -10,10 +10,26 @@
 
 #include "Render.hpp"
 
-static void glfwErrorCallback(int error, const char* description)
+namespace
 {
-  std::cerr << "GLFW Error " << error << ": " << description << std::endl;
+  void glfwErrorCallback(int error, const char* description)
+  {
+    std::cerr << "GLFW Error " << error << ": " << description << std::endl;
+  }
+
+  void glErrorCallback(GLenum source,
+                       GLenum type,
+                       GLuint id,
+                       GLenum severity,
+                       GLsizei length,
+                       const GLchar* pMessage,
+                       const void* pUserParam)
+  {
+    std::string msg(pMessage, length);
+    std::cout << "error: " << msg << std::endl;
+  }
 }
+
 
 int main(int, char**)
 {
@@ -55,13 +71,15 @@ int main(int, char**)
   ImGui_ImplGlfw_InitForOpenGL(window, true);
   ImGui_ImplOpenGL3_Init(glsl_version);
 
+  glDebugMessageCallback(glErrorCallback, nullptr);
+
   // Our state
   bool showDemoWindow = true;
   ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-  std::vector<float> triangle{ -.5f, .5f, 0.f, .5f, .5f, -.5f };
+  std::vector<float> triangle{ -.5f, -.5f, 0.f, .5f, .5f, -.5f };
 
-  evolution::generateVertexBuffer(
+  auto buffer = evolution::generateVertexBuffer(
     triangle.data(), triangle.size() * sizeof(float), evolution::StaticDraw);
   evolution::vertexBufferAttributes();
 
@@ -72,27 +90,26 @@ int main(int, char**)
   // Main loop
   while (!glfwWindowShouldClose(window))
   {
-    // glfwPollEvents();
-    // ImGui_ImplOpenGL3_NewFrame();
-    // ImGui_ImplGlfw_NewFrame();
-    // ImGui::NewFrame();
+    glfwPollEvents();
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
+    if (showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
+
+    ImGui::Render();
+    int displayWidth, displayHeight;
+    glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+    glViewport(0, 0, displayWidth, displayHeight);
+    glClearColor(clearColor.x * clearColor.w,
+                 clearColor.y * clearColor.w,
+                 clearColor.z * clearColor.w,
+                 clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT);
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glDrawArrays(GL_TRIANGLES, 0, 3);
-
-    // if (showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
-
-    // Rendering
-    // ImGui::Render();
-    // int displayWidth, displayHeight;
-    // glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
-    // glViewport(0, 0, displayWidth, displayHeight);
-    // glClearColor(clearColor.x * clearColor.w,
-    //              clearColor.y * clearColor.w,
-    //              clearColor.z * clearColor.w,
-    //              clearColor.w);
-    // glClear(GL_COLOR_BUFFER_BIT);
-    // ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(window);
   }

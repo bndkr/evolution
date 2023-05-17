@@ -55,7 +55,7 @@ namespace evolution
   void vertexBufferAttributes()
   {
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 6, 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
   }
 
   uint32_t createShader(const std::string& vertexShader,
