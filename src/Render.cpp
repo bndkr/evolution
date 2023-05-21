@@ -41,21 +41,20 @@ namespace evolution
                                  BufferDataUsage usage)
   {
     GLuint buffId;
-    glGenBuffers(1, &buffId);
-    glBindBuffer(GL_ARRAY_BUFFER, buffId);
-    glBufferData(GL_ARRAY_BUFFER, size, pData, usage);
 
     if (buffId == 0)
     {
       // error state?
     }
 
-    return buffId;
-  }
-  void vertexBufferAttributes()
-  {
+    glGenBuffers(1, &buffId);
+    glBindBuffer(GL_ARRAY_BUFFER, buffId);
+    glBufferData(GL_ARRAY_BUFFER, size, pData, usage);
+
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+    return buffId;
   }
 
   uint32_t createShader(const std::string& vertexShader,

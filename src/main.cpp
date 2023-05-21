@@ -77,15 +77,15 @@ int main(int, char**)
   bool showDemoWindow = true;
   ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-  std::vector<float> triangle{ -.5f, -.5f, 0.f, .5f, .5f, -.5f };
+  std::vector<float> triangle{ -1.f, -.5f, 0.f, .5f, .5f, -.5f };
 
   auto buffer = evolution::generateVertexBuffer(
     triangle.data(), triangle.size() * sizeof(float), evolution::StaticDraw);
-  evolution::vertexBufferAttributes();
 
   // specify shader
   auto shader = evolution::createShader(evolution::defaultVertexShaderSrc,
                                         evolution::defaultFragmentShaderSrc);
+  glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
   // Main loop
   while (!glfwWindowShouldClose(window))
@@ -108,7 +108,6 @@ int main(int, char**)
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     glfwSwapBuffers(window);

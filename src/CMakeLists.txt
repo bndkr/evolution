@@ -4,6 +4,7 @@ add_subdirectory(imgui)
 set(${exe_name}_srcs
   Render.cpp
   Render.hpp
+  Buffers.hpp
   main.cpp
   utils.cpp
 )
