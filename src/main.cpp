@@ -2,13 +2,12 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 #define GLEW_STATIC
+#include "Buffers.hpp"
+#include "Render.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
-
-#include <vector>
 #include <iostream>
-
-#include "Render.hpp"
+#include <vector>
 
 namespace
 {
@@ -22,16 +21,16 @@ namespace
                        GLuint id,
                        GLenum severity,
                        GLsizei length,
-                       const GLchar* pMessage,
+                       const char* pMessage, // type GLChar*?
                        const void* pUserParam)
   {
     std::string msg(pMessage, length);
     std::cout << "error: " << msg << std::endl;
   }
-}
+} // namespace
 
-
-int main(int, char**)
+int
+main(int, char**)
 {
   glfwSetErrorCallback(glfwErrorCallback);
   if (!glfwInit()) return 1;
@@ -42,8 +41,8 @@ int main(int, char**)
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
   // Create window with graphics context
-  GLFWwindow* window = glfwCreateWindow(
-    1280, 720, "Evolution Game Engine", nullptr, nullptr);
+  GLFWwindow* window =
+    glfwCreateWindow(1280, 720, "Evolution Game Engine", nullptr, nullptr);
   if (!window) return 1;
 
   glfwMakeContextCurrent(window);
@@ -77,15 +76,19 @@ int main(int, char**)
   bool showDemoWindow = true;
   ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
-  std::vector<float> triangle{ -1.f, -.5f, 0.f, .5f, .5f, -.5f };
+  evolution::PositionBuffer vertices = { { -0.8f, -0.8f, 0.0f, 1.0f },
+                                         { 0.0f, 0.8f, 0.0f, 1.0f },
+                                         { 0.8f, -0.8f, 0.0f, 1.0f } };
 
-  auto buffer = evolution::generateVertexBuffer(
-    triangle.data(), triangle.size() * sizeof(float), evolution::StaticDraw);
+  evolution::ColorBuffer colors = { { 1.0f, 0.0f, 0.0f, 1.0f },
+                                    { 0.0f, 1.0f, 0.0f, 1.0f },
+                                    { 0.0f, 0.0f, 1.0f, 1.0f } };
+
+  auto mesh = evolution::Mesh(vertices, colors, evolution::IndexBuffer());
 
   // specify shader
   auto shader = evolution::createShader(evolution::defaultVertexShaderSrc,
                                         evolution::defaultFragmentShaderSrc);
-  glBindBuffer(GL_ARRAY_BUFFER, buffer);
 
   // Main loop
   while (!glfwWindowShouldClose(window))

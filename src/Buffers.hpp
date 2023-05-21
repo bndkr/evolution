@@ -5,8 +5,17 @@
 
 namespace evolution
 {
-  typedef float VertexType;
-  typedef std::vector<VertexType> VertexBuffer;
+  struct Float4
+  {
+    float x;
+    float y;
+    float z;
+    float w;
+  };
+
+  typedef std::vector<Float4> PositionBuffer;
+  typedef std::vector<Float4> ColorBuffer;
+  // ... add more as needed (etc. normal)
   typedef std::vector<uint32_t> IndexBuffer;
 
   // hint to OpenGL about how buffer data will be accessed
@@ -27,7 +36,22 @@ namespace evolution
   class Mesh
   {
   public:
-    Mesh(const VertexBuffer& vb, IndexBuffer& ib, const BufferDataUsage usage);
+    Mesh(const PositionBuffer& positions,
+         const ColorBuffer& colors,
+         IndexBuffer& indices,
+         const BufferDataUsage usage = BufferDataUsage::StaticRead);
+
+    ~Mesh();
+
+    void draw();
+
+  private:
+    uint32_t m_posBufferId;
+    uint32_t m_colBufferId;
+    uint32_t m_indexBufferId;
+    uint32_t m_vaoId;
+
+    size_t m_numVertices;
   };
 } // namespace evolution
 
