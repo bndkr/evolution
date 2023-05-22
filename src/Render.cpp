@@ -47,8 +47,8 @@ uint32_t createShader(const std::string& vertexShader,
     glLinkProgram(program);
     glValidateProgram(program);
 
-    glDeleteShader(vertexShaderId);
-    glDeleteShader(fragmentShaderId);
+    // glDeleteShader(vertexShaderId);
+    // glDeleteShader(fragmentShaderId);
 
     glUseProgram(program);
     return program;

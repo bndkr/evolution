@@ -35,9 +35,8 @@ main(int, char**)
   glfwSetErrorCallback(glfwErrorCallback);
   if (!glfwInit()) return 1;
 
-  // GL 3.0 + GLSL 130
-  const char* glsl_version = "#version 130";
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+  const char* glsl_version = "#version 400";
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
   // Create window with graphics context

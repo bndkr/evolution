@@ -11,24 +11,24 @@ namespace evolution
 layout(location=0) in vec4 positionIn;
 layout(location=1) in vec4 colorIn;
 
-out vec4 colorOut;
+out vec4 colorPass;
 
-void main()
+void main(void)
 {
   gl_Position = positionIn;
-  colorOut = colorIn;
+  colorPass = colorIn;
 }
 )";
 
   const std::string defaultFragmentShaderSrc = R"(
 #version 400
 
-in vec4 colorIn;
+in vec4 colorPass;
 out vec4 colorOut;
 
-void main()
-{
-  colorOut = colorIn;
+void main(void)
+{ 
+  colorOut = colorPass;
 }
 )";
 
