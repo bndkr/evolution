@@ -7,6 +7,7 @@
 #include "color_console/color.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
+#include <eigen3/Eigen/Dense>
 #include <iostream>
 #include <vector>
 
@@ -34,7 +35,8 @@ namespace
       std::cout << dye::yellow_on_white(std::string(message, length))
                 << std::endl;
     // if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
-    //   std::cout << dye::light_aqua(std::string(message, length)) << std::endl;
+    //   std::cout << dye::light_aqua(std::string(message, length)) <<
+    //   std::endl;
   }
 
   void setupImgui(GLFWwindow* window)
@@ -84,10 +86,8 @@ namespace
   }
 } // namespace
 
-// clang-format off
 int main(int argc, char** argv)
 {
-  // clang-fomat on
   auto window = setupGlfwWindow(1280, 720, "Evolution Game Engine");
 
   setupImgui(window);
@@ -98,7 +98,6 @@ int main(int argc, char** argv)
 
   // Our state
   bool showDemoWindow = true;
-  ImVec4 clearColor = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
   evolution::PositionBuffer vertices = { { -0.8f, -0.8f, 0.0f, 1.0f },
                                          { 0.0f, 0.8f, 0.0f, 1.0f },
@@ -110,7 +109,6 @@ int main(int argc, char** argv)
 
   auto mesh = evolution::Mesh(vertices, colors, evolution::IndexBuffer());
 
-  // specify shader
   auto program = evolution::createProgram();
 
   // Main loop
@@ -127,14 +125,11 @@ int main(int argc, char** argv)
     int displayWidth, displayHeight;
     glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
     glViewport(0, 0, displayWidth, displayHeight);
-    glClearColor(clearColor.x * clearColor.w,
-                 clearColor.y * clearColor.w,
-                 clearColor.z * clearColor.w,
-                 clearColor.w);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    mesh.draw();
 
     glfwSwapBuffers(window);
   }

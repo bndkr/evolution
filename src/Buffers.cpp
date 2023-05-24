@@ -113,6 +113,7 @@ namespace evolution
 
   void Mesh::draw()
   {
+    glBindVertexArray(m_vaoId);
     glDrawElements(GL_TRIANGLES, m_numVertices, GL_UNSIGNED_INT, 0);
   }
 } // namespace evolution
