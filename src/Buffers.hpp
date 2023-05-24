@@ -38,7 +38,7 @@ namespace evolution
   public:
     Mesh(const PositionBuffer& positions,
          const ColorBuffer& colors,
-         IndexBuffer& indices,
+         IndexBuffer& indices = IndexBuffer(),
          const BufferDataUsage usage = BufferDataUsage::StaticRead);
 
     ~Mesh();

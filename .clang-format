@@ -14,4 +14,4 @@ AllowShortFunctionsOnASingleLine: Empty
 AlwaysBreakAfterReturnType: None
 FixNamespaceComments: true
 NamespaceIndentation: All
-...
+---

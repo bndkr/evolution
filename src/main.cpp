@@ -4,6 +4,7 @@
 #define GLEW_STATIC
 #include "Buffers.hpp"
 #include "Render.hpp"
+#include "color_console/color.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 #include <iostream>
@@ -16,60 +17,84 @@ namespace
     std::cerr << "GLFW Error " << error << ": " << description << std::endl;
   }
 
-  void glErrorCallback(GLenum source,
-                       GLenum type,
-                       GLuint id,
-                       GLenum severity,
-                       GLsizei length,
-                       const char* pMessage, // type GLChar*?
-                       const void* pUserParam)
+  void GLAPIENTRY glErrorCallback(GLenum source,
+                                  GLenum type,
+                                  GLuint id,
+                                  GLenum severity,
+                                  GLsizei length,
+                                  const GLchar* message,
+                                  const void* userParam)
   {
-    std::string msg(pMessage, length);
-    std::cout << "error: " << msg << std::endl;
+    if (severity == GL_DEBUG_SEVERITY_HIGH)
+      std::cout << dye::purple_on_white(std::string(message, length))
+                << std::endl;
+    if (severity == GL_DEBUG_SEVERITY_MEDIUM)
+      std::cout << dye::red(std::string(message, length)) << std::endl;
+    if (severity == GL_DEBUG_SEVERITY_LOW)
+      std::cout << dye::yellow_on_white(std::string(message, length))
+                << std::endl;
+    // if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
+    //   std::cout << dye::light_aqua(std::string(message, length)) << std::endl;
+  }
+
+  void setupImgui(GLFWwindow* window)
+  {
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 430");
+  }
+
+  GLFWwindow* setupGlfwWindow(const int width,
+                              const int height,
+                              const char* name)
+  {
+    glfwSetErrorCallback(glfwErrorCallback);
+    if (!glfwInit()) exit(1);
+
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    // debug mode for logging
+    glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+
+    // Create window with graphics context
+    GLFWwindow* window =
+      glfwCreateWindow(width, height, name, nullptr, nullptr);
+    if (!window) exit(1);
+
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1); // Enable vsync
+
+    if (glewInit() != GLEW_OK)
+    {
+      std::cerr << "error initializing glew" << std::endl;
+      exit(1);
+    }
+    return window;
   }
 } // namespace
 
-int
-main(int, char**)
+// clang-format off
+int main(int argc, char** argv)
 {
-  glfwSetErrorCallback(glfwErrorCallback);
-  if (!glfwInit()) return 1;
+  // clang-fomat on
+  auto window = setupGlfwWindow(1280, 720, "Evolution Game Engine");
 
-  const char* glsl_version = "#version 400";
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-
-  // Create window with graphics context
-  GLFWwindow* window =
-    glfwCreateWindow(1280, 720, "Evolution Game Engine", nullptr, nullptr);
-  if (!window) return 1;
-
-  glfwMakeContextCurrent(window);
-  glfwSwapInterval(1); // Enable vsync
-
-  if (glewInit() != GLEW_OK)
-  {
-    std::cerr << "error initializing glew" << std::endl;
-    return 1;
-  }
-  std::cout << "opengl version: " << glGetString(GL_VERSION) << std::endl;
-
-  // Setup Dear ImGui context
-  IMGUI_CHECKVERSION();
-  ImGui::CreateContext();
-  ImGuiIO& io = ImGui::GetIO();
-  io.ConfigFlags |=
-    ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-  io.ConfigFlags |=
-    ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
-
-  ImGui::StyleColorsDark();
-
-  // Setup Platform/Renderer backends
-  ImGui_ImplGlfw_InitForOpenGL(window, true);
-  ImGui_ImplOpenGL3_Init(glsl_version);
-
+  setupImgui(window);
   glDebugMessageCallback(glErrorCallback, nullptr);
+  glEnable(GL_DEBUG_OUTPUT);
+
+  std::cout << "opengl version: " << glGetString(GL_VERSION) << std::endl;
 
   // Our state
   bool showDemoWindow = true;
@@ -86,8 +111,7 @@ main(int, char**)
   auto mesh = evolution::Mesh(vertices, colors, evolution::IndexBuffer());
 
   // specify shader
-  auto shader = evolution::createShader(evolution::defaultVertexShaderSrc,
-                                        evolution::defaultFragmentShaderSrc);
+  auto program = evolution::createProgram();
 
   // Main loop
   while (!glfwWindowShouldClose(window))

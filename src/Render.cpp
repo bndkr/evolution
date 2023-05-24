@@ -34,8 +34,8 @@ namespace
 
 namespace evolution
 {
-uint32_t createShader(const std::string& vertexShader,
-                        const std::string& fragmentShader)
+  uint32_t createProgram(const std::string& vertexShader,
+                         const std::string& fragmentShader)
   {
     auto program = glCreateProgram();
 

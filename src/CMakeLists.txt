@@ -1,6 +1,7 @@
 set(exe_name Evolution)
 add_executable(${exe_name})
 add_subdirectory(imgui)
+add_subdirectory(color_console)
 set(${exe_name}_srcs
   Render.cpp
   Render.hpp

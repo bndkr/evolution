@@ -27,13 +27,13 @@ in vec4 colorPass;
 out vec4 colorOut;
 
 void main(void)
-{ 
+{
   colorOut = colorPass;
 }
 )";
 
-  uint32_t createShader(const std::string& vertexShader,
-                        const std::string& fragmentShader);
+  uint32_t createProgram(const std::string& vertexShader = defaultVertexShaderSrc,
+                         const std::string& fragmentShader = defaultFragmentShaderSrc);
 
 } // namespace evolution
 #endif
