@@ -1,15 +1,16 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
-#define GLEW_STATIC
 #include "Buffers.hpp"
 #include "Render.hpp"
 #include "color_console/color.hpp"
+#ifndef GLEW_STATIC
+#define GLEW_STATIC
+#endif
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 #include <iostream>
 #include <vector>
-#include <eigen3/Eigen/Dense>
 
 namespace
 {
@@ -35,7 +36,8 @@ namespace
       std::cout << dye::yellow_on_white(std::string(message, length))
                 << std::endl;
     // if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
-    //   std::cout << dye::light_aqua(std::string(message, length)) << std::endl;
+    //   std::cout << dye::light_aqua(std::string(message, length)) <<
+    //   std::endl;
   }
 
   void setupImgui(GLFWwindow* window)
@@ -106,9 +108,8 @@ int main(int argc, char** argv)
                                     { 0.0f, 1.0f, 0.0f, 1.0f },
                                     { 0.0f, 0.0f, 1.0f, 1.0f } };
 
-  auto mesh = evolution::Mesh(vertices, colors, evolution::IndexBuffer());
-
-  
+  auto indexBuffer = evolution::IndexBuffer();
+  auto mesh = evolution::Mesh(vertices, colors, indexBuffer);
 
   auto program = evolution::createProgram();
 

@@ -1,5 +1,7 @@
-#define GLEW_STATIC
 #include "Buffers.hpp"
+#ifndef GLEW_STATIC
+#define GLEW_STATIC
+#endif
 #include <GL/glew.h>
 #include <stdexcept>
 
@@ -114,6 +116,6 @@ namespace evolution
   void Mesh::draw()
   {
     glBindVertexArray(m_vaoId);
-    glDrawElements(GL_TRIANGLES, m_numVertices, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (GLsizei) m_numVertices, GL_UNSIGNED_INT, 0);
   }
 } // namespace evolution
