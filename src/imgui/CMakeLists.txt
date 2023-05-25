@@ -18,3 +18,4 @@ set(imgui_srcs
 )
 target_sources(${exe_name} PUBLIC ${imgui_srcs})
 source_group("imgui" FILES ${imgui_srcs})
+xpSourceListAppend("${imgui_srcs}")
