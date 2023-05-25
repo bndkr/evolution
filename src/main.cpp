@@ -7,9 +7,9 @@
 #include "color_console/color.hpp"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
-#include <eigen3/Eigen/Dense>
 #include <iostream>
 #include <vector>
+#include <eigen3/Eigen/Dense>
 
 namespace
 {
@@ -35,8 +35,7 @@ namespace
       std::cout << dye::yellow_on_white(std::string(message, length))
                 << std::endl;
     // if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
-    //   std::cout << dye::light_aqua(std::string(message, length)) <<
-    //   std::endl;
+    //   std::cout << dye::light_aqua(std::string(message, length)) << std::endl;
   }
 
   void setupImgui(GLFWwindow* window)
@@ -108,6 +107,8 @@ int main(int argc, char** argv)
                                     { 0.0f, 0.0f, 1.0f, 1.0f } };
 
   auto mesh = evolution::Mesh(vertices, colors, evolution::IndexBuffer());
+
+  
 
   auto program = evolution::createProgram();
 
