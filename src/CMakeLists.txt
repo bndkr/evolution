@@ -1,20 +1,5 @@
-set(exe_name Evolution)
-add_executable(${exe_name})
-add_subdirectory(imgui)
-add_subdirectory(color_console)
-set(${exe_name}_srcs
-  Render.cpp
-  Render.hpp
-  Buffers.cpp
-  Buffers.hpp
-  Projection.cpp
-  Projection.hpp
-  main.cpp
-  utils.cpp
-)
+set(${exe_name}_srcs main.cpp utils.cpp)
+add_executable(${exe_name} ${${exe_name}_srcs})
 source_group("" FILES ${${exe_name}_srcs})
-target_sources(${exe_name} PUBLIC ${${exe_name}_srcs})
-xpFindPkg(PKGS eigen glew)
-target_include_directories(${exe_name} PRIVATE ${GLFW3_INCLUDE_DIR})
-target_link_libraries(${exe_name} PRIVATE ${OPENGL_LIBRARY} GLEW::glew_s ${GLFW3_LIBRARY} Eigen3::Eigen)
+target_link_libraries(${exe_name} PRIVATE ${lib_name})
 xpSourceListAppend("${${exe_name}_srcs}")
