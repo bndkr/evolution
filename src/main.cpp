@@ -4,9 +4,6 @@
 #include "Buffers.hpp"
 #include "Render.hpp"
 #include "color_console/color.hpp"
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
 #include <iostream>

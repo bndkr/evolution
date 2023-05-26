@@ -1,7 +1,4 @@
 #include "Render.hpp"
-#ifndef GLEW_STATIC
-#define GLEW_STATIC
-#endif
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
@@ -49,8 +46,8 @@ namespace evolution
     glLinkProgram(program);
     glValidateProgram(program);
 
-    // glDeleteShader(vertexShaderId);
-    // glDeleteShader(fragmentShaderId);
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
 
     glUseProgram(program);
     return program;

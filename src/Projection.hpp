@@ -1,7 +1,6 @@
 #ifndef PROJECTION_HPP
 #define PROJECTION_HPP
 
-
 namespace evolution
 {
   struct Mat4
