@@ -1,4 +1,4 @@
 _bld/
 .vscode/
 imgui.ini
-make.bat
+*.bat
