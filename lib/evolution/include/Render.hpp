@@ -32,8 +32,13 @@ void main(void)
 }
 )";
 
-  uint32_t createProgram(const std::string& vertexShader = defaultVertexShaderSrc,
-                         const std::string& fragmentShader = defaultFragmentShaderSrc);
+  uint32_t createProgram(
+    const std::string& vertexShader = defaultVertexShaderSrc,
+    const std::string& fragmentShader = defaultFragmentShaderSrc);
+
+  void setupOpenGL();
+
+  void prepareRender(int width, int height);
 
 } // namespace evolution
 #endif

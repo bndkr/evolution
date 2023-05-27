@@ -1,4 +1,5 @@
 #include "Projection.hpp"
+
 #include <eigen3/Eigen/Dense>
 
 namespace
@@ -22,9 +23,10 @@ namespace evolution
     std::memcpy(matrix.m, m.data(), sizeof(matrix));
   }
 
-  void rotateAroundY(Mat4& matrix, const float theta) {}
+  void rotateAroundY(Mat4& matrix, const float theta) { }
 
-  void rotateAroundZ(Mat4& matrix, const float theta) {}
+  void rotateAroundZ(Mat4& matrix, const float theta) { }
 
-  void scaleMatrix(Mat4& matrix, const float x, const float y, const float z) {}
+  void scaleMatrix(Mat4& matrix, const float x, const float y, const float z) {
+  }
 } // namespace evolution

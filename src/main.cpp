@@ -1,11 +1,13 @@
 #include "Buffers.hpp"
 #include "Render.hpp"
-#include "color_console/color.hpp"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
+
 #include <iostream>
 #include <vector>
 
@@ -14,27 +16,6 @@ namespace
   void glfwErrorCallback(int error, const char* description)
   {
     std::cerr << "GLFW Error " << error << ": " << description << std::endl;
-  }
-
-  void GLAPIENTRY glErrorCallback(GLenum source,
-                                  GLenum type,
-                                  GLuint id,
-                                  GLenum severity,
-                                  GLsizei length,
-                                  const GLchar* message,
-                                  const void* userParam)
-  {
-    if (severity == GL_DEBUG_SEVERITY_HIGH)
-      std::cout << dye::purple_on_white(std::string(message, length))
-                << std::endl;
-    if (severity == GL_DEBUG_SEVERITY_MEDIUM)
-      std::cout << dye::red(std::string(message, length)) << std::endl;
-    if (severity == GL_DEBUG_SEVERITY_LOW)
-      std::cout << dye::yellow_on_white(std::string(message, length))
-                << std::endl;
-    // if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
-    //   std::cout << dye::light_aqua(std::string(message, length)) <<
-    //   std::endl;
   }
 
   void setupImgui(GLFWwindow* window)
@@ -46,7 +27,7 @@ namespace
     io.ConfigFlags |=
       ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
+      ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
 
     ImGui::StyleColorsDark();
 
@@ -60,7 +41,8 @@ namespace
                               const char* name)
   {
     glfwSetErrorCallback(glfwErrorCallback);
-    if (!glfwInit()) exit(1);
+    if (!glfwInit())
+      exit(1);
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -70,7 +52,8 @@ namespace
     // Create window with graphics context
     GLFWwindow* window =
       glfwCreateWindow(width, height, name, nullptr, nullptr);
-    if (!window) exit(1);
+    if (!window)
+      exit(1);
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
@@ -89,21 +72,18 @@ int main(int argc, char** argv)
   auto window = setupGlfwWindow(1280, 720, "Evolution Game Engine");
 
   setupImgui(window);
-  glDebugMessageCallback(glErrorCallback, nullptr);
-  glEnable(GL_DEBUG_OUTPUT);
-
-  std::cout << "opengl version: " << glGetString(GL_VERSION) << std::endl;
+  evolution::setupOpenGL();
 
   // Our state
   bool showDemoWindow = true;
 
-  evolution::PositionBuffer vertices = { { -0.8f, -0.8f, 0.0f, 1.0f },
-                                         { 0.0f, 0.8f, 0.0f, 1.0f },
-                                         { 0.8f, -0.8f, 0.0f, 1.0f } };
+  evolution::PositionBuffer vertices = {{-0.8f, -0.8f, 0.0f, 1.0f},
+                                        {0.0f, 0.8f, 0.0f, 1.0f},
+                                        {0.8f, -0.8f, 0.0f, 1.0f}};
 
-  evolution::ColorBuffer colors = { { 1.0f, 0.0f, 0.0f, 1.0f },
-                                    { 0.0f, 1.0f, 0.0f, 1.0f },
-                                    { 0.0f, 0.0f, 1.0f, 1.0f } };
+  evolution::ColorBuffer colors = {{1.0f, 0.0f, 0.0f, 1.0f},
+                                   {0.0f, 1.0f, 0.0f, 1.0f},
+                                   {0.0f, 0.0f, 1.0f, 1.0f}};
 
   auto indexBuffer = evolution::IndexBuffer();
   auto mesh = evolution::Mesh(vertices, colors, indexBuffer);
@@ -118,14 +98,16 @@ int main(int argc, char** argv)
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    if (showDemoWindow) ImGui::ShowDemoWindow(&showDemoWindow);
+    if (showDemoWindow)
+      ImGui::ShowDemoWindow(&showDemoWindow);
 
     ImGui::Render();
+    // TODO: abstract away imgui stuff
     int displayWidth, displayHeight;
     glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
-    glViewport(0, 0, displayWidth, displayHeight);
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+
+    evolution::prepareRender(displayWidth, displayHeight);
+
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     mesh.draw();
