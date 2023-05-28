@@ -20,7 +20,6 @@ target_link_libraries(
   ${OPENGL_LIBRARY}
   GLEW::glew_s
   ${GLFW3_LIBRARY}
-  imgui
   PRIVATE
   color_console
   Eigen3::Eigen
