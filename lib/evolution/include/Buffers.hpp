@@ -1,5 +1,5 @@
-#ifndef BUFFERS_HPP
-#define BUFFERS_HPP
+#ifndef EVOLUTION_BUFFERS_HPP
+#define EVOLUTION_BUFFERS_HPP
 
 #include <vector>
 

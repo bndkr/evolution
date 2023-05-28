@@ -23,8 +23,12 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef COLOR_HPP
-#define COLOR_HPP
+#ifndef COLOR_CONSOLE_COLOR_HPP
+#define COLOR_CONSOLE_COLOR_HPP
+
+// TODO: as a header-only library, we come across problems when multiple
+// files include this one. I think the solution is declare this interface
+// as 'extern' when required, but I don't know...
 
 #include <algorithm>
 #include <iostream>

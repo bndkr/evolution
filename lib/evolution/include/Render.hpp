@@ -1,5 +1,5 @@
-#ifndef RENDER_HPP
-#define RENDER_HPP
+#ifndef EVOLUTION_RENDER_HPP
+#define EVOLUTION_RENDER_HPP
 
 #include <string>
 

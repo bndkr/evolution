@@ -2,9 +2,11 @@ set(${lib_name}_srcs
   include/Render.hpp
   include/Buffers.hpp
   include/Projection.hpp
+  include/Setup.hpp
   src/Render.cpp
   src/Buffers.cpp
   src/Projection.cpp
+  src/Setup.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})
@@ -17,8 +19,8 @@ target_link_libraries(
   GLEW::glew_s
   ${GLFW3_LIBRARY}
   imgui
-  color_console
   PRIVATE
+  color_console
   Eigen3::Eigen
 )
 xpSourceListAppend("${${lib_name}_srcs}")

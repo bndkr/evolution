@@ -1,5 +1,5 @@
-#ifndef PROJECTION_HPP
-#define PROJECTION_HPP
+#ifndef EVOLUTION_PROJECTION_HPP
+#define EVOLUTION_PROJECTION_HPP
 
 namespace evolution
 {
@@ -12,6 +12,6 @@ namespace evolution
   void rotateAroundY(Mat4& matrix, const float theta);
   void rotateAroundZ(Mat4& matrix, const float theta);
   void scaleMatrix(Mat4& matrix, const float x, const float y, const float z);
-}
+} // namespace evolution
 
 #endif
