@@ -11,9 +11,31 @@
 
 #include <iostream>
 
+namespace
+{
+  void setupImgui(GLFWwindow* window)
+  {
+    // Setup Dear ImGui context
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+    io.ConfigFlags |=
+      ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 430");
+  }
+} // namespace
+
 int main(int argc, char** argv)
 {
   auto window = evolution::setup();
+  setupImgui(window);
 
   // Our state
   bool showDemoWindow = true;

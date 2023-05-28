@@ -18,24 +18,6 @@ namespace
     std::cerr << "GLFW Error " << error << ": " << description << std::endl;
   }
 
-  void setupImgui(GLFWwindow* window)
-  {
-    // Setup Dear ImGui context
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO();
-    io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
-    io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
-
-    ImGui::StyleColorsDark();
-
-    // Setup Platform/Renderer backends
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 430");
-  }
-
   GLFWwindow* setupGlfwWindow(const int width,
                               const int height,
                               const char* name)
@@ -100,7 +82,6 @@ namespace evolution
   GLFWwindow* setup()
   {
     auto* window = setupGlfwWindow(1280, 720, "Evolution Game Engine");
-    setupImgui(window);
     setupOpenGL();
     return window;
   }
