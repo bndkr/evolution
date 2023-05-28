@@ -32,6 +32,8 @@ int main(int argc, char** argv)
   auto program = evolution::createProgram();
 
   // Main loop
+  // let's start off leaving the main loop client-side. this allows
+  // the client more flexibility over events and state.
   while (!glfwWindowShouldClose(window))
   {
     glfwPollEvents();
