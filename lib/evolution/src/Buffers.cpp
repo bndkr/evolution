@@ -1,4 +1,5 @@
 #include "Buffers.hpp"
+#define GLEW_STATIC
 #include <GL/glew.h>
 #include <stdexcept>
 

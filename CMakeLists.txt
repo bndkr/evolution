@@ -1,11 +1,17 @@
 cmake_minimum_required(VERSION 3.21)
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake)
 project(evolution)
+#################################
 find_package(OpenGL REQUIRED)
+set(GLEW_USE_STATIC_LIBS TRUE)
+set(GLEW_INSTALL_DIR "C:/dev/extern/glew-2.1.0-win32/glew-2.1.0" CACHE FILEPATH "Path to GLEW installation")
+set(CMAKE_PREFIX_PATH ${GLEW_INSTALL_DIR})
+find_package(GLEW REQUIRED)
+set(GLFW3_ROOT "C:/dev/extern/glfw-3.3.8.bin.WIN64/glfw-3.3.8.bin.WIN64" CACHE FILEPATH "Path to GLFW installation")
 set(externpro_REV 23.02)
 find_package(externpro REQUIRED)
+################################
 xpSetFlags()
-# unset(CMAKE_MSVC_RUNTIME_LIBRARY)
 # dependency order
 add_subdirectory(cmake)
 add_subdirectory(dep)

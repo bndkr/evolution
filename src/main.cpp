@@ -6,11 +6,11 @@
 #include "Render.hpp"
 #include "Setup.hpp"
 
+#define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
-
 
 namespace
 {
@@ -68,11 +68,11 @@ int main(int argc, char** argv)
       ImGui::ShowDemoWindow(&showDemoWindow);
 
     ImGui::Render();
-    // TODO: abstract away imgui stuff
+    
     int displayWidth, displayHeight;
     glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
 
-    evolution::prepareRender(displayWidth, displayHeight);
+    evolution::prepareRender(displayWidth, displayHeight); // TODO: remove, it's okay
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
