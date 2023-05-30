@@ -55,11 +55,4 @@ namespace evolution
     glUseProgram(program);
     return program;
   }
-
-  void prepareRender(int width, int height)
-  {
-    glViewport(0, 0, width, height);
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-  }
 } // namespace evolution

@@ -38,7 +38,5 @@ void main(void)
 
   void setupOpenGL();
 
-  void prepareRender(int width, int height);
-
 } // namespace evolution
 #endif

@@ -68,15 +68,17 @@ int main(int argc, char** argv)
       ImGui::ShowDemoWindow(&showDemoWindow);
 
     ImGui::Render();
-    
+
     int displayWidth, displayHeight;
     glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
 
-    evolution::prepareRender(displayWidth, displayHeight); // TODO: remove, it's okay
-
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    glViewport(0, 0, displayWidth, displayHeight);
+    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT);
 
     mesh.draw();
+
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     glfwSwapBuffers(window);
   }
