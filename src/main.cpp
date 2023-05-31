@@ -35,12 +35,10 @@ namespace
 
 int main(int argc, char** argv)
 {
-  auto window = evolution::setup();
+  auto window = evolution::setup(/*enable3D=*/true);
   setupImgui(window);
 
   // Our state
-  bool showDemoWindow = true;
-
   evolution::PositionBuffer vertices = {{-0.8f, -0.8f, 0.0f, 1.0f},
                                         {0.0f, 0.8f, 0.0f, 1.0f},
                                         {0.8f, -0.8f, 0.0f, 1.0f}};
@@ -67,16 +65,15 @@ int main(int argc, char** argv)
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    if (showDemoWindow)
-      ImGui::ShowDemoWindow(&showDemoWindow);
-
     ImGui::Begin("hello");
     static float triangleColor[4] = {1.0f, 0.0f, 1.0f, 1.0f};
-    ImGui::ColorPicker4("pick your triangle color!", triangleColor);
+    if (ImGui::ColorPicker4("pick your triangle color!", triangleColor))
+    {
+      std::vector<float> color(
+        std::begin(triangleColor), std::end(triangleColor));
+      program.addUniform(color, "un_color");
+    }
 
-    std::vector<float> color(
-      {triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]});
-    program.addUniform(color, "un_color");
     ImGui::End();
 
     ImGui::Render();
@@ -85,7 +82,6 @@ int main(int argc, char** argv)
     glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
 
     glViewport(0, 0, displayWidth, displayHeight);
-    glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     mesh.draw();

@@ -2,10 +2,6 @@
 
 #include "color_console/color.hpp"
 
-// #include "imgui/imgui.h"
-// #include "imgui/imgui_impl_opengl3.h"
-// #include "imgui/imgui_impl_glfw.h"
-
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -57,17 +53,16 @@ namespace
                                   const void* userParam)
   {
     if (severity == GL_DEBUG_SEVERITY_HIGH)
-      std::cout << dye::purple_on_white(std::string(message, length))
-                << std::endl;
+      std::cout << dye::red(std::string(message, length)) << std::endl;
     if (severity == GL_DEBUG_SEVERITY_MEDIUM)
       std::cout << dye::red(std::string(message, length)) << std::endl;
     if (severity == GL_DEBUG_SEVERITY_LOW)
-      std::cout << dye::yellow_on_white(std::string(message, length))
-                << std::endl;
+      std::cout << dye::yellow(std::string(message, length)) << std::endl;
     // if (severity == GL_DEBUG_SEVERITY_NOTIFICATION)
     //   std::cout << dye::light_aqua(std::string(message, length)) <<
     //   std::endl;
   }
+
   void setupOpenGL()
   {
     glDebugMessageCallback(glErrorCallback, nullptr);
@@ -75,15 +70,31 @@ namespace
 
     // todo: add game engine logging module
     std::cout << "opengl version: " << glGetString(GL_VERSION) << std::endl;
+    glClearColor(
+      0.5f,
+      0.5f,
+      0.5f,
+      1.0f); // background color. Does this need to be in the main loop?
+  }
+
+  void enable3D()
+  {
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_ALWAYS);
+    glEnable(GL_CULL_FACE);
+    glFrontFace(
+      GL_CW); // the winding direction of vertices. (probably should be CCW)
   }
 } // namespace
 
 namespace evolution
 {
-  GLFWwindow* setup()
+  GLFWwindow* setup(const bool enable3DMode)
   {
     auto* window = setupGlfwWindow(1280, 720, "Evolution Game Engine");
     setupOpenGL();
+    if (enable3DMode)
+      enable3D();
     return window;
   }
 } // namespace evolution
