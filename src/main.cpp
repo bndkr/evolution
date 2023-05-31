@@ -3,7 +3,7 @@
 #include "imgui/imgui_impl_glfw.h"
 
 #include "Buffers.hpp"
-#include "Render.hpp"
+#include "Shader.hpp"
 #include "Setup.hpp"
 
 #define GLEW_STATIC
@@ -52,7 +52,10 @@ int main(int argc, char** argv)
   auto indexBuffer = evolution::IndexBuffer();
   auto mesh = evolution::Mesh(vertices, colors, indexBuffer);
 
-  auto program = evolution::createProgram();
+  auto program = evolution::Program();
+  program.bind();
+
+  program.addUniform(std::vector<float>{0.0f, 1.0f, 1.0f, 1.0f}, "un_color");
 
   // Main loop
   // let's start off leaving the main loop client-side. this allows
@@ -66,6 +69,15 @@ int main(int argc, char** argv)
 
     if (showDemoWindow)
       ImGui::ShowDemoWindow(&showDemoWindow);
+
+    ImGui::Begin("hello");
+    static float triangleColor[4] = {1.0f, 0.0f, 1.0f, 1.0f};
+    ImGui::ColorPicker4("pick your triangle color!", triangleColor);
+
+    std::vector<float> color(
+      {triangleColor[0], triangleColor[1], triangleColor[2], triangleColor[3]});
+    program.addUniform(color, "un_color");
+    ImGui::End();
 
     ImGui::Render();
 

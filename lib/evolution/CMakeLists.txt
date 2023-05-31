@@ -1,14 +1,14 @@
 set(${lib_name}_srcs
-  include/Render.hpp
   include/Buffers.hpp
   include/Projection.hpp
   include/Setup.hpp
   include/Engine.hpp
-  src/Render.cpp
+  include/Shader.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
   src/Engine.cpp
+  src/Shader.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})
