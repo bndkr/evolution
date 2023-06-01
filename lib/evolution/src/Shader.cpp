@@ -28,8 +28,6 @@ namespace
     }
     return id;
   }
-
- 
 } // namespace
 
 namespace evolution

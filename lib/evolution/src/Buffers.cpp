@@ -9,19 +9,19 @@ namespace
   {
     switch (usage)
     {
-      case (evolution::BufferDataUsage::StaticDraw):
-        return GL_STATIC_DRAW;
-        break;
-      case (evolution::BufferDataUsage::StaticRead):
-        return GL_STATIC_READ;
-        break;
-      case (evolution::BufferDataUsage::DynamicDraw):
-        return GL_DYNAMIC_DRAW;
-        break;
-      case (evolution::BufferDataUsage::DynamicRead):
-        return GL_DYNAMIC_READ;
-        break;
-        // TODO: support the rest
+    case (evolution::BufferDataUsage::StaticDraw):
+      return GL_STATIC_DRAW;
+      break;
+    case (evolution::BufferDataUsage::StaticRead):
+      return GL_STATIC_READ;
+      break;
+    case (evolution::BufferDataUsage::DynamicDraw):
+      return GL_DYNAMIC_DRAW;
+      break;
+    case (evolution::BufferDataUsage::DynamicRead):
+      return GL_DYNAMIC_READ;
+      break;
+      // TODO: support the rest
     }
     return 0;
   }
@@ -36,7 +36,8 @@ namespace
     // create and fill a vertex buffer with position data
     uint32_t buffId = 0;
     glGenBuffers(1, &buffId);
-    if (!buffId) throw std::runtime_error("buffer generation failed");
+    if (!buffId)
+      throw std::runtime_error("buffer generation failed");
     glBindBuffer(type, buffId);
     glBufferData(type, size, data, bufferDataUsageToGlType(usage));
     // TODO: use a custom enum instead of this opengl macro garbage
@@ -55,7 +56,9 @@ namespace evolution
   Mesh::Mesh(const PositionBuffer& positions,
              const ColorBuffer& colors,
              IndexBuffer& indices,
-             const BufferDataUsage usage)
+             const PositionInfo& posInfo,
+             const BufferDataUsage usage = BufferDataUsage::StaticRead)
+    : m_position(posInfo)
   {
     if (indices.size() == 0) // no index buffer
     {
@@ -95,6 +98,40 @@ namespace evolution
                                    usage);
   }
 
+  void Mesh::setPosition(Float3 newPos)
+  {
+    m_position.position = newPos;
+  }
+
+  void Mesh::movePostion(Float3 delta)
+  {
+    m_position.position.x += delta.x;
+    m_position.position.y += delta.y;
+    m_position.position.z += delta.z;
+  }
+
+  void Mesh::setRotation(Float3 rotation)
+  {
+    m_position.rotation = rotation;
+  }
+
+  void Mesh::rotate(Float3 delta)
+  {
+    m_position.rotation.x = delta.x;
+    m_position.rotation.y = delta.y;
+    m_position.rotation.z = delta.z;
+  }
+
+  Float3 Mesh::getPostion()
+  {
+    return m_position.position;
+  }
+
+  Float3 Mesh::getRotation()
+  {
+    return m_position.rotation;
+  }
+
   Mesh::~Mesh()
   {
     glDisableVertexAttribArray(1);
@@ -114,6 +151,6 @@ namespace evolution
   void Mesh::draw()
   {
     glBindVertexArray(m_vaoId);
-    glDrawElements(GL_TRIANGLES, (GLsizei) m_numVertices, GL_UNSIGNED_INT, 0);
+    glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);
   }
 } // namespace evolution

@@ -11,6 +11,7 @@ namespace
     auto c = cos(theta);
     auto s = sin(theta);
     Matrix mat = Matrix::Zero();
+    mat(3, 3) = 1;
     switch (axis)
     {
     case 'x':
@@ -19,7 +20,6 @@ namespace
       mat(1, 2) = -s;
       mat(2, 1) = s;
       mat(2, 2) = -c;
-      mat(3, 3) = 1;
       break;
     case 'y':
       mat(0, 0) = c;
@@ -27,7 +27,6 @@ namespace
       mat(1, 1) = 1;
       mat(2, 0) = -s;
       mat(2, 2) = c;
-      mat(3, 3) = 1;
       break;
     case 'z':
       mat(0, 0) = c;
@@ -35,7 +34,6 @@ namespace
       mat(1, 0) = s;
       mat(1, 1) = c;
       mat(2, 2) = 1;
-      mat(3, 3) = 1;
       break;
     }
     evolution::Mat4 res;
@@ -58,7 +56,7 @@ namespace evolution
   {
     Matrix m1 = Eigen::Map<Matrix>(mat1.m);
     Matrix m2 = Eigen::Map<Matrix>(mat2.m);
-    Matrix result = m2 * m1;
+    Matrix result = m1 * m2;
     std::memcpy(mat1.m, result.data(), sizeof(mat1));
   }
 
@@ -91,5 +89,21 @@ namespace evolution
     // clang-format on
 
     multiplyTransformationMatrices(matrix, scaleMatrix);
+  }
+  void translateMatrix(Mat4& matrix,
+                       const float x,
+                       const float y,
+                       const float z)
+  {
+    // clang-format on
+    Mat4 translateMatrix = {
+      1.0f, 0.0f, 0.0f, x,
+      0.0f, 1.0f, 0.0f, y,
+      0.0f, 0.0f, 1.0f, z,
+      0.0f, 0.0f, 0.0f, 1.0f,
+    };
+    // clang-format off
+
+    multiplyTransformationMatrices(matrix, translateMatrix);
   }
 } // namespace evolution

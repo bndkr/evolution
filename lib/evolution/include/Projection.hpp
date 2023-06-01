@@ -28,6 +28,9 @@ namespace evolution
 
   // Scales the given matrix by the specified factors in each dimension
   void scaleMatrix(Mat4& matrix, const float x, const float y, const float z);
+
+  // Translates the given matrix by an offset
+  void translateMatrix(Mat4& matrix, const float x, const float y, const float z);
 } // namespace evolution
 
 #endif
