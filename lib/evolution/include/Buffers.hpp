@@ -20,6 +20,8 @@ namespace evolution
     float z;
   };
 
+  struct Mat4;
+
   struct PositionInfo
   {
     Float3 position;
@@ -66,6 +68,8 @@ namespace evolution
 
     Float3 getPostion();
     Float3 getRotation();
+
+    Mat4 getWorldSpaceTransformation();
 
     ~Mesh();
 

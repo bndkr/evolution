@@ -1,4 +1,6 @@
 #include "Buffers.hpp"
+#include "Projection.hpp"
+
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <stdexcept>
@@ -130,6 +132,22 @@ namespace evolution
   Float3 Mesh::getRotation()
   {
     return m_position.rotation;
+  }
+
+  Mat4 Mesh::getWorldSpaceTransformation()
+  {
+    auto mat = identityMatrix();
+
+    rotateAroundX(mat, m_position.rotation.x);
+    rotateAroundY(mat, m_position.rotation.y);
+    rotateAroundZ(mat, m_position.rotation.z);
+    // TODO: add scaling
+
+    translateMatrix(mat,
+                    -m_position.position.x,
+                    -m_position.position.y,
+                    -m_position.position.z);
+    return mat;
   }
 
   Mesh::~Mesh()
