@@ -48,7 +48,9 @@ int main(int argc, char** argv)
                                    {0.0f, 0.0f, 1.0f, 1.0f}};
 
   auto indexBuffer = evolution::IndexBuffer();
-  auto mesh = evolution::Mesh(vertices, colors, indexBuffer);
+
+  auto mesh =
+    evolution::Mesh(vertices, colors, indexBuffer, evolution::PositionInfo());
 
   auto program = evolution::Program();
   program.bind();

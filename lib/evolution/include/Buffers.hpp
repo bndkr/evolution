@@ -7,17 +7,17 @@ namespace evolution
 {
   struct Float4
   {
-    float x;
-    float y;
-    float z;
-    float w;
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    float w = 0.0f;
   };
 
   struct Float3
   {
-    float x;
-    float y;
-    float z;
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
   };
 
   struct Mat4;
@@ -55,7 +55,7 @@ namespace evolution
     Mesh(const PositionBuffer& positions,
          const ColorBuffer& colors,
          IndexBuffer& indices,
-         const PositionInfo& posInfo,
+         const PositionInfo posInfo,
          const BufferDataUsage usage = BufferDataUsage::DynamicDraw);
 
     void setPosition(Float3 newPos);

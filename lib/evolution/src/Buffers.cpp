@@ -58,8 +58,8 @@ namespace evolution
   Mesh::Mesh(const PositionBuffer& positions,
              const ColorBuffer& colors,
              IndexBuffer& indices,
-             const PositionInfo& posInfo,
-             const BufferDataUsage usage = BufferDataUsage::StaticRead)
+             const PositionInfo posInfo,
+             const BufferDataUsage usage)
     : m_position(posInfo)
   {
     if (indices.size() == 0) // no index buffer
