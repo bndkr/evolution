@@ -47,9 +47,9 @@ void main(void)
     void bind();
     void unbind();
 
-    void addUniform(const std::vector<float>& vals, std::string name);
-    void addUniform(const std::vector<uint32_t>& vals, std::string name);
-    void addUniform(const std::vector<int32_t>& vals, std::string name);
+    void addUniform(const float* vals, size_t num, std::string name);
+    void addUniform(const uint32_t* vals, size_t num, std::string name);
+    void addUniform(const int32_t* vals, size_t num, std::string name);
 
   private:
     uint32_t m_programID = 0;

@@ -5,6 +5,7 @@
 #include "Buffers.hpp"
 #include "Shader.hpp"
 #include "Setup.hpp"
+#include "Camera.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -55,7 +56,10 @@ int main(int argc, char** argv)
   auto program = evolution::Program();
   program.bind();
 
-  program.addUniform(std::vector<float>{0.0f, 1.0f, 1.0f, 1.0f}, "un_color");
+  static float initialColor[4] = {0.0f, 1.0f, 1.0f, 1.0f};
+  program.addUniform(initialColor, 4, "un_color");
+
+  evolution::Camera camera({0.0f, 0.0f, -2.0f}, {0.0f, 0.0f, 0.0f});
 
   // Main loop
   // let's start off leaving the main loop client-side. this allows
@@ -68,12 +72,9 @@ int main(int argc, char** argv)
     ImGui::NewFrame();
 
     ImGui::Begin("hello");
-    static float triangleColor[4] = {1.0f, 0.0f, 1.0f, 1.0f};
-    if (ImGui::ColorPicker4("pick your triangle color!", triangleColor))
+    if (ImGui::ColorPicker4("pick your triangle color!", initialColor))
     {
-      std::vector<float> color(
-        std::begin(triangleColor), std::end(triangleColor));
-      program.addUniform(color, "un_color");
+      program.addUniform(initialColor, 4, "un_color");
     }
 
     ImGui::End();
@@ -86,7 +87,7 @@ int main(int argc, char** argv)
     glViewport(0, 0, displayWidth, displayHeight);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    mesh.draw();
+    mesh.draw(program, camera);
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

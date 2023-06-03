@@ -1,5 +1,7 @@
 #include "Buffers.hpp"
 #include "Projection.hpp"
+#include "Shader.hpp"
+#include "Camera.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -166,8 +168,10 @@ namespace evolution
     glDeleteVertexArrays(1, &m_vaoId);
   }
 
-  void Mesh::draw()
+  void Mesh::draw(Program& program, const Camera& camera)
   {
+    program.addUniform(&m_position.position.x, 3, "un_modelMatrix");
+    program.addUniform(camera.getEyeSpaceMatrix().m, 16, "un_eyeMatrix");
     glBindVertexArray(m_vaoId);
     glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);
   }

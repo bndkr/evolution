@@ -64,48 +64,50 @@ namespace evolution
     glUseProgram(0);
   }
 
-  void Program::addUniform(const std::vector<float>& vals, std::string name)
+  void Program::addUniform(const float* vals, size_t num, std::string name)
   {
     auto location = glGetUniformLocation(m_programID, name.c_str());
-    auto numVals = vals.size();
-    if (numVals == 1)
+    if (num == 1)
     {
       glUniform1f(location, vals[0]);
     }
-    else if (numVals == 2)
+    else if (num == 2)
     {
       glUniform2f(location, vals[0], vals[1]);
     }
-    else if (numVals == 3)
+    else if (num == 3)
     {
       glUniform3f(location, vals[0], vals[1], vals[2]);
     }
-    else if (numVals == 4)
+    else if (num == 4)
     {
       glUniform4f(location, vals[0], vals[1], vals[2], vals[3]);
+    }
+    else if (num = 16)
+    {
+      glUniformMatrix4fv(location, ) // TODO: 4x4 float matrix support
     }
     else
     {
       throw std::runtime_error("invalid number of elements in array");
     }
   }
-  void Program::addUniform(const std::vector<uint32_t>& vals, std::string name)
+  void Program::addUniform(const uint32_t* vals, size_t num, std::string name)
   {
     auto location = glGetUniformLocation(m_programID, name.c_str());
-    auto numVals = vals.size();
-    if (numVals == 1)
+    if (num == 1)
     {
       glUniform1ui(location, vals[0]);
     }
-    else if (numVals == 2)
+    else if (num == 2)
     {
       glUniform2ui(location, vals[0], vals[1]);
     }
-    else if (numVals == 3)
+    else if (num == 3)
     {
       glUniform3ui(location, vals[0], vals[1], vals[2]);
     }
-    else if (numVals == 4)
+    else if (num == 4)
     {
       glUniform4ui(location, vals[1], vals[2], vals[3], vals[4]);
     }
@@ -114,23 +116,22 @@ namespace evolution
       throw std::runtime_error("invalid number of elements in array");
     }
   }
-  void Program::addUniform(const std::vector<int32_t>& vals, std::string name)
+  void Program::addUniform(const int32_t* vals, size_t num, std::string name)
   {
     auto location = glGetUniformLocation(m_programID, name.c_str());
-    auto numVals = vals.size();
-    if (numVals == 1)
+    if (num == 1)
     {
       glUniform1i(location, vals[0]);
     }
-    else if (numVals == 2)
+    else if (num == 2)
     {
       glUniform2i(location, vals[0], vals[1]);
     }
-    else if (numVals == 3)
+    else if (num == 3)
     {
       glUniform3i(location, vals[0], vals[1], vals[2]);
     }
-    else if (numVals == 4)
+    else if (num == 4)
     {
       glUniform4i(location, vals[1], vals[2], vals[3], vals[4]);
     }

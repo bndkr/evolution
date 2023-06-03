@@ -5,6 +5,9 @@
 
 namespace evolution
 {
+  class Program;
+  class Camera;
+
   struct Float4
   {
     float x = 0.0f;
@@ -73,7 +76,9 @@ namespace evolution
 
     ~Mesh();
 
-    void draw();
+    // draws the mesh using a program and a viewpoint. Assumes the program is
+    // already bound.
+    void draw(Program& program, const Camera& camera);
 
   private:
     // Keep track of OpenGL buffer IDs

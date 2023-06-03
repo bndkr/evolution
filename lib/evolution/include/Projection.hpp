@@ -3,6 +3,7 @@
 
 namespace evolution
 {
+  // row-major matrix representation
   struct Mat4
   {
     float m[16];

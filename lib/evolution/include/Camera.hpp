@@ -14,7 +14,7 @@ namespace evolution
   public:
     Camera(Float3 position, Float3 direction);
 
-    Mat4 getEyeSpaceMatrix();
+    Mat4 getEyeSpaceMatrix() const;
   private:
     PositionInfo m_position;
   };

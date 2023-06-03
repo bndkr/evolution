@@ -4,7 +4,9 @@
 
 namespace
 {
-  typedef Eigen::Matrix4f Matrix;
+  // use row-major so we can easily convert from float[16] to
+  // mat4 and maintain readability
+  typedef Eigen::Matrix<float, 4, 4, Eigen::RowMajor> Matrix;
 
   evolution::Mat4 getRotationMatrix(char axis, float theta)
   {
@@ -56,7 +58,7 @@ namespace evolution
   {
     Matrix m1 = Eigen::Map<Matrix>(mat1.m);
     Matrix m2 = Eigen::Map<Matrix>(mat2.m);
-    Matrix result = m1 * m2;
+    Matrix result = m2 * m1;
     std::memcpy(mat1.m, result.data(), sizeof(mat1));
   }
 

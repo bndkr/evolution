@@ -13,9 +13,10 @@ namespace evolution
   {
     auto mat = identityMatrix();
     // rotate matrix
-    translateMatrix(
-      mat, m_position.position.x, m_position.position.y, m_position.position.z);
+    translateMatrix(mat,
+                    -m_position.position.x,
+                    -m_position.position.y,
+                    -m_position.position.z);
     return mat;
   }
-
 } // namespace evolution
