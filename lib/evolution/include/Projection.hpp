@@ -31,7 +31,15 @@ namespace evolution
   void scaleMatrix(Mat4& matrix, const float x, const float y, const float z);
 
   // Translates the given matrix by an offset
-  void translateMatrix(Mat4& matrix, const float x, const float y, const float z);
+  void translateMatrix(Mat4& matrix,
+                       const float x,
+                       const float y,
+                       const float z);
+
+  Mat4 getProjectionMatrix(const float fovy,
+                           const float aspectRatio,
+                           const float nearPlane,
+                           const float farPlane);
 } // namespace evolution
 
 #endif

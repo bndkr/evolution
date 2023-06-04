@@ -6,6 +6,7 @@
 #include "Shader.hpp"
 #include "Setup.hpp"
 #include "Camera.hpp"
+#include "Projection.hpp" // for debugging projection matrix
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -59,7 +60,7 @@ int main(int argc, char** argv)
   static float initialColor[4] = {0.0f, 1.0f, 1.0f, 1.0f};
   program.addUniform(initialColor, 4, "un_color");
 
-  evolution::Camera camera({0.0f, 0.0f, -2.0f}, {0.0f, 0.0f, 0.0f});
+  evolution::Camera camera({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
 
   // Main loop
   // let's start off leaving the main loop client-side. this allows
@@ -72,11 +73,31 @@ int main(int argc, char** argv)
     ImGui::NewFrame();
 
     ImGui::Begin("hello");
-    if (ImGui::ColorPicker4("pick your triangle color!", initialColor))
     {
-      program.addUniform(initialColor, 4, "un_color");
-    }
+      if (ImGui::ColorPicker4("pick your triangle color!", initialColor))
+      {
+        program.addUniform(initialColor, 4, "un_color");
+      }
+      static float position1[4] = {0};
 
+      ImGui::SliderFloat4("position1", position1, -5.f, 5.f);
+
+      evolution::Mat4 m = evolution::identityMatrix();
+      m.m[3] = position1[0];
+      m.m[7] = position1[1];
+      m.m[11] = position1[2];
+      // m.m[15] = position1[3];
+      program.addUniform(m.m, 16, "un_modelMatrix");
+
+      static float cameraPosition[4] = {0};
+      ImGui::SliderFloat4("camera position", cameraPosition, -5.f, 5.f);
+      auto cam = evolution::identityMatrix();
+      cam.m[3] = cameraPosition[0];
+      cam.m[7] = cameraPosition[1];
+      cam.m[11] = cameraPosition[2];
+      // cam.m[15] = cameraPosition[3];
+      program.addUniform(cam.m, 16, "un_eyeMatrix");
+    }
     ImGui::End();
 
     ImGui::Render();

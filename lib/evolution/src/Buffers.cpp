@@ -170,8 +170,13 @@ namespace evolution
 
   void Mesh::draw(Program& program, const Camera& camera)
   {
-    program.addUniform(&m_position.position.x, 3, "un_modelMatrix");
-    program.addUniform(camera.getEyeSpaceMatrix().m, 16, "un_eyeMatrix");
+    program.bind();
+    auto im = identityMatrix(); // for now, object space is world space (identity model matrix)
+    // program.addUniform(&im.m[0], 16, "un_modelMatrix");
+    auto eyeMatrix = camera.getEyeSpaceMatrix();
+    // program.addUniform(&eyeMatrix.m[0], 16, "un_eyeMatrix");
+    auto projectionMatrix = getProjectionMatrix(90.f, 1280.f / 720.f, 1.f, 100.f);
+    program.addUniform(&projectionMatrix.m[0], 16, "un_projMatrix");
     glBindVertexArray(m_vaoId);
     glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);
   }

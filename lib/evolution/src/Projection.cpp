@@ -2,6 +2,8 @@
 
 #include <eigen3/Eigen/Dense>
 
+#include <cmath>
+
 namespace
 {
   // use row-major so we can easily convert from float[16] to
@@ -108,4 +110,21 @@ namespace evolution
 
     multiplyTransformationMatrices(matrix, translateMatrix);
   }
+
+Mat4 getProjectionMatrix(const float fovy, const float aspectRatio, const float nearPlane, const float farPlane)
+{
+  Mat4 result = identityMatrix();
+  float yScale = 1.0f / std::tan((fovy / 2) * (3.14159265358f / 180.0f));
+  float xScale = yScale / aspectRatio;
+  float frustumLength = farPlane - nearPlane;
+
+  result.m[0] = xScale;
+  result.m[5] = yScale;
+  result.m[10] = -((farPlane + nearPlane) / frustumLength);
+  result.m[11] = -((2 * nearPlane * farPlane) / frustumLength);
+  result.m[14] = -1;
+  result.m[15] = 0;
+
+  return result;
+}
 } // namespace evolution

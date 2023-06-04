@@ -66,7 +66,7 @@ namespace evolution
 
   void Program::addUniform(const float* vals, size_t num, std::string name)
   {
-    auto location = glGetUniformLocation(m_programID, name.c_str());
+    auto location = glGetUniformLocation(m_programID, name.c_str());  
     if (num == 1)
     {
       glUniform1f(location, vals[0]);
@@ -85,7 +85,7 @@ namespace evolution
     }
     else if (num = 16)
     {
-      glUniformMatrix4fv(location, ) // TODO: 4x4 float matrix support
+      glUniformMatrix4fv(location, 1, /*transpose=*/GL_TRUE, vals);
     }
     else
     {

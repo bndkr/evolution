@@ -9,7 +9,7 @@ namespace evolution
     m_position.rotation = direction;
   }
 
-  Mat4 Camera::getEyeSpaceMatrix()
+  Mat4 Camera::getEyeSpaceMatrix() const
   {
     auto mat = identityMatrix();
     // rotate matrix
