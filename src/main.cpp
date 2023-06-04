@@ -96,7 +96,7 @@ int main(int argc, char** argv)
       cam.m[7] = cameraPosition[1];
       cam.m[11] = cameraPosition[2];
       // cam.m[15] = cameraPosition[3];
-      program.addUniform(cam.m, 16, "un_eyeMatrix");
+      // program.addUniform(cam.m, 16, "un_eyeMatrix");
     }
     ImGui::End();
 

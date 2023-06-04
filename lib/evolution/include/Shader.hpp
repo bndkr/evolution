@@ -37,8 +37,8 @@ uniform vec4 un_color;
 
 void main(void)
 {
-  // colorOut = colorPass;
-  colorOut = un_color;
+  colorOut = colorPass;
+  // colorOut = un_color;
 }
 )";
 
