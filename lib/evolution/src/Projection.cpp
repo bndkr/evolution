@@ -23,7 +23,7 @@ namespace
       mat(1, 1) = c;
       mat(1, 2) = -s;
       mat(2, 1) = s;
-      mat(2, 2) = -c;
+      mat(2, 2) = c;
       break;
     case 'y':
       mat(0, 0) = c;

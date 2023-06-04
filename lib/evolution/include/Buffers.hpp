@@ -87,6 +87,7 @@ namespace evolution
     uint32_t m_indexBufferId;
     uint32_t m_vaoId;
 
+    size_t m_numUniqueVertices;
     size_t m_numVertices;
 
     PositionInfo m_position;

@@ -74,14 +74,14 @@ namespace evolution
     }
 
     // all vectors need to have the same number of elements
-    if (positions.size() != colors.size() || colors.size() != indices.size())
+    if (positions.size() != colors.size())
     {
       throw std::runtime_error(
         "invalid mesh setup, buffer count not consistent");
     }
 
-    m_numVertices = positions.size();
-
+    m_numUniqueVertices = positions.size();
+    m_numVertices = indices.size();
     // create and bind the vertex array object
     glGenVertexArrays(1, &m_vaoId);
     if (!m_vaoId)
@@ -121,9 +121,9 @@ namespace evolution
 
   void Mesh::rotate(Float3 delta)
   {
-    m_position.rotation.x = delta.x;
-    m_position.rotation.y = delta.y;
-    m_position.rotation.z = delta.z;
+    m_position.rotation.x += delta.x;
+    m_position.rotation.y += delta.y;
+    m_position.rotation.z += delta.z;
   }
 
   Float3 Mesh::getPostion()
@@ -145,10 +145,8 @@ namespace evolution
     rotateAroundZ(mat, m_position.rotation.z);
     // TODO: add scaling
 
-    translateMatrix(mat,
-                    -m_position.position.x,
-                    -m_position.position.y,
-                    -m_position.position.z);
+    translateMatrix(
+      mat, m_position.position.x, m_position.position.y, m_position.position.z);
     return mat;
   }
 
@@ -171,11 +169,12 @@ namespace evolution
   void Mesh::draw(Program& program, const Camera& camera)
   {
     program.bind();
-    auto im = identityMatrix(); // for now, object space is world space (identity model matrix)
-    // program.addUniform(&im.m[0], 16, "un_modelMatrix");
+    auto im = getWorldSpaceTransformation();
+    program.addUniform(&im.m[0], 16, "un_modelMatrix");
     auto eyeMatrix = camera.getEyeSpaceMatrix();
     program.addUniform(&eyeMatrix.m[0], 16, "un_eyeMatrix");
-    auto projectionMatrix = getProjectionMatrix(90.f, 1280.f / 720.f, 0.f, 100.f);
+    auto projectionMatrix =
+      getProjectionMatrix(90.f, 1280.f / 720.f, 0.f, 100.f);
     program.addUniform(&projectionMatrix.m[0], 16, "un_projMatrix");
     glBindVertexArray(m_vaoId);
     glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);

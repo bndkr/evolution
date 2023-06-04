@@ -40,20 +40,35 @@ int main(int argc, char** argv)
   auto window = evolution::setup(/*enable3D=*/true);
   setupImgui(window);
 
-  // Our state
-  evolution::PositionBuffer vertices = {{-0.8f, -0.8f, 0.0f, 1.0f},
-                                        {0.0f, 0.8f, 0.0f, 1.0f},
-                                        {0.8f, -0.8f, 0.0f, 1.0f}};
+  evolution::PositionBuffer vertices = {
+    {-.5f, -.5f, .5f, 1.f},
+    {-.5f, .5f, .5f, 1.f},
+    {.5f, .5f, .5f, 1.f},
+    {.5f, -.5f, .5f, 1.f},
+    {-.5f, -.5f, -.5f, 1.f},
+    {-.5f, .5f, -.5f, 1.f},
+    {.5f, .5f, -.5f, 1.f},
+    {.5f, -.5f, -.5f, 1.f},
+  };
 
-  evolution::ColorBuffer colors = {{1.0f, 0.0f, 0.0f, 1.0f},
-                                   {0.0f, 1.0f, 0.0f, 1.0f},
-                                   {0.0f, 0.0f, 1.0f, 1.0f}};
-
-  auto indexBuffer = evolution::IndexBuffer();
+  evolution::ColorBuffer colors = {
+    {0.f, 0.f, 1.f, 1.f},
+    {1.f, 0.f, 0.f, 1.f},
+    {0.f, 1.f, 0.f, 1.f},
+    {1.f, 1.f, 0.f, 1.f},
+    {1.f, 1.f, 1.f, 1.f},
+    {1.f, 0.f, 0.f, 1.f},
+    {1.f, 0.f, 1.f, 1.f},
+    {0.f, 0.f, 1.f, 1.f},
+  };
+  evolution::IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
+                                        4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,
+                                        1, 6, 5, 1, 2, 6, 7, 5, 6, 7, 4, 5};
 
   auto mesh =
     evolution::Mesh(vertices, colors, indexBuffer, evolution::PositionInfo());
 
+  mesh.movePostion(evolution::Float3{0.0f, 0.0f, -2.0f});
   auto program = evolution::Program();
   program.bind();
 
@@ -74,29 +89,18 @@ int main(int argc, char** argv)
 
     ImGui::Begin("hello");
     {
-      if (ImGui::ColorPicker4("pick your triangle color!", initialColor))
+      if (ImGui::Button("rotatex"))
       {
-        program.addUniform(initialColor, 4, "un_color");
+        mesh.rotate(evolution::Float3{0.5f, 0.f, 0.f});
       }
-      static float position1[4] = {0};
-
-      ImGui::SliderFloat4("position1", position1, -5.f, 5.f);
-
-      evolution::Mat4 m = evolution::identityMatrix();
-      m.m[3] = position1[0];
-      m.m[7] = position1[1];
-      m.m[11] = position1[2];
-      // m.m[15] = position1[3];
-      program.addUniform(m.m, 16, "un_modelMatrix");
-
-      static float cameraPosition[4] = {0};
-      ImGui::SliderFloat4("camera position", cameraPosition, -5.f, 5.f);
-      auto cam = evolution::identityMatrix();
-      cam.m[3] = cameraPosition[0];
-      cam.m[7] = cameraPosition[1];
-      cam.m[11] = cameraPosition[2];
-      // cam.m[15] = cameraPosition[3];
-      // program.addUniform(cam.m, 16, "un_eyeMatrix");
+      if (ImGui::Button("rotatey"))
+      {
+        mesh.rotate(evolution::Float3{0.f, 0.5f, 0.f});
+      }
+      if (ImGui::Button("rotatez"))
+      {
+        mesh.rotate(evolution::Float3{0.f, 0.f, 0.5f});
+      }
     }
     ImGui::End();
 
@@ -106,7 +110,7 @@ int main(int argc, char** argv)
     glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
 
     glViewport(0, 0, displayWidth, displayHeight);
-    glClear(GL_COLOR_BUFFER_BIT);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     mesh.draw(program, camera);
 
