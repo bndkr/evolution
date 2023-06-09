@@ -6,7 +6,6 @@
 #include "Shader.hpp"
 #include "Setup.hpp"
 #include "Camera.hpp"
-#include "Projection.hpp" // for debugging projection matrix
 
 #include "ShaderEditor.hpp"
 
@@ -89,26 +88,22 @@ int main(int argc, char** argv)
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    ImGui::Begin("hello");
+    mesh.rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+
+
+    ImGui::Begin("yep, it's me again.", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    static float color[4] = {0};
+    if (ImGui::ColorPicker4("pick a color for the cube!", color))
     {
-      if (ImGui::Button("rotatex"))
-      {
-        mesh.rotate(evolution::Float3{0.5f, 0.f, 0.f});
-      }
-      if (ImGui::Button("rotatey"))
-      {
-        mesh.rotate(evolution::Float3{0.f, 0.5f, 0.f});
-      }
-      if (ImGui::Button("rotatez"))
-      {
-        mesh.rotate(evolution::Float3{0.f, 0.f, 0.5f});
-      }
+      program.addUniform(color, 4, "un_color");
     }
+
     ImGui::End();
 
     ImGui::ShowDemoWindow();
 
-    showShaderEditor();
+    static bool shaderEditorOpen = true;
+    showShaderEditor(&shaderEditorOpen, program);
 
     ImGui::Render();
 

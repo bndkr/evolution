@@ -46,12 +46,16 @@ void main(void)
   {
   public:
     Program(const std::string& vertexShaderSrc = defaultVertexShaderSrc,
-            const std::string& fragmentShaderSrc = defaultFragmentShaderSrc);
+            const std::string& fragmentShaderSrc = defaultFragmentShaderSrc,
+            std::string* errMsg = nullptr);
 
     ~Program();
 
     void bind();
     void unbind();
+
+    void recompileFragShader(const std::string& fragmentShaderSrc,
+                             std::string* errMsg = nullptr);
 
     void addUniform(const float* vals, size_t num, std::string name);
     void addUniform(const uint32_t* vals, size_t num, std::string name);
@@ -59,6 +63,8 @@ void main(void)
 
   private:
     uint32_t m_programID = 0;
+    std::string m_vertexSrc;
+    std::string m_fragSrc;
   };
 } // namespace evolution
 

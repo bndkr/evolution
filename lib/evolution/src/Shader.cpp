@@ -7,7 +7,9 @@
 
 namespace
 {
-  uint32_t compileShader(uint32_t type, const std::string& src)
+  uint32_t compileShader(uint32_t type,
+                         const std::string& src,
+                         std::string* errMsg)
   {
     uint32_t id = glCreateShader(type);
     auto srcStr = src.c_str();
@@ -24,29 +26,45 @@ namespace
       glGetShaderInfoLog(id, length, &length, errorMsg.data());
       std::string errorMsgStr(errorMsg.data(), errorMsg.size());
       glDeleteShader(id);
-      throw std::runtime_error(errorMsgStr);
+      *errMsg = errorMsgStr;
+      return 0;
     }
     return id;
+  }
+
+  uint32_t createProgram(const std::string& vertexStc,
+                         const std::string fragSrc,
+                         std::string* errMsg)
+  {
+    uint32_t programId = glCreateProgram();
+    auto vertexShaderId = compileShader(GL_VERTEX_SHADER, vertexStc, errMsg);
+    auto fragmentShaderId = compileShader(GL_FRAGMENT_SHADER, fragSrc, errMsg);
+
+    if (errMsg && !errMsg->empty())
+      return 0;
+
+    glAttachShader(programId, vertexShaderId);
+    glAttachShader(programId, fragmentShaderId);
+    glLinkProgram(programId);
+    glValidateProgram(programId);
+
+    glDeleteShader(vertexShaderId);
+    glDeleteShader(fragmentShaderId);
+
+    return programId;
   }
 } // namespace
 
 namespace evolution
 {
   Program::Program(const std::string& vertexShaderSrc,
-                   const std::string& fragmentShaderSrc)
+                   const std::string& fragmentShaderSrc,
+                   std::string* errMsg)
+    : m_vertexSrc(vertexShaderSrc), m_fragSrc(fragmentShaderSrc)
   {
-    m_programID = glCreateProgram();
-    auto vertexShaderId = compileShader(GL_VERTEX_SHADER, vertexShaderSrc);
-    auto fragmentShaderId =
-      compileShader(GL_FRAGMENT_SHADER, fragmentShaderSrc);
 
-    glAttachShader(m_programID, vertexShaderId);
-    glAttachShader(m_programID, fragmentShaderId);
-    glLinkProgram(m_programID);
-    glValidateProgram(m_programID);
-
-    glDeleteShader(vertexShaderId);
-    glDeleteShader(fragmentShaderId);
+    m_programID = createProgram(vertexShaderSrc, fragmentShaderSrc, errMsg);
+    bind();
   }
 
   Program::~Program()
@@ -64,9 +82,18 @@ namespace evolution
     glUseProgram(0);
   }
 
+  void Program::recompileFragShader(const std::string& fragmentShaderSrc,
+                                    std::string* errMsg)
+  {
+    glDeleteProgram(m_programID);
+    m_programID = createProgram(m_vertexSrc, fragmentShaderSrc, errMsg);
+
+    bind();
+  }
+
   void Program::addUniform(const float* vals, size_t num, std::string name)
   {
-    auto location = glGetUniformLocation(m_programID, name.c_str());  
+    auto location = glGetUniformLocation(m_programID, name.c_str());
     if (num == 1)
     {
       glUniform1f(location, vals[0]);
