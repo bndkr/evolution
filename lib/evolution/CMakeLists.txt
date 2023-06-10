@@ -5,12 +5,14 @@ set(${lib_name}_srcs
   include/Engine.hpp
   include/Shader.hpp
   include/Camera.hpp
+  include/ProgramSelector.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
   src/Engine.cpp
   src/Shader.cpp
   src/Camera.cpp
+  src/ProgramSelector.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})

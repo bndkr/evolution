@@ -1,6 +1,6 @@
 #include "Buffers.hpp"
 #include "Projection.hpp"
-#include "Shader.hpp"
+#include "ProgramSelector.hpp"
 #include "Camera.hpp"
 
 #define GLEW_STATIC
@@ -61,9 +61,15 @@ namespace evolution
              const ColorBuffer& colors,
              IndexBuffer& indices,
              const PositionInfo posInfo,
+             ProgramSelector* programSelector,
              const BufferDataUsage usage)
-    : m_position(posInfo)
+    : m_position(posInfo),
+      m_programSelector(programSelector),
+      m_currProgram("default")
   {
+    if (!programSelector)
+      throw std::runtime_error("program selector must be non-null");
+
     if (indices.size() == 0) // no index buffer
     {
       // generate a default one
@@ -100,6 +106,11 @@ namespace evolution
                                    indices.size() * sizeof(uint32_t),
                                    0,
                                    usage);
+  }
+
+  void Mesh::useShader(const std::string& shader)
+  {
+    m_currProgram = shader;
   }
 
   void Mesh::setPosition(Float3 newPos)
@@ -152,6 +163,68 @@ namespace evolution
 
   Mesh::~Mesh()
   {
+    release();
+  }
+
+  Mesh::Mesh(Mesh&& other)
+    : m_colBufferId(other.m_colBufferId),
+      m_posBufferId(other.m_posBufferId),
+      m_currProgram(other.m_currProgram),
+      m_indexBufferId(other.m_indexBufferId),
+      m_vaoId(other.m_vaoId),
+      m_programSelector(other.m_programSelector),
+      m_numUniqueVertices(other.m_numUniqueVertices),
+      m_numVertices(other.m_numVertices),
+      m_position(other.m_position)
+  {
+    other.m_colBufferId = 0;
+    other.m_indexBufferId = 0;
+    other.m_posBufferId = 0;
+    other.m_vaoId = 0;
+    other.m_programSelector = nullptr;
+  }
+
+  Mesh& Mesh::operator=(Mesh&& other)
+  {
+    if (this != &other)
+    {
+      release();
+      std::swap(m_colBufferId, other.m_colBufferId);
+      std::swap(m_posBufferId, other.m_posBufferId);
+      std::swap(m_currProgram, other.m_currProgram);
+      std::swap(m_indexBufferId, other.m_indexBufferId);
+      std::swap(m_vaoId, other.m_vaoId);
+      std::swap(m_programSelector, other.m_programSelector);
+      std::swap(m_numUniqueVertices, other.m_numUniqueVertices);
+      std::swap(m_numVertices, other.m_numVertices);
+      std::swap(m_position, other.m_position);
+    }
+    return other;
+  }
+
+  void Mesh::draw(const Camera& camera)
+  {
+    auto pProgram = m_programSelector->getProgram(m_currProgram);
+    auto im = getWorldSpaceTransformation();
+    pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
+    auto eyeMatrix = camera.getEyeSpaceMatrix();
+    pProgram->addUniform(&eyeMatrix.m[0], 16, "un_eyeMatrix");
+    auto projectionMatrix = getProjectionMatrix(
+      90.f, 1280.f / 720.f, 0.f, 100.f); // TODO: pass this from somewhere else
+    pProgram->addUniform(&projectionMatrix.m[0], 16, "un_projMatrix");
+    glBindVertexArray(m_vaoId);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferId);
+    pProgram->bind();
+    glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);
+    pProgram->unbind();
+    glBindVertexArray(0);
+  }
+
+  void Mesh::release()
+  {
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &m_vaoId);
+
     glDisableVertexAttribArray(1);
     glDisableVertexAttribArray(0);
 
@@ -161,22 +234,39 @@ namespace evolution
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_indexBufferId);
-
-    glBindVertexArray(0);
-    glDeleteVertexArrays(1, &m_vaoId);
   }
 
-  void Mesh::draw(Program& program, const Camera& camera)
+  Mesh createCubeMesh(ProgramSelector* programSelector)
   {
-    program.bind();
-    auto im = getWorldSpaceTransformation();
-    program.addUniform(&im.m[0], 16, "un_modelMatrix");
-    auto eyeMatrix = camera.getEyeSpaceMatrix();
-    program.addUniform(&eyeMatrix.m[0], 16, "un_eyeMatrix");
-    auto projectionMatrix =
-      getProjectionMatrix(90.f, 1280.f / 720.f, 0.f, 100.f);
-    program.addUniform(&projectionMatrix.m[0], 16, "un_projMatrix");
-    glBindVertexArray(m_vaoId);
-    glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);
+    PositionBuffer vertices = {
+      {-.5f, -.5f, .5f, 1.f},
+      {-.5f, .5f, .5f, 1.f},
+      {.5f, .5f, .5f, 1.f},
+      {.5f, -.5f, .5f, 1.f},
+      {-.5f, -.5f, -.5f, 1.f},
+      {-.5f, .5f, -.5f, 1.f},
+      {.5f, .5f, -.5f, 1.f},
+      {.5f, -.5f, -.5f, 1.f},
+    };
+
+    ColorBuffer colors = {
+      {0.f, 0.f, 1.f, 1.f},
+      {1.f, 0.f, 0.f, 1.f},
+      {0.f, 1.f, 0.f, 1.f},
+      {1.f, 1.f, 0.f, 1.f},
+      {1.f, 1.f, 1.f, 1.f},
+      {1.f, 0.f, 0.f, 1.f},
+      {1.f, 0.f, 1.f, 1.f},
+      {0.f, 0.f, 1.f, 1.f},
+    };
+    IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
+                               4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,
+                               1, 6, 5, 1, 2, 6, 7, 5, 6, 7, 4, 5};
+    auto mesh = Mesh(vertices,
+                     colors,
+                     indexBuffer,
+                     evolution::PositionInfo(),
+                     programSelector);
+    return mesh;
   }
 } // namespace evolution

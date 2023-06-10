@@ -51,11 +51,21 @@ void main(void)
 
     ~Program();
 
+    Program(const Program&) = delete;
+    Program& operator=(const Program&) = delete;
+
+    Program(Program&& other);
+    Program& operator=(Program&& other);
+
+
+
     void bind();
     void unbind();
 
     void recompileFragShader(const std::string& fragmentShaderSrc,
                              std::string* errMsg = nullptr);
+    void recompileVertexShader(const std::string& vertexShaderSrc,
+                               std::string* errMsg = nullptr);
 
     void addUniform(const float* vals, size_t num, std::string name);
     void addUniform(const uint32_t* vals, size_t num, std::string name);
@@ -65,6 +75,8 @@ void main(void)
     uint32_t m_programID = 0;
     std::string m_vertexSrc;
     std::string m_fragSrc;
+
+    void release();
   };
 } // namespace evolution
 

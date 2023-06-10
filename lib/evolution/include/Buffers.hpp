@@ -3,10 +3,13 @@
 
 #include <vector>
 
+#include <string>
+
 namespace evolution
 {
   class Program;
   class Camera;
+  class ProgramSelector;
 
   struct Float4
   {
@@ -59,12 +62,25 @@ namespace evolution
          const ColorBuffer& colors,
          IndexBuffer& indices,
          const PositionInfo posInfo,
+         ProgramSelector* programSelector,
          const BufferDataUsage usage = BufferDataUsage::DynamicDraw);
+
+    ~Mesh();
+
+    // delete the copy, assignment operators
+    Mesh(const Mesh&) = delete;
+    Mesh& operator=(const Mesh&) = delete;
+
+    // move constructor
+    Mesh(Mesh&& other);
+    // assignment operator
+    Mesh& operator=(Mesh&& other);
+
+    void useShader(const std::string& shader);
 
     void setPosition(Float3 newPos);
     void movePostion(Float3 delta);
 
-    // TODO: I don't think 3 floats can uniquely identify all possible rotations
     void setRotation(Float3 rotation);
 
     void rotate(Float3 delta);
@@ -74,11 +90,9 @@ namespace evolution
 
     Mat4 getWorldSpaceTransformation();
 
-    ~Mesh();
-
     // draws the mesh using a program and a viewpoint. Assumes the program is
     // already bound.
-    void draw(Program& program, const Camera& camera);
+    void draw(const Camera& camera);
 
   private:
     // Keep track of OpenGL buffer IDs
@@ -87,11 +101,21 @@ namespace evolution
     uint32_t m_indexBufferId;
     uint32_t m_vaoId;
 
+    ProgramSelector* m_programSelector;
+
+    std::string m_currProgram;
+
     size_t m_numUniqueVertices;
     size_t m_numVertices;
 
     PositionInfo m_position;
+
+    void release();
   };
+
+  // TODO: add factory methods (createCube, createSphere, create...)
+  Mesh createCubeMesh(ProgramSelector* programSelector);
+
 } // namespace evolution
 
 #endif

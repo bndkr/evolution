@@ -3,7 +3,7 @@
 #include "imgui/imgui_impl_glfw.h"
 
 #include "Buffers.hpp"
-#include "Shader.hpp"
+#include "ProgramSelector.hpp"
 #include "Setup.hpp"
 #include "Camera.hpp"
 
@@ -41,40 +41,19 @@ int main(int argc, char** argv)
   auto window = evolution::setup(/*enable3D=*/true);
   setupImgui(window);
 
-  evolution::PositionBuffer vertices = {
-    {-.5f, -.5f, .5f, 1.f},
-    {-.5f, .5f, .5f, 1.f},
-    {.5f, .5f, .5f, 1.f},
-    {.5f, -.5f, .5f, 1.f},
-    {-.5f, -.5f, -.5f, 1.f},
-    {-.5f, .5f, -.5f, 1.f},
-    {.5f, .5f, -.5f, 1.f},
-    {.5f, -.5f, -.5f, 1.f},
-  };
-
-  evolution::ColorBuffer colors = {
-    {0.f, 0.f, 1.f, 1.f},
-    {1.f, 0.f, 0.f, 1.f},
-    {0.f, 1.f, 0.f, 1.f},
-    {1.f, 1.f, 0.f, 1.f},
-    {1.f, 1.f, 1.f, 1.f},
-    {1.f, 0.f, 0.f, 1.f},
-    {1.f, 0.f, 1.f, 1.f},
-    {0.f, 0.f, 1.f, 1.f},
-  };
-  evolution::IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
-                                        4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,
-                                        1, 6, 5, 1, 2, 6, 7, 5, 6, 7, 4, 5};
+  evolution::ProgramSelector programSelector;
+  auto pDefaultProgram = programSelector.getProgram("default");
+  if (!pDefaultProgram)
+    throw std::runtime_error("unable to initialize default program");
 
   auto mesh =
-    evolution::Mesh(vertices, colors, indexBuffer, evolution::PositionInfo());
+    evolution::createCubeMesh(&programSelector);
+  mesh.useShader("default");
 
   mesh.movePostion(evolution::Float3{0.0f, 0.0f, -2.0f});
-  auto program = evolution::Program();
-  program.bind();
 
   static float initialColor[4] = {0.0f, 1.0f, 1.0f, 1.0f};
-  program.addUniform(initialColor, 4, "un_color");
+  pDefaultProgram->addUniform(initialColor, 4, "un_color");
 
   evolution::Camera camera({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
 
@@ -95,7 +74,7 @@ int main(int argc, char** argv)
     static float color[4] = {0};
     if (ImGui::ColorPicker4("pick a color for the cube!", color))
     {
-      program.addUniform(color, 4, "un_color");
+      pDefaultProgram->addUniform(color, 4, "un_color");
     }
 
     ImGui::End();
@@ -103,7 +82,9 @@ int main(int argc, char** argv)
     ImGui::ShowDemoWindow();
 
     static bool shaderEditorOpen = true;
-    showShaderEditor(&shaderEditorOpen, program);
+    // showShaderEditor(&shaderEditorOpen, program);
+
+    // ImGui::ShowDemoWindow();
 
     ImGui::Render();
 
@@ -113,7 +94,7 @@ int main(int argc, char** argv)
     glViewport(0, 0, displayWidth, displayHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mesh.draw(program, camera);
+    mesh.draw(camera);
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
