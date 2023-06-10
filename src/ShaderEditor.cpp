@@ -12,9 +12,9 @@ void showShaderEditor(bool* showWindow, evolution::Program& program)
 
   if (*showWindow)
   {
-    ImGui::Begin("Shader Editor", showWindow);
+    ImGui::Begin("Shader Editor", showWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-    ImGui::InputTextMultiline("", &currentShader, ImVec2(400, 200));
+    ImGui::InputTextMultiline("Fragment Shader Source", &currentShader, ImVec2(400, 200));
 
     static std::string currErrMsg;
 

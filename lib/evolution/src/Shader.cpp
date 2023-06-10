@@ -36,6 +36,8 @@ namespace
                          const std::string fragSrc,
                          std::string* errMsg)
   {
+    if (errMsg)
+      errMsg->clear();
     uint32_t programId = glCreateProgram();
     auto vertexShaderId = compileShader(GL_VERTEX_SHADER, vertexStc, errMsg);
     auto fragmentShaderId = compileShader(GL_FRAGMENT_SHADER, fragSrc, errMsg);
