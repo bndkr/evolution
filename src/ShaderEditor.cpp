@@ -67,6 +67,8 @@ void showShaderEditor(bool* showWindow, evolution::ProgramSelector& selector)
       }
     }
 
+    // TODO: add a uniform creation menu
+
     bool open = true;
     if (ImGui::BeginPopupModal(
           "Error", &open, ImGuiWindowFlags_AlwaysAutoResize))

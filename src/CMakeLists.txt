@@ -3,6 +3,8 @@ set(${exe_name}_srcs
   utils.cpp
   ShaderEditor.cpp
   ShaderEditor.hpp
+  MeshManager.cpp
+  MeshManager.hpp
   )
 add_executable(${exe_name} ${${exe_name}_srcs})
 source_group("" FILES ${${exe_name}_srcs})

@@ -8,6 +8,7 @@
 #include "Camera.hpp"
 
 #include "ShaderEditor.hpp"
+#include "MeshManager.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -38,8 +39,8 @@ namespace
 
 int main(int argc, char** argv)
 {
-  uint32_t width = 1600;
-  uint32_t height = 900;
+  const uint32_t width = 1600;
+  const uint32_t height = 900;
 
   auto window = evolution::setup(/*enable3D=*/true, width, height);
   setupImgui(window);
@@ -49,14 +50,14 @@ int main(int argc, char** argv)
   if (!pDefaultProgram)
     throw std::runtime_error("unable to initialize default program");
 
-  auto mesh =
-    evolution::createCubeMesh(&programSelector);
-  mesh.useShader("default");
+  auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
-  mesh.movePostion(evolution::Float3{0.0f, 0.0f, -2.0f});
+  meshes["my cube"] = std::make_unique<evolution::Mesh>(
+    evolution::createCubeMesh(&programSelector));
 
-  static float initialColor[4] = {0.0f, 1.0f, 1.0f, 1.0f};
-  pDefaultProgram->addUniform(initialColor, 4, "un_color");
+  meshes["my cube"]->useShader("default");
+
+  meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -2.0f});
 
   evolution::Camera camera(width, height);
 
@@ -70,10 +71,10 @@ int main(int argc, char** argv)
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
-    mesh.rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+    meshes["my cube"]->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
 
-
-    ImGui::Begin("yep, it's me again.", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::Begin(
+      "yep, it's me again.", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
     static float color[4] = {0};
     if (ImGui::ColorPicker4("pick a color for the cube!", color))
     {
@@ -87,7 +88,8 @@ int main(int argc, char** argv)
     static bool shaderEditorOpen = true;
     showShaderEditor(&shaderEditorOpen, programSelector);
 
-    // ImGui::ShowDemoWindow();
+    static bool meshManagerOpen = true;
+    showMeshManagerWindow(meshes, meshManagerOpen);
 
     ImGui::Render();
 
@@ -98,7 +100,7 @@ int main(int argc, char** argv)
     camera.updateWindowSize(displayWidth, displayHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    mesh.draw(camera);
+    meshes["my cube"]->draw(camera);
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
