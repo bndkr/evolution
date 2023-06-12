@@ -214,7 +214,7 @@ namespace evolution
     auto eyeMatrix = camera.getEyeSpaceMatrix();
     pProgram->addUniform(&eyeMatrix.m[0], 16, "un_eyeMatrix");
     auto projectionMatrix = getProjectionMatrix(
-      90.f, 1280.f / 720.f, 0.f, 100.f); // TODO: pass this from somewhere else
+      90.f, camera.getAspectRatio(), 0.f, 100.f);
     pProgram->addUniform(&projectionMatrix.m[0], 16, "un_projMatrix");
     glBindVertexArray(m_vaoId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferId);

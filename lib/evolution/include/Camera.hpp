@@ -11,11 +11,19 @@ namespace evolution
   class Camera
   {
   public:
-    Camera(const Float3 position, const Float3 direction, const uint32_t screenWidth, const uint32_t screenHeight);
+    Camera(const Float3 position,
+           const Float3 direction,
+           const uint32_t screenWidth,
+           const uint32_t screenHeight);
 
     Camera(const uint32_t screenWidth, const uint32_t screenHeight);
 
+    void updateWindowSize(const uint32_t width, const uint32_t height);
+
+    float getAspectRatio() const;
+
     Mat4 getEyeSpaceMatrix() const;
+
   private:
     PositionInfo m_position;
     uint32_t m_width;
