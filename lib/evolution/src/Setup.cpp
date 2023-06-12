@@ -89,9 +89,9 @@ namespace
 
 namespace evolution
 {
-  GLFWwindow* setup(const bool enable3DMode)
+  GLFWwindow* setup(const bool enable3DMode, unsigned int width, unsigned int height)
   {
-    auto* window = setupGlfwWindow(1280, 720, "Evolution Game Engine");
+    auto* window = setupGlfwWindow(width, height, "Evolution Game Engine");
     setupOpenGL();
     if (enable3DMode)
       enable3D();

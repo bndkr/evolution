@@ -5,6 +5,8 @@ struct GLFWwindow;
 
 namespace evolution
 {
-  GLFWwindow* setup(const bool enable3DMode);
+  GLFWwindow* setup(const bool enable3DMode,
+                    unsigned int width,
+                    unsigned int height);
 } // namespace evolution
 #endif

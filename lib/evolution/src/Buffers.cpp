@@ -110,6 +110,10 @@ namespace evolution
 
   void Mesh::useShader(const std::string& shader)
   {
+    if (!m_programSelector->isProgramValid(shader))
+    {
+      throw std::runtime_error("program (" + m_currProgram + ") is not a valid program");
+    }
     m_currProgram = shader;
   }
 

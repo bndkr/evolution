@@ -38,7 +38,10 @@ namespace
 
 int main(int argc, char** argv)
 {
-  auto window = evolution::setup(/*enable3D=*/true);
+  uint32_t width = 1600;
+  uint32_t height = 900;
+
+  auto window = evolution::setup(/*enable3D=*/true, width, height);
   setupImgui(window);
 
   evolution::ProgramSelector programSelector;
@@ -55,7 +58,7 @@ int main(int argc, char** argv)
   static float initialColor[4] = {0.0f, 1.0f, 1.0f, 1.0f};
   pDefaultProgram->addUniform(initialColor, 4, "un_color");
 
-  evolution::Camera camera({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 0.0f});
+  evolution::Camera camera(width, height);
 
   // Main loop
   // let's start off leaving the main loop client-side. this allows
@@ -82,7 +85,7 @@ int main(int argc, char** argv)
     ImGui::ShowDemoWindow();
 
     static bool shaderEditorOpen = true;
-    // showShaderEditor(&shaderEditorOpen, program);
+    showShaderEditor(&shaderEditorOpen, programSelector);
 
     // ImGui::ShowDemoWindow();
 

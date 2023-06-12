@@ -1,8 +1,11 @@
 #ifndef SHADER_EDITOR_HPP
 #define SHADER_EDITOR_HPP
 
-#include "Shader.hpp"
+namespace evolution
+{
+  class ProgramSelector;
+}
 
-void showShaderEditor(bool* showWindow, evolution::Program& program);
+void showShaderEditor(bool* showWindow, evolution::ProgramSelector& selector);
 
 #endif

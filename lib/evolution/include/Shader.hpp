@@ -57,7 +57,8 @@ void main(void)
     Program(Program&& other);
     Program& operator=(Program&& other);
 
-
+    std::string& getVertexShaderSrc();
+    std::string& getFragmentShaderSrc();
 
     void bind();
     void unbind();
@@ -66,6 +67,12 @@ void main(void)
                              std::string* errMsg = nullptr);
     void recompileVertexShader(const std::string& vertexShaderSrc,
                                std::string* errMsg = nullptr);
+
+    void recompileProgram(const std::string& fragmentShaderSrc,
+                          const std::string& vertexShaderSrc,
+                          std::string* errMsg);
+
+    void recompileProgram(std::string* errMsg);
 
     void addUniform(const float* vals, size_t num, std::string name);
     void addUniform(const uint32_t* vals, size_t num, std::string name);

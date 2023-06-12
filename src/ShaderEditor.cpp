@@ -1,43 +1,81 @@
 #include "ShaderEditor.hpp"
+#include "ProgramSelector.hpp"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_stdlib.h>
 
 #include <string>
-#include <iostream> // debug
 
-void showShaderEditor(bool* showWindow, evolution::Program& program)
+void showShaderEditor(bool* showWindow, evolution::ProgramSelector& selector)
 {
-  static auto currentFragShader = evolution::defaultFragmentShaderSrc;
-  static auto currentVertexShader = evolution::defaultVertexShaderSrc;
   if (*showWindow)
   {
-    ImGui::Begin("Shader Editor", showWindow, ImGuiWindowFlags_AlwaysAutoResize);
+    ImGui::Begin(
+      "Shader Editor", showWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-    ImGui::BeginTabBar("My tab bar");
-    // TODO: see how this works (it doesn't)
-    if (ImGui::BeginTabItem("Vertex Shader"))
+    auto validShaders = selector.getAllValidProgramKeys();
+
+    if (ImGui::Button("Create New Shader"))
+      ImGui::OpenPopup("Create Shader");
+
+    bool createShaderOpen = true;
+    if (ImGui::BeginPopupModal("Create Shader",
+                               &createShaderOpen,
+                               ImGuiWindowFlags_AlwaysAutoResize))
     {
+      static std::string newShaderName;
+      ImGui::InputText("Name", &newShaderName);
 
+      if (ImGui::Button("Create Shader"))
+      {
+        if (!newShaderName.empty())
+        {
+          selector.addProgram(newShaderName);
+          ImGui::CloseCurrentPopup();
+        }
+      }
+      if (ImGui::Button("Cancel"))
+        ImGui::CloseCurrentPopup();
+      ImGui::EndPopup();
     }
-    if (ImGui::BeginTabItem("Fragment Shader"))
+    ImGui::Text("Shader List:");
+    static std::string selectedShader = "default";
+    for (const auto& key : validShaders)
     {
-
+      if (ImGui::Selectable(key.c_str(), selectedShader == key))
+        selectedShader = key;
     }
+    ImGui::Separator();
 
-    ImGui::EndTabBar();
+    static std::string error = "";
 
-    ImGui::InputTextMultiline("Fragment Shader Source", &currentFragShader, ImVec2(400, 200));
-
-    static std::string currErrMsg;
-
+    evolution::Program* currProgram = selector.getProgram(selectedShader);
+    ImGui::Text("Vertex Shader");
+    ImGui::InputTextMultiline("##Vertex Shader",
+                              &(currProgram->getVertexShaderSrc()),
+                              ImVec2(500, 300));
+    ImGui::Text("Fragment Shader");
+    ImGui::InputTextMultiline("##Fragment Shader",
+                              &(currProgram->getFragmentShaderSrc()),
+                              ImVec2(500, 300));
     if (ImGui::Button("Compile"))
     {
-      program.recompileFragShader(currentFragShader, &currErrMsg);
+      currProgram->recompileProgram(&error);
+      if (!error.empty())
+      {
+        ImGui::OpenPopup("Error");
+      }
     }
 
-    ImGui::Text(currErrMsg.c_str());
-
+    bool open = true;
+    if (ImGui::BeginPopupModal(
+          "Error", &open, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+      ImGui::Text(error.c_str());
+      if (ImGui::Button("Close"))
+        ImGui::CloseCurrentPopup();
+      ImGui::EndPopup();
+    }
     ImGui::End();
   }
 }

@@ -74,7 +74,8 @@ namespace evolution
     release();
   }
 
-  Program::Program(Program&& other) {
+  Program::Program(Program&& other)
+  {
     other.m_programID = 0;
     other.m_fragSrc.clear();
     other.m_vertexSrc.clear();
@@ -90,6 +91,16 @@ namespace evolution
       std::swap(m_vertexSrc, other.m_vertexSrc);
     }
     return other;
+  }
+
+  std::string& Program::getVertexShaderSrc()
+  {
+    return m_vertexSrc;
+  }
+
+  std::string& Program::getFragmentShaderSrc()
+  {
+    return m_fragSrc;
   }
 
   void Program::bind()
@@ -116,6 +127,21 @@ namespace evolution
     glDeleteProgram(m_programID);
     m_vertexSrc = vertexShaderSrc;
     m_programID = createProgram(vertexShaderSrc, m_fragSrc, errMsg);
+  }
+
+  void Program::recompileProgram(const std::string& fragmentShaderSrc,
+                                 const std::string& vertexShaderSrc,
+                                 std::string* errMsg)
+  {
+    glDeleteProgram(m_programID);
+    m_vertexSrc = vertexShaderSrc;
+    m_fragSrc = fragmentShaderSrc;
+    m_programID = createProgram(vertexShaderSrc, fragmentShaderSrc, errMsg);
+  }
+
+  void Program::recompileProgram(std::string* errMsg)
+  {
+    recompileProgram(m_fragSrc, m_vertexSrc, errMsg);
   }
 
   void Program::addUniform(const float* vals, size_t num, std::string name)

@@ -5,6 +5,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 #include <string>
 
 namespace evolution
@@ -14,11 +15,13 @@ namespace evolution
   public:
     ProgramSelector();
 
-    Program* getProgram(std::string key);
+    Program* getProgram(const std::string& key);
 
-    void addProgram(const std::string& vertexShaderSrc,
-                    const std::string& fragmentShaderSrc,
-                    std::string* errMsg);
+    void addProgram(const std::string& name);
+
+    bool isProgramValid(const std::string& key);
+
+    std::set<std::string> getAllValidProgramKeys();
 
   private:
     std::map<std::string, std::unique_ptr<Program>> m_programs;
