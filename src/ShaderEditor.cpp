@@ -45,7 +45,8 @@ void showShaderEditor(bool* showWindow, evolution::ProgramSelector& selector)
       if (ImGui::Selectable(key.c_str(), selectedShader == key))
         selectedShader = key;
     }
-    ImGui::Separator();
+    auto text = "Currently editing shader: " + selectedShader;
+    ImGui::SeparatorText(text.c_str());
 
     static std::string error = "";
 

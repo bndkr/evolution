@@ -21,13 +21,13 @@ namespace evolution
     m_programs[name] = std::make_unique<Program>();
   }
 
-  bool ProgramSelector::isProgramValid(const std::string& key)
+  bool ProgramSelector::isProgramValid(const std::string& key) const
   {
     // TODO: do some extra validation? is this necessary?
     return m_programs.count(key);
   
   }
-  std::set<std::string> ProgramSelector::getAllValidProgramKeys()
+  std::set<std::string> ProgramSelector::getAllValidProgramKeys() const
   {
     std::set<std::string> result;
     for (const auto& pair : m_programs)

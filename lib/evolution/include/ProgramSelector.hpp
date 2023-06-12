@@ -19,9 +19,9 @@ namespace evolution
 
     void addProgram(const std::string& name);
 
-    bool isProgramValid(const std::string& key);
+    bool isProgramValid(const std::string& key) const;
 
-    std::set<std::string> getAllValidProgramKeys();
+    std::set<std::string> getAllValidProgramKeys() const;
 
   private:
     std::map<std::string, std::unique_ptr<Program>> m_programs;

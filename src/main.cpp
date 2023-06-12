@@ -89,7 +89,7 @@ int main(int argc, char** argv)
     showShaderEditor(&shaderEditorOpen, programSelector);
 
     static bool meshManagerOpen = true;
-    showMeshManagerWindow(meshes, meshManagerOpen);
+    showMeshManagerWindow(meshes, programSelector, meshManagerOpen);
 
     ImGui::Render();
 
