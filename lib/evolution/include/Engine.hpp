@@ -5,6 +5,8 @@
 
 #include "Buffers.hpp"
 
+#include "assimp/mesh.h"
+
 namespace evolution
 {
 

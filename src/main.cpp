@@ -57,7 +57,7 @@ int main(int argc, char** argv)
 
   meshes["my cube"]->useShader("default");
 
-  meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -2.0f});
+  meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
 
   evolution::Camera camera(width, height);
 
@@ -70,8 +70,6 @@ int main(int argc, char** argv)
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
-    meshes["my cube"]->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
 
     ImGui::Begin(
       "yep, it's me again.", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
@@ -100,7 +98,11 @@ int main(int argc, char** argv)
     camera.updateWindowSize(displayWidth, displayHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    meshes["my cube"]->draw(camera);
+    for (const auto& mesh : meshes)
+    {
+      mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+      mesh.second->draw(camera);
+    }
 
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

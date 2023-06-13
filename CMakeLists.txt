@@ -10,6 +10,7 @@ find_package(GLEW REQUIRED)
 set(GLFW3_ROOT "C:/dev/extern/glfw-3.3.8.bin.WIN64/glfw-3.3.8.bin.WIN64" CACHE FILEPATH "Path to GLFW installation")
 set(externpro_REV 23.02)
 find_package(externpro REQUIRED)
+find_package(assimp)
 ################################
 xpSetFlags()
 # dependency order

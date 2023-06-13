@@ -27,10 +27,10 @@ target_include_directories(
 target_link_libraries(
   ${lib_name}
   PUBLIC
-  # ${OPENGL_LIBRARY}
   GLEW::glew_s
   ${GLFW3_LIB}
   PRIVATE
+  assimp::assimp
   color_console
   Eigen3::Eigen
 )

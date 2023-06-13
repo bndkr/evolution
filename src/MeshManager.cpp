@@ -4,16 +4,43 @@
 #include "Buffers.hpp"
 
 #include <imgui/imgui.h>
+#include <imgui/imgui_stdlib.h>
 
 #include <string>
 
 void showMeshManagerWindow(
   std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes,
-  const evolution::ProgramSelector& selector,
+  evolution::ProgramSelector& selector,
   bool& open)
 {
   ImGui::Begin("Mesh Manager", &open, ImGuiWindowFlags_AlwaysAutoResize);
 
+  if (ImGui::Button("Create new mesh"))
+  {
+    ImGui::OpenPopup("Create Mesh");
+  }
+  bool createMeshOpen = true;
+  if (ImGui::BeginPopupModal(
+        "Create Mesh", &createMeshOpen, ImGuiWindowFlags_AlwaysAutoResize))
+  {
+    static std::string newName;
+    ImGui::InputText("Name", &newName);
+
+    if (ImGui::Button("Create Mesh"))
+    {
+      if (!newName.empty() && !meshes.count(newName))
+      {
+        meshes[newName] = std::make_unique<evolution::Mesh>(
+          evolution::createCubeMesh(&selector));
+        ImGui::CloseCurrentPopup();
+      }
+    }
+    if (ImGui::Button("Cancel"))
+      ImGui::CloseCurrentPopup();
+    ImGui::EndPopup();
+  }
+
+  ImGui::SeparatorText("Available Meshes");
   if (meshes.empty())
     return;
 
@@ -24,10 +51,15 @@ void showMeshManagerWindow(
       selectedMesh = mesh.first;
   }
 
-  ImGui::SeparatorText("Available Shaders");
-  
   if (meshes.count(selectedMesh))
   {
+    ImGui::SeparatorText("Position");
+
+    ImGui::SliderFloat3(
+      "##position", &(meshes[selectedMesh]->getPostion()->x), -5.f, 5.f);
+
+    ImGui::SeparatorText("Available Shaders");
+
     evolution::Mesh* pMesh = meshes[selectedMesh].get();
     static std::string selectedShader = "default";
     auto availableShaders = selector.getAllValidProgramKeys();

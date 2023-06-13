@@ -13,7 +13,7 @@ namespace evolution
 
 void showMeshManagerWindow(
   std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes,
-  const evolution::ProgramSelector& selector,
+  evolution::ProgramSelector& selector,
   bool& open);
 
 #endif

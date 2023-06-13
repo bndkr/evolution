@@ -85,8 +85,8 @@ namespace evolution
 
     void rotate(Float3 delta);
 
-    Float3 getPostion();
-    Float3 getRotation();
+    Float3* getPostion();
+    Float3* getRotation();
 
     Mat4 getWorldSpaceTransformation();
 

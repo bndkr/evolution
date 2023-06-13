@@ -141,14 +141,14 @@ namespace evolution
     m_position.rotation.z += delta.z;
   }
 
-  Float3 Mesh::getPostion()
+  Float3* Mesh::getPostion()
   {
-    return m_position.position;
+    return &m_position.position;
   }
 
-  Float3 Mesh::getRotation()
+  Float3* Mesh::getRotation()
   {
-    return m_position.rotation;
+    return &m_position.rotation;
   }
 
   Mat4 Mesh::getWorldSpaceTransformation()
