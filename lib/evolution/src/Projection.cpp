@@ -2,6 +2,8 @@
 
 #include <eigen3/Eigen/Dense>
 
+#include <assimp/config.h>
+
 #include <cmath>
 
 namespace

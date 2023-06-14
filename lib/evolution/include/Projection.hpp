@@ -1,8 +1,6 @@
 #ifndef EVOLUTION_PROJECTION_HPP
 #define EVOLUTION_PROJECTION_HPP
 
-#include "assimp/mesh.h"
-
 namespace evolution
 {
   // row-major matrix representation

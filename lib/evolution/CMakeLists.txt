@@ -19,18 +19,25 @@ source_group("" FILES ${${lib_name}_srcs})
 xpFindPkg(PKGS eigen glew)
 set(GLFW3_INCLUDE_DIR "${GLFW3_ROOT}/include" CACHE PATH "path of GLFW3 include dir")
 set(GLFW3_LIB "${GLFW3_ROOT}/lib/glfw3_mt.lib" CACHE PATH "path of GLFW3 lib")
+set(ASSIMP_INCLUDE_DIR "C:/Program Files (x86)/Assimp/include")
+set(ASSIMP_LIB
+  "C:/Program Files (x86)/Assimp/lib/assimp-vc142-mt.lib"
+  "C:/Program Files (x86)/Assimp/lib/zlibstatic.lib"
+)
 target_include_directories(
   ${lib_name}
   PUBLIC
   ${GLFW3_INCLUDE_DIR}
-  ${CMAKE_CURRENT_LIST_DIR}/include)
+  ${CMAKE_CURRENT_LIST_DIR}/include
+  ${ASSIMP_INCLUDE_DIR}
+)
 target_link_libraries(
   ${lib_name}
   PUBLIC
   GLEW::glew_s
   ${GLFW3_LIB}
   PRIVATE
-  assimp::assimp
+  ${ASSIMP_LIB}
   color_console
   Eigen3::Eigen
 )
