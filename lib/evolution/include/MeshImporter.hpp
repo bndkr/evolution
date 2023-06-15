@@ -7,7 +7,7 @@
 
 namespace evolution
 {
-  void fromFile(const std::string& filename);
+  Mesh fromFile(const std::string& filename);
 }
 
 #endif

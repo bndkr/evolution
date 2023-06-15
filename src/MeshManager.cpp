@@ -56,7 +56,7 @@ void showMeshManagerWindow(
     ImGui::SeparatorText("Position");
 
     ImGui::SliderFloat3(
-      "##position", &(meshes[selectedMesh]->getPostion()->x), -5.f, 5.f);
+      "##position", &(meshes[selectedMesh]->getPostion()->x), -10.f, 10.f);
 
     ImGui::SeparatorText("Available Shaders");
 

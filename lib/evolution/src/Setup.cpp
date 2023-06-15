@@ -80,9 +80,9 @@ namespace
   void enable3D()
   {
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL); // not sure why GL_LESS doesn't work
+    glDepthFunc(GL_LESS); // not sure why GL_LESS doesn't work
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_BACK);    // why back and not front?
+    glCullFace(GL_FRONT);
     glFrontFace(GL_CCW);
   }
 } // namespace

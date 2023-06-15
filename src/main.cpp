@@ -10,7 +10,6 @@
 #include "MeshManager.hpp"
 #include "MeshImporter.hpp"
 
-
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
@@ -55,14 +54,15 @@ int main(int argc, char** argv)
 
   auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
-  meshes["my cube"] = std::make_unique<evolution::Mesh>(
-    evolution::createCubeMesh());
+  meshes["my cube"] =
+    std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
 
   meshes["my cube"]->useShader("default");
 
   meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
 
-  evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/teapot.stl");
+  meshes["teapot"] = std::make_unique<evolution::Mesh>(
+    evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/teapot.stl"));
 
   evolution::Camera camera(width, height);
 
