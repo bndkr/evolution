@@ -61,14 +61,12 @@ namespace evolution
              const ColorBuffer& colors,
              IndexBuffer& indices,
              const PositionInfo posInfo,
-             ProgramSelector* programSelector,
              const BufferDataUsage usage)
-    : m_position(posInfo),
-      m_programSelector(programSelector),
-      m_currProgram("default")
+    : m_position(posInfo), m_currProgram("default")
   {
-    if (!programSelector)
-      throw std::runtime_error("program selector must be non-null");
+    if (!pProgramSelector)
+      throw std::runtime_error("program selector must be non-null (use "
+                               "evolution::UseProgramSelector)");
 
     if (indices.size() == 0) // no index buffer
     {
@@ -110,9 +108,10 @@ namespace evolution
 
   void Mesh::useShader(const std::string& shader)
   {
-    if (!m_programSelector->isProgramValid(shader))
+    if (!pProgramSelector->isProgramValid(shader))
     {
-      throw std::runtime_error("program (" + m_currProgram + ") is not a valid program");
+      throw std::runtime_error("program (" + m_currProgram +
+                               ") is not a valid program");
     }
     m_currProgram = shader;
   }
@@ -176,7 +175,6 @@ namespace evolution
       m_currProgram(other.m_currProgram),
       m_indexBufferId(other.m_indexBufferId),
       m_vaoId(other.m_vaoId),
-      m_programSelector(other.m_programSelector),
       m_numUniqueVertices(other.m_numUniqueVertices),
       m_numVertices(other.m_numVertices),
       m_position(other.m_position)
@@ -185,7 +183,6 @@ namespace evolution
     other.m_indexBufferId = 0;
     other.m_posBufferId = 0;
     other.m_vaoId = 0;
-    other.m_programSelector = nullptr;
   }
 
   Mesh& Mesh::operator=(Mesh&& other)
@@ -198,7 +195,6 @@ namespace evolution
       std::swap(m_currProgram, other.m_currProgram);
       std::swap(m_indexBufferId, other.m_indexBufferId);
       std::swap(m_vaoId, other.m_vaoId);
-      std::swap(m_programSelector, other.m_programSelector);
       std::swap(m_numUniqueVertices, other.m_numUniqueVertices);
       std::swap(m_numVertices, other.m_numVertices);
       std::swap(m_position, other.m_position);
@@ -208,13 +204,13 @@ namespace evolution
 
   void Mesh::draw(const Camera& camera)
   {
-    auto pProgram = m_programSelector->getProgram(m_currProgram);
+    auto pProgram = pProgramSelector->getProgram(m_currProgram);
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
     auto eyeMatrix = camera.getEyeSpaceMatrix();
     pProgram->addUniform(&eyeMatrix.m[0], 16, "un_eyeMatrix");
-    auto projectionMatrix = getProjectionMatrix(
-      90.f, camera.getAspectRatio(), 0.f, 100.f);
+    auto projectionMatrix =
+      getProjectionMatrix(90.f, camera.getAspectRatio(), 0.f, 100.f);
     pProgram->addUniform(&projectionMatrix.m[0], 16, "un_projMatrix");
     glBindVertexArray(m_vaoId);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferId);
@@ -240,7 +236,7 @@ namespace evolution
     glDeleteBuffers(1, &m_indexBufferId);
   }
 
-  Mesh createCubeMesh(ProgramSelector* programSelector)
+  Mesh createCubeMesh()
   {
     PositionBuffer vertices = {
       {-.5f, -.5f, .5f, 1.f},
@@ -266,11 +262,7 @@ namespace evolution
     IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
                                4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,
                                1, 6, 5, 1, 2, 6, 7, 5, 6, 7, 4, 5};
-    auto mesh = Mesh(vertices,
-                     colors,
-                     indexBuffer,
-                     evolution::PositionInfo(),
-                     programSelector);
+    auto mesh = Mesh(vertices, colors, indexBuffer, evolution::PositionInfo());
     return mesh;
   }
 } // namespace evolution

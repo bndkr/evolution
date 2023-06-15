@@ -6,9 +6,10 @@
 #include "ProgramSelector.hpp"
 #include "Setup.hpp"
 #include "Camera.hpp"
-
 #include "ShaderEditor.hpp"
 #include "MeshManager.hpp"
+#include "MeshImporter.hpp"
+
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -45,19 +46,23 @@ int main(int argc, char** argv)
   auto window = evolution::setup(/*enable3D=*/true, width, height);
   setupImgui(window);
 
-  evolution::ProgramSelector programSelector;
-  auto pDefaultProgram = programSelector.getProgram("default");
+  evolution::ProgramSelector selector;
+  evolution::UseProgramSelector(&selector);
+
+  auto pDefaultProgram = selector.getProgram("default");
   if (!pDefaultProgram)
     throw std::runtime_error("unable to initialize default program");
 
   auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
   meshes["my cube"] = std::make_unique<evolution::Mesh>(
-    evolution::createCubeMesh(&programSelector));
+    evolution::createCubeMesh());
 
   meshes["my cube"]->useShader("default");
 
   meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
+
+  evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/teapot.stl");
 
   evolution::Camera camera(width, height);
 
@@ -84,10 +89,10 @@ int main(int argc, char** argv)
     ImGui::ShowDemoWindow();
 
     static bool shaderEditorOpen = true;
-    showShaderEditor(&shaderEditorOpen, programSelector);
+    showShaderEditor(&shaderEditorOpen, selector);
 
     static bool meshManagerOpen = true;
-    showMeshManagerWindow(meshes, programSelector, meshManagerOpen);
+    showMeshManagerWindow(meshes, selector, meshManagerOpen);
 
     ImGui::Render();
 

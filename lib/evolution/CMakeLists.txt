@@ -6,6 +6,7 @@ set(${lib_name}_srcs
   include/Shader.hpp
   include/Camera.hpp
   include/ProgramSelector.hpp
+  include/MeshImporter.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
@@ -13,6 +14,7 @@ set(${lib_name}_srcs
   src/Shader.cpp
   src/Camera.cpp
   src/ProgramSelector.cpp
+  src/MeshImporter.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})
@@ -20,9 +22,12 @@ xpFindPkg(PKGS eigen glew)
 set(GLFW3_INCLUDE_DIR "${GLFW3_ROOT}/include" CACHE PATH "path of GLFW3 include dir")
 set(GLFW3_LIB "${GLFW3_ROOT}/lib/glfw3_mt.lib" CACHE PATH "path of GLFW3 lib")
 set(ASSIMP_INCLUDE_DIR "C:/Program Files (x86)/Assimp/include")
+# we'll link the debug libs for now. make sure to switch this when performance is relevant.
 set(ASSIMP_LIB
-  "C:/Program Files (x86)/Assimp/lib/assimp-vc142-mt.lib"
-  "C:/Program Files (x86)/Assimp/lib/zlibstatic.lib"
+#  "C:/Program Files (x86)/Assimp/lib/assimp-vc142-mt.lib"
+  "C:/Program Files (x86)/Assimp/lib/assimp-vc142-mtd.lib"
+#  "C:/Program Files (x86)/Assimp/lib/zlibstatic.lib"
+  "C:/Program Files (x86)/Assimp/lib/zlibstaticd.lib"
 )
 target_include_directories(
   ${lib_name}

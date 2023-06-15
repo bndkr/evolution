@@ -31,7 +31,7 @@ void showMeshManagerWindow(
       if (!newName.empty() && !meshes.count(newName))
       {
         meshes[newName] = std::make_unique<evolution::Mesh>(
-          evolution::createCubeMesh(&selector));
+          evolution::createCubeMesh());
         ImGui::CloseCurrentPopup();
       }
     }

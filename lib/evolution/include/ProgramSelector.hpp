@@ -26,5 +26,9 @@ namespace evolution
   private:
     std::map<std::string, std::unique_ptr<Program>> m_programs;
   };
+
+  extern ProgramSelector* pProgramSelector;
+
+  void UseProgramSelector(ProgramSelector* pSelector);
 } // namespace evolution
 #endif

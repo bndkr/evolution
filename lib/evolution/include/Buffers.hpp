@@ -62,7 +62,6 @@ namespace evolution
          const ColorBuffer& colors,
          IndexBuffer& indices,
          const PositionInfo posInfo,
-         ProgramSelector* programSelector,
          const BufferDataUsage usage = BufferDataUsage::DynamicDraw);
 
     ~Mesh();
@@ -101,8 +100,6 @@ namespace evolution
     uint32_t m_indexBufferId;
     uint32_t m_vaoId;
 
-    ProgramSelector* m_programSelector;
-
     std::string m_currProgram;
 
     size_t m_numUniqueVertices;
@@ -114,7 +111,7 @@ namespace evolution
   };
 
   // TODO: add factory methods (createCube, createSphere, create...)
-  Mesh createCubeMesh(ProgramSelector* programSelector);
+  Mesh createCubeMesh();
 
 } // namespace evolution
 

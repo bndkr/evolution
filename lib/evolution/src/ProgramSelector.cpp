@@ -2,6 +2,9 @@
 
 namespace evolution
 {
+
+  ProgramSelector* pProgramSelector = nullptr;
+
   ProgramSelector::ProgramSelector()
   {
     m_programs["default"] = std::make_unique<Program>();
@@ -15,7 +18,7 @@ namespace evolution
     }
     return nullptr;
   }
-  
+
   void ProgramSelector::addProgram(const std::string& name)
   {
     m_programs[name] = std::make_unique<Program>();
@@ -25,7 +28,6 @@ namespace evolution
   {
     // TODO: do some extra validation? is this necessary?
     return m_programs.count(key);
-  
   }
   std::set<std::string> ProgramSelector::getAllValidProgramKeys() const
   {
@@ -35,5 +37,10 @@ namespace evolution
       result.insert(pair.first);
     }
     return result;
+  }
+  void UseProgramSelector(ProgramSelector* pSelector)
+  {
+    if (pSelector)
+      pProgramSelector = pSelector;
   }
 } // namespace evolution
