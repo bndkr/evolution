@@ -7,6 +7,7 @@ namespace evolution
 {
   class Texture
   {
+  public:
     Texture(const std::string& path);
     ~Texture();
 
@@ -19,8 +20,8 @@ namespace evolution
     // assignment operator
     Texture& operator=(Texture&& other);
 
-    
-
+  private:
+    uint32_t m_texId;
   };
 } // namespace evolution
 

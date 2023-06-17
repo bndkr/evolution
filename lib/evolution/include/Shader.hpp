@@ -43,6 +43,7 @@ void main(void)
 {
   colorOut = colorPass;
   // colorOut = un_color;
+  // colorOut = vec4(texCoordsPass, 0, 1);
 }
 )";
 

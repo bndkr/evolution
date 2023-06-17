@@ -46,6 +46,7 @@ target_link_libraries(
   PRIVATE
   ${ASSIMP_LIB}
   color_console
+  stb_image
   Eigen3::Eigen
 )
 add_subdirectory(test)

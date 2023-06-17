@@ -36,7 +36,7 @@ namespace evolution
       posBuffer.push_back(Float4{vertex.x, vertex.y, vertex.z, 1.0f});
       colors.push_back(Float4{1.0f, vertex.x, 1.0f, 1.0f});
 
-      if (mesh->HasTextureCoords(0)) // what is this index?
+      if (mesh->HasTextureCoords((uint32_t) i)) // what is this index?
       {
         auto texCoord = mesh->mTextureCoords[i];
         // are we sure we can throw away the z?

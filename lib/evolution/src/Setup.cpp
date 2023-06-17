@@ -71,8 +71,8 @@ namespace
     // todo: add game engine logging module
     std::cout << "opengl version: " << glGetString(GL_VERSION) << std::endl;
     glClearColor(
-      0.5f,
-      0.5f,
+      0.4f,
+      0.4f,
       0.7f,
       1.0f); // background color. Does this need to be in the main loop?
   }

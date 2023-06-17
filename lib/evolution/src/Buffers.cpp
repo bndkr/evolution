@@ -80,7 +80,7 @@ namespace evolution
       // generate a default one
       for (uint32_t i = 0; i < buffers.positions.size(); i++)
       {
-        textureCoods.push_back(Float2{0.5f, 0.5f});
+        textureCoods.push_back(Float2{0.f, 0.f});
       }
     }
 
