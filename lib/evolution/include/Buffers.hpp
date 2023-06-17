@@ -11,6 +11,8 @@ namespace evolution
   class Camera;
   class ProgramSelector;
 
+  class Texture;
+
   struct Float4
   {
     float x = 0.0f;
@@ -95,6 +97,8 @@ namespace evolution
     void setRotation(Float3 rotation);
 
     void rotate(Float3 delta);
+
+    void assignTexture(const Texture& tex);
 
     Float3* getPostion();
     Float3* getRotation();

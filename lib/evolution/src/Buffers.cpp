@@ -2,6 +2,7 @@
 #include "Projection.hpp"
 #include "ProgramSelector.hpp"
 #include "Camera.hpp"
+#include "Texture.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -154,6 +155,19 @@ namespace evolution
     m_position.rotation.y += delta.y;
     m_position.rotation.z += delta.z;
   }
+
+  void Mesh::assignTexture(const Texture& tex)
+  {
+    if (!pProgramSelector->isProgramValid(m_currProgram))
+    {
+      throw std::runtime_error("program (" + m_currProgram +
+                               ") is not a valid program");
+    }
+    auto shader = pProgramSelector->getProgram(m_currProgram);
+    int texSlot[1] = {tex.getSlotNum()};
+    shader->addUniform(texSlot, 1, tex.getName());
+  }
+
 
   Float3* Mesh::getPostion()
   {

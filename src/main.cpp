@@ -9,6 +9,7 @@
 #include "ShaderEditor.hpp"
 #include "MeshManager.hpp"
 #include "MeshImporter.hpp"
+#include "Texture.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -53,6 +54,8 @@ int main(int argc, char** argv)
     throw std::runtime_error("unable to initialize default program");
 
   auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
+
+  evolution::Texture myTexture("C:/Users/bende/OneDrive/Pictures/meme.png", 5, "myTexture");
 
   meshes["my cube"] =
     std::make_unique<evolution::Mesh>(evolution::createCubeMesh());

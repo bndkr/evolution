@@ -8,7 +8,7 @@ namespace evolution
   class Texture
   {
   public:
-    Texture(const std::string& path);
+    Texture(const std::string& path, uint32_t slot, const std::string& name);
     ~Texture();
 
     // delete the copy, assignment operators
@@ -20,8 +20,13 @@ namespace evolution
     // assignment operator
     Texture& operator=(Texture&& other);
 
+    int32_t getSlotNum() const;
+    std::string getName() const;
+
   private:
     uint32_t m_texId;
+    int32_t m_slot;
+    std::string m_name;
     void release();
   };
 } // namespace evolution
