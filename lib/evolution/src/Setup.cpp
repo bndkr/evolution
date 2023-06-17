@@ -82,7 +82,7 @@ namespace
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS); // not sure why GL_LESS doesn't work
     glEnable(GL_CULL_FACE);
-    glCullFace(GL_FRONT);
+    glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
   }
 } // namespace
