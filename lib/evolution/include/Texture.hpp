@@ -22,6 +22,7 @@ namespace evolution
 
   private:
     uint32_t m_texId;
+    void release();
   };
 } // namespace evolution
 

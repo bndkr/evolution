@@ -65,6 +65,10 @@ int main(int argc, char** argv)
     evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/teapot.stl"));
   meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
+  meshes["quad"] =
+    std::make_unique<evolution::Mesh>(evolution::createTextureQuad());
+  meshes["quad"]->setPosition(evolution::Float3{0.f, 0.f, -3.f});
+
   evolution::Camera camera(width, height);
 
   // Main loop
@@ -106,7 +110,8 @@ int main(int argc, char** argv)
 
     for (const auto& mesh : meshes)
     {
-      mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+      if (mesh.first != "quad")
+        mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
       mesh.second->draw(camera);
     }
 

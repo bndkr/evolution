@@ -11,7 +11,7 @@
 
 namespace evolution
 {
-  Texture::Texture(const std::string& path)
+  Texture::Texture(const std::string& path) : m_texId(0)
   {
     int width, height, numChannels;
     uint8_t* data = stbi_load(path.c_str(), &width, &height, &numChannels, 0);
@@ -19,8 +19,6 @@ namespace evolution
     {
       throw std::runtime_error("could not load file: " + path);
     }
-
-    m_texId = 0;
     glGenTextures(1, &m_texId);
     glBindTexture(GL_TEXTURE_2D, m_texId);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -42,6 +40,28 @@ namespace evolution
 
     stbi_image_free(data);
   }
+  Texture::Texture(Texture&& other) : m_texId(other.m_texId)
+  {
+    other.m_texId = 0;
+  }
 
-  Texture::~Texture() { }
+  Texture& Texture::operator=(Texture&& other)
+  {
+    if(this != &other)
+    {
+      release();
+      std::swap(m_texId, other.m_texId);
+    }
+    return other;
+  }
+  void Texture::release()
+  {
+    glDeleteTextures(1, &m_texId);
+    m_texId = 0;
+  }
+
+  Texture::~Texture()
+  {
+    release();
+  }
 } // namespace evolution

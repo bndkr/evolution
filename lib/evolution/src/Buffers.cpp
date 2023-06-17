@@ -285,7 +285,25 @@ namespace evolution
                                1, 6, 5, 1, 2, 6, 7, 5, 6, 7, 4, 5};
 
     MeshBuffers buffers{vertices, colors, texture, indexBuffer};
-    auto mesh = Mesh(buffers);
-    return mesh;
+    return Mesh(buffers);
+  }
+  Mesh createTextureQuad()
+  {
+    PositionBuffer vertices = {{1.f, 1.f, 0.f, 1.f},
+                               {1.f, -1.f, 0.f, 1.f},
+                               {-1.f, -1.f, 0.f, 1.f},
+                               {-1.f, 1.f, 0.f, 1.f}};
+
+    ColorBuffer colors = {{1.f, 0.f, 0.f, 1.f},
+                          {1.f, 1.f, 1.f, 1.f},
+                          {0.f, 1.f, 0.f, 1.f},
+                          {0.f, 0.f, 1.f, 1.f}};
+
+    TextureCoordBuffer texture = {
+      {1.f, 0.f}, {0.f, 1.f}, {0.f, 0.f}, {0.f, 0.f}};
+
+    IndexBuffer indices = {0, 3, 1, 1, 3, 2};
+    MeshBuffers buffers{vertices, colors, texture, indices};
+    return Mesh(buffers);
   }
 } // namespace evolution

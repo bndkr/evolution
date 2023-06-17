@@ -126,6 +126,8 @@ namespace evolution
   // TODO: add factory methods (createCube, createSphere, create...)
   Mesh createCubeMesh();
 
+  Mesh createTextureQuad();
+
 } // namespace evolution
 
 #endif
