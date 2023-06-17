@@ -29,34 +29,17 @@ namespace
     }
     return 0;
   }
-
-  // creates a buffer. assumes a vertex array buffer is already bound.
-  uint32_t createBuffer(uint32_t type,
-                        const void* data,
-                        const size_t size,
-                        const uint32_t attribIndex,
-                        const evolution::BufferDataUsage usage)
-  {
-    // create and fill a vertex buffer with position data
-    uint32_t buffId = 0;
-    glGenBuffers(1, &buffId);
-    if (!buffId)
-      throw std::runtime_error("buffer generation failed");
-    glBindBuffer(type, buffId);
-    glBufferData(type, size, data, bufferDataUsageToGlType(usage));
-    // TODO: use a custom enum instead of this opengl macro garbage
-    if (type == GL_ARRAY_BUFFER)
-    {
-      glVertexAttribPointer(attribIndex, 4, GL_FLOAT, GL_FALSE, 0, 0);
-      glEnableVertexAttribArray(attribIndex);
-    }
-    return buffId;
-  }
-
 } // namespace
 
 namespace evolution
 {
+  struct Vertex
+  {
+    Float4 position;
+    Float4 color;
+    Float2 textureCoords;
+  };
+
   Mesh::Mesh(const MeshBuffers& buffers, const BufferDataUsage usage)
     : m_currProgram("default") // initialize m_posinfo
   {
@@ -85,7 +68,8 @@ namespace evolution
     }
 
     // all vectors need to have the same number of elements
-    if (buffers.positions.size() != buffers.colors.size())
+    if (buffers.positions.size() != buffers.colors.size() ||
+        textureCoods.size() != buffers.positions.size())
     {
       throw std::runtime_error(
         "invalid mesh setup, buffer count not consistent");
@@ -93,32 +77,48 @@ namespace evolution
 
     m_numUniqueVertices = buffers.positions.size();
     m_numVertices = indices.size();
+
+    std::vector<Vertex> vertices;
+    for (size_t i = 0; i < m_numUniqueVertices; i++)
+    {
+      vertices.push_back(
+        Vertex{buffers.positions[i], buffers.colors[i], textureCoods[i]});
+    }
+
     // create and bind the vertex array object
     glGenVertexArrays(1, &m_vaoId);
     if (!m_vaoId)
       throw std::runtime_error("vertex object array creation failed");
     glBindVertexArray(m_vaoId);
 
-    m_posBufferId = createBuffer(GL_ARRAY_BUFFER,
-                                 buffers.positions.data(),
-                                 buffers.positions.size() * sizeof(Float4),
-                                 0,
-                                 usage);
-    m_colBufferId = createBuffer(GL_ARRAY_BUFFER,
-                                 buffers.colors.data(),
-                                 buffers.colors.size() * sizeof(Float4),
-                                 1,
-                                 usage);
-    m_textureBufferId = createBuffer(GL_ARRAY_BUFFER,
-                                     textureCoods.data(),
-                                     textureCoods.size() * sizeof(Float2),
-                                     2,
-                                     usage);
-    m_indexBufferId = createBuffer(GL_ELEMENT_ARRAY_BUFFER,
-                                   indices.data(),
-                                   indices.size() * sizeof(uint32_t),
-                                   0,
-                                   usage);
+    glGenBuffers(1, &m_posBufferId);
+    glGenBuffers(1, &m_indexBufferId);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_posBufferId);
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(Vertex) * vertices.size(),
+                 vertices.data(),
+                 bufferDataUsageToGlType(usage));
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferId);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+                 sizeof(uint32_t) * indices.size(),
+                 indices.data(),
+                 bufferDataUsageToGlType(usage));
+
+    glVertexAttribPointer(
+      0, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(
+      1, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(4 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(
+      2, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(8 * sizeof(float)));
+    glEnableVertexAttribArray(2);
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+    glBindVertexArray(0);
   }
 
   void Mesh::useShader(const std::string& shader)
@@ -300,7 +300,7 @@ namespace evolution
                           {0.f, 0.f, 1.f, 1.f}};
 
     TextureCoordBuffer texture = {
-      {1.f, 0.f}, {0.f, 1.f}, {0.f, 0.f}, {0.f, 0.f}};
+      {1.f, 1.f}, {1.f, 0.f}, {0.f, 0.f}, {0.f, 1.f}};
 
     IndexBuffer indices = {0, 3, 1, 1, 3, 2};
     MeshBuffers buffers{vertices, colors, texture, indices};
