@@ -26,6 +26,12 @@ namespace evolution
     float z = 0.0f;
   };
 
+  struct Float2
+  {
+    float x = 0.0f;
+    float y = 0.0f;
+  };
+
   struct Mat4;
 
   struct PositionInfo
@@ -37,8 +43,17 @@ namespace evolution
 
   typedef std::vector<Float4> PositionBuffer;
   typedef std::vector<Float4> ColorBuffer;
-  // ... add more as needed (etc. normal, texture coords)
+  typedef std::vector<Float2> TextureCoordBuffer;
+  // typedef std::vector<Float4> NormalVectorBuffer;
   typedef std::vector<uint32_t> IndexBuffer;
+
+  struct MeshBuffers
+  {
+    PositionBuffer positions;
+    ColorBuffer colors;
+    TextureCoordBuffer texture;
+    IndexBuffer indices;
+  };
 
   // hint to OpenGL about how buffer data will be accessed
   enum BufferDataUsage
@@ -58,10 +73,7 @@ namespace evolution
   class Mesh
   {
   public:
-    Mesh(const PositionBuffer& positions,
-         const ColorBuffer& colors,
-         IndexBuffer& indices,
-         const PositionInfo posInfo,
+    Mesh(const MeshBuffers& buffers,
          const BufferDataUsage usage = BufferDataUsage::DynamicDraw);
 
     ~Mesh();
@@ -97,6 +109,7 @@ namespace evolution
     // Keep track of OpenGL buffer IDs
     uint32_t m_posBufferId;
     uint32_t m_colBufferId;
+    uint32_t m_textureBufferId;
     uint32_t m_indexBufferId;
     uint32_t m_vaoId;
 

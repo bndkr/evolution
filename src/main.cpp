@@ -63,6 +63,7 @@ int main(int argc, char** argv)
 
   meshes["teapot"] = std::make_unique<evolution::Mesh>(
     evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/teapot.stl"));
+  meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
   evolution::Camera camera(width, height);
 

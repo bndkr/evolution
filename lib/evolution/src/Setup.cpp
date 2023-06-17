@@ -73,14 +73,14 @@ namespace
     glClearColor(
       0.5f,
       0.5f,
-      0.5f,
+      0.7f,
       1.0f); // background color. Does this need to be in the main loop?
   }
 
   void enable3D()
   {
     glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS); // not sure why GL_LESS doesn't work
+    glDepthFunc(GL_LESS);
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);

@@ -7,6 +7,7 @@ set(${lib_name}_srcs
   include/Camera.hpp
   include/ProgramSelector.hpp
   include/MeshImporter.hpp
+  include/Texture.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
@@ -15,6 +16,7 @@ set(${lib_name}_srcs
   src/Camera.cpp
   src/ProgramSelector.cpp
   src/MeshImporter.cpp
+  src/Texture.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})

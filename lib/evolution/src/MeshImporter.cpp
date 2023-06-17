@@ -28,11 +28,20 @@ namespace evolution
     PositionBuffer posBuffer;
     ColorBuffer colors;
     IndexBuffer indexBuffer;
+    TextureCoordBuffer texCoords;
+
     for (size_t i = 0; i < numVertices; i++)
     {
       auto vertex = mesh->mVertices[i];
       posBuffer.push_back(Float4{vertex.x, vertex.y, vertex.z, 1.0f});
       colors.push_back(Float4{1.0f, vertex.x, 1.0f, 1.0f});
+
+      if (mesh->HasTextureCoords(0)) // what is this index?
+      {
+        auto texCoord = mesh->mTextureCoords[i];
+        // are we sure we can throw away the z?
+        texCoords.push_back(Float2{texCoord->x, texCoord->y});
+      }
     }
     for (size_t i = 0; i < numFaces; i++)
     {
@@ -42,6 +51,7 @@ namespace evolution
         indexBuffer.push_back(face.mIndices[j]);
       }
     }
-    return Mesh(posBuffer, colors, indexBuffer, PositionInfo{}, DynamicDraw);
+    MeshBuffers buffers{posBuffer, colors, texCoords, indexBuffer};
+    return Mesh(buffers, DynamicDraw);
   }
 } // namespace evolution
