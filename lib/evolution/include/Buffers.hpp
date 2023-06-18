@@ -124,6 +124,8 @@ namespace evolution
 
     PositionInfo m_position;
 
+    uint32_t m_activeTextureSlot = 0;
+
     void release();
   };
 

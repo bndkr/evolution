@@ -84,12 +84,18 @@ namespace
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
     glFrontFace(GL_CCW);
+
+    // enable blending
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   }
 } // namespace
 
 namespace evolution
 {
-  GLFWwindow* setup(const bool enable3DMode, unsigned int width, unsigned int height)
+  GLFWwindow* setup(const bool enable3DMode,
+                    unsigned int width,
+                    unsigned int height)
   {
     auto* window = setupGlfwWindow(width, height, "Evolution Game Engine");
     setupOpenGL();

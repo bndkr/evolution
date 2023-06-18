@@ -166,6 +166,7 @@ namespace evolution
     auto shader = pProgramSelector->getProgram(m_currProgram);
     int texSlot[1] = {tex.getSlotNum()};
     shader->addUniform(texSlot, 1, tex.getName());
+    m_activeTextureSlot = texSlot[0];
   }
 
 
@@ -207,7 +208,8 @@ namespace evolution
       m_vaoId(other.m_vaoId),
       m_numUniqueVertices(other.m_numUniqueVertices),
       m_numVertices(other.m_numVertices),
-      m_position(other.m_position)
+      m_position(other.m_position),
+      m_activeTextureSlot(other.m_activeTextureSlot)
   {
     other.m_colBufferId = 0;
     other.m_indexBufferId = 0;
@@ -230,12 +232,14 @@ namespace evolution
       std::swap(m_numUniqueVertices, other.m_numUniqueVertices);
       std::swap(m_numVertices, other.m_numVertices);
       std::swap(m_position, other.m_position);
+      std::swap(m_activeTextureSlot, other.m_activeTextureSlot);
     }
     return other;
   }
 
   void Mesh::draw(const Camera& camera)
   {
+    glActiveTexture(GL_TEXTURE0 + m_activeTextureSlot);
     auto pProgram = pProgramSelector->getProgram(m_currProgram);
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");

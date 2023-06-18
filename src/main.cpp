@@ -55,7 +55,7 @@ int main(int argc, char** argv)
 
   auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
-  evolution::Texture myTexture("C:/Users/bende/OneDrive/Desktop/meshes/dice-tex.png", 5, "myTexture");
+  evolution::Texture myTexture("C:/Users/bende/OneDrive/Desktop/meshes/ELMO.png", 5, "myTexture");
 
   meshes["my cube"] =
     std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
   meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
 
   meshes["teapot"] = std::make_unique<evolution::Mesh>(
-    evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/dice.obj"));
+    evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/ELMO.obj"));
   meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
   meshes["quad"] =
