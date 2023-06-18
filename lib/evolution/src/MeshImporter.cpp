@@ -36,11 +36,11 @@ namespace evolution
       posBuffer.push_back(Float4{vertex.x, vertex.y, vertex.z, 1.0f});
       colors.push_back(Float4{1.0f, vertex.x, 1.0f, 1.0f});
 
-      if (mesh->HasTextureCoords((uint32_t) i)) // what is this index?
+      if (mesh->HasTextureCoords((uint32_t) 0)) // what is this index?
       {
-        auto texCoord = mesh->mTextureCoords[i];
+        auto texCoord = mesh->mTextureCoords[0][i];
         // are we sure we can throw away the z?
-        texCoords.push_back(Float2{texCoord->x, texCoord->y});
+        texCoords.push_back(Float2{texCoord.x, texCoord.y});
       }
     }
     for (size_t i = 0; i < numFaces; i++)
