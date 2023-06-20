@@ -23,6 +23,7 @@ namespace evolution
     {
       throw std::runtime_error("could not load file: " + path);
     }
+    glActiveTexture(GL_TEXTURE0 + m_slot);
     glGenTextures(1, &m_texId);
     glBindTexture(GL_TEXTURE_2D, m_texId);
 
