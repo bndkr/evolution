@@ -47,7 +47,12 @@ int main(int argc, char** argv)
   setupImgui(window);
 
   evolution::ProgramSelector selector;
-  evolution::UseProgramSelector(&selector);
+  evolution::UseProgramSelector(&selector); // TODO: make this a singleton
+  int numTextureSlots;
+  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
+
+  std::cout << "number of texture slots: " << numTextureSlots << std::endl;
+
 
   auto pDefaultProgram = selector.getProgram("default");
   if (!pDefaultProgram)
@@ -67,7 +72,7 @@ int main(int argc, char** argv)
   meshes["teapot"] = std::make_unique<evolution::Mesh>(
     evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/sphere.obj"));
   meshes["teapot"]->assignTexture(myTexture);
-  
+
   meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
   meshes["quad"] =
