@@ -10,8 +10,7 @@
 #include <string>
 
 void showMeshManagerWindow(
-  std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes,
-  bool& open)
+  std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes, bool& open)
 {
   ImGui::Begin("Mesh Manager", &open, ImGuiWindowFlags_AlwaysAutoResize);
 
@@ -75,7 +74,8 @@ void showMeshManagerWindow(
 
     evolution::Mesh* pMesh = meshes[selectedMesh].get();
     static std::string selectedShader = "default";
-    auto availableShaders = evolution::ProgramSelector::getProgramSelector()->getAllValidProgramKeys();
+    auto availableShaders =
+      evolution::getProgramSelector()->getAllValidProgramKeys();
     for (const auto& key : availableShaders)
     {
       if (ImGui::Selectable(key.c_str(), selectedShader == key))

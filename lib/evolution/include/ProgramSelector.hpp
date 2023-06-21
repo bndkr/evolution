@@ -34,5 +34,7 @@ namespace evolution
     std::map<std::string, std::unique_ptr<Program>> m_programs;
     ProgramSelector();
   };
+
+  ProgramSelector* getProgramSelector();
 } // namespace evolution
 #endif

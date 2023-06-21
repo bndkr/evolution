@@ -8,6 +8,7 @@ set(${lib_name}_srcs
   include/ProgramSelector.hpp
   include/MeshImporter.hpp
   include/Texture.hpp
+  include/TextureManager.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
@@ -17,6 +18,7 @@ set(${lib_name}_srcs
   src/ProgramSelector.cpp
   src/MeshImporter.cpp
   src/Texture.cpp
+  src/TextureManager.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})

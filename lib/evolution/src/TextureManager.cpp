@@ -10,7 +10,6 @@ namespace evolution
 {
   TextureManager::TextureManager()
   {
-    m_currTextureSlot = 0;
     glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &m_maxTextureSlots);
   }
 
@@ -21,12 +20,17 @@ namespace evolution
   }
 
   void TextureManager::addTexture(const std::string& name,
-                                  const Texture& texture)
+                                  const std::string& filename)
   {
-    if (m_currTextureSlot < m_maxTextureSlots)
+    // keep track of the current texture slot so each
+    // texture has its own slot.
+    static int32_t currTextureSlot = 0;
+
+    if (currTextureSlot < m_maxTextureSlots)
     {
-      m_textures[name] = std::make_unique<Texture>(texture);
-      m_currTextureSlot++;
+      m_textures[name] =
+        std::make_unique<Texture>(Texture(filename, currTextureSlot, name));
+      currTextureSlot++;
     }
     else // we've run out of texture slots...
     {
@@ -52,5 +56,10 @@ namespace evolution
       result.insert(item.first);
     }
     return result;
+  }
+
+  TextureManager* getTextureManager()
+  {
+    return TextureManager::getTextureManager();
   }
 } // namespace evolution

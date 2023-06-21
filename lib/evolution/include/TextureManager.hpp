@@ -16,7 +16,7 @@ namespace evolution
     static TextureManager* getTextureManager();
     ~TextureManager() { }
 
-    void addTexture(const std::string& name, const Texture& texture);
+    void addTexture(const std::string& name, const std::string& filename);
     Texture* getTexture(const std::string& name);
 
     std::set<std::string> getAllTextures();
@@ -30,12 +30,10 @@ namespace evolution
 
     std::map<std::string, std::unique_ptr<Texture>> m_textures;
 
-    // keep track of the current texture slot so each
-    // texture has its own slot. 
-    static uint32_t m_currTextureSlot;
-
     int32_t m_maxTextureSlots;
   };
+
+  TextureManager* getTextureManager();
 } // namespace evolution
 
 #endif

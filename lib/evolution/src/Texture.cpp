@@ -31,7 +31,6 @@ namespace evolution
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // we should check the channels coming in to know if we have alpha or not
     glTexImage2D(GL_TEXTURE_2D,
                  0,
                  numChannels == 4 ? GL_RGBA : GL_RGB,

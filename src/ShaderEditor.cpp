@@ -13,7 +13,7 @@ void showShaderEditor(bool* showWindow)
     ImGui::Begin(
       "Shader Editor", showWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-    auto validShaders = evolution::ProgramSelector::getProgramSelector()->getAllValidProgramKeys();
+    auto validShaders = evolution::getProgramSelector()->getAllValidProgramKeys();
 
     if (ImGui::Button("Create New Shader"))
       ImGui::OpenPopup("Create Shader");
@@ -30,7 +30,7 @@ void showShaderEditor(bool* showWindow)
       {
         if (!newShaderName.empty())
         {
-          evolution::ProgramSelector::getProgramSelector()->addProgram(newShaderName);
+          evolution::getProgramSelector()->addProgram(newShaderName);
           ImGui::CloseCurrentPopup();
         }
       }
@@ -50,7 +50,7 @@ void showShaderEditor(bool* showWindow)
 
     static std::string error = "";
 
-    evolution::Program* currProgram = evolution::ProgramSelector::getProgramSelector()->getProgram(selectedShader);
+    evolution::Program* currProgram = evolution::getProgramSelector()->getProgram(selectedShader);
     ImGui::Text("Vertex Shader");
     ImGui::InputTextMultiline("##Vertex Shader",
                               &(currProgram->getVertexShaderSrc()),

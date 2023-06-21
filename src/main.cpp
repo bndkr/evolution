@@ -9,7 +9,7 @@
 #include "ShaderEditor.hpp"
 #include "MeshManager.hpp"
 #include "MeshImporter.hpp"
-#include "Texture.hpp"
+#include "TextureManager.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -46,13 +46,13 @@ int main(int argc, char** argv)
   auto window = evolution::setup(/*enable3D=*/true, width, height);
   setupImgui(window);
 
-  auto pDefaultProgram = evolution::ProgramSelector::getProgramSelector()->getProgram("default");
-  if (!pDefaultProgram)
-    throw std::runtime_error("unable to initialize default program");
+  auto pTextureManager = evolution::getTextureManager();
+  auto pProgramSelector = evolution::getProgramSelector();
 
   auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
-  evolution::Texture myTexture("C:/Users/bende/OneDrive/Desktop/meshes/cool-lights.png", 5, "myTexture");
+  pTextureManager->addTexture(
+    "tex-lights", "C:/Users/bende/OneDrive/Desktop/meshes/cool-lights.png");
 
   meshes["my cube"] =
     std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
 
   meshes["teapot"] = std::make_unique<evolution::Mesh>(
     evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/sphere.obj"));
-  meshes["teapot"]->assignTexture(myTexture);
+  meshes["teapot"]->assignTexture(*pTextureManager->getTexture("tex-lights"));
 
   meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 

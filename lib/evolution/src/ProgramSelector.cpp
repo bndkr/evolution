@@ -41,4 +41,9 @@ namespace evolution
     }
     return result;
   }
+  
+  ProgramSelector* getProgramSelector()
+  {
+    return ProgramSelector::getProgramSelector();
+  }
 } // namespace evolution
