@@ -46,14 +46,12 @@ int main(int argc, char** argv)
   auto window = evolution::setup(/*enable3D=*/true, width, height);
   setupImgui(window);
 
-  evolution::ProgramSelector selector;
-  evolution::UseProgramSelector(&selector); // TODO: make this a singleton
   int numTextureSlots;
   glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
 
   std::cout << "number of texture slots: " << numTextureSlots << std::endl;
 
-  auto pDefaultProgram = selector.getProgram("default");
+  auto pDefaultProgram = evolution::ProgramSelector::getProgramSelector()->getProgram("default");
   if (!pDefaultProgram)
     throw std::runtime_error("unable to initialize default program");
 
@@ -93,10 +91,10 @@ int main(int argc, char** argv)
     ImGui::ShowDemoWindow();
 
     static bool shaderEditorOpen = true;
-    showShaderEditor(&shaderEditorOpen, selector);
+    showShaderEditor(&shaderEditorOpen);
 
     static bool meshManagerOpen = true;
-    showMeshManagerWindow(meshes, selector, meshManagerOpen);
+    showMeshManagerWindow(meshes, meshManagerOpen);
 
     ImGui::Render();
 

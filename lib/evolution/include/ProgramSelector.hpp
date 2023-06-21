@@ -10,10 +10,17 @@
 
 namespace evolution
 {
+  // singleton class to hold a collection of programs (GLSL shaders)
   class ProgramSelector
   {
   public:
-    ProgramSelector();
+    static ProgramSelector* getProgramSelector();
+
+    ~ProgramSelector() {}
+
+    // rule of three
+    ProgramSelector(const ProgramSelector&) = delete;
+    ProgramSelector& operator=(const ProgramSelector&) = delete;
 
     Program* getProgram(const std::string& key);
 
@@ -25,10 +32,7 @@ namespace evolution
 
   private:
     std::map<std::string, std::unique_ptr<Program>> m_programs;
+    ProgramSelector();
   };
-
-  extern ProgramSelector* pProgramSelector;
-
-  void UseProgramSelector(ProgramSelector* pSelector);
 } // namespace evolution
 #endif

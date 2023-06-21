@@ -11,7 +11,6 @@
 
 void showMeshManagerWindow(
   std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes,
-  evolution::ProgramSelector& selector,
   bool& open)
 {
   ImGui::Begin("Mesh Manager", &open, ImGuiWindowFlags_AlwaysAutoResize);
@@ -76,7 +75,7 @@ void showMeshManagerWindow(
 
     evolution::Mesh* pMesh = meshes[selectedMesh].get();
     static std::string selectedShader = "default";
-    auto availableShaders = selector.getAllValidProgramKeys();
+    auto availableShaders = evolution::ProgramSelector::getProgramSelector()->getAllValidProgramKeys();
     for (const auto& key : availableShaders)
     {
       if (ImGui::Selectable(key.c_str(), selectedShader == key))

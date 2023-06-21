@@ -6,6 +6,6 @@ namespace evolution
   class ProgramSelector;
 }
 
-void showShaderEditor(bool* showWindow, evolution::ProgramSelector& selector);
+void showShaderEditor(bool* showWindow);
 
 #endif

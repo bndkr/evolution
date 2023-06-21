@@ -44,10 +44,6 @@ namespace evolution
   Mesh::Mesh(const MeshBuffers& buffers, const BufferDataUsage usage)
     : m_currProgram("default") // initialize m_posinfo
   {
-    if (!pProgramSelector)
-      throw std::runtime_error("program selector must be non-null (use "
-                               "evolution::UseProgramSelector)");
-
     auto indices = buffers.indices;
     auto textureCoods = buffers.texture;
     if (indices.size() == 0) // no index buffer
@@ -124,7 +120,7 @@ namespace evolution
 
   void Mesh::useShader(const std::string& shader)
   {
-    if (!pProgramSelector->isProgramValid(shader))
+    if (!ProgramSelector::getProgramSelector()->isProgramValid(shader))
     {
       throw std::runtime_error("program (" + m_currProgram +
                                ") is not a valid program");
@@ -158,12 +154,12 @@ namespace evolution
 
   void Mesh::assignTexture(const Texture& tex)
   {
-    if (!pProgramSelector->isProgramValid(m_currProgram))
+    if (!ProgramSelector::getProgramSelector()->isProgramValid(m_currProgram))
     {
       throw std::runtime_error("program (" + m_currProgram +
                                ") is not a valid program");
     }
-    auto shader = pProgramSelector->getProgram(m_currProgram);
+    auto shader = ProgramSelector::getProgramSelector()->getProgram(m_currProgram);
     int texSlot[1] = {tex.getSlotNum()};
     shader->addUniform(texSlot, 1, tex.getName());
     m_activeTextureSlot = texSlot[0];
@@ -240,7 +236,7 @@ namespace evolution
   void Mesh::draw(const Camera& camera)
   {
     glActiveTexture(GL_TEXTURE0 + m_activeTextureSlot);
-    auto pProgram = pProgramSelector->getProgram(m_currProgram);
+    auto pProgram = ProgramSelector::getProgramSelector()->getProgram(m_currProgram);
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
     auto eyeMatrix = camera.getEyeSpaceMatrix();

@@ -2,12 +2,15 @@
 
 namespace evolution
 {
-
-  ProgramSelector* pProgramSelector = nullptr;
-
   ProgramSelector::ProgramSelector()
   {
     m_programs["default"] = std::make_unique<Program>();
+  }
+
+  ProgramSelector* ProgramSelector::getProgramSelector()
+  {
+    static ProgramSelector selector;
+    return &selector;
   }
 
   Program* ProgramSelector::getProgram(const std::string& key)
@@ -37,10 +40,5 @@ namespace evolution
       result.insert(pair.first);
     }
     return result;
-  }
-  void UseProgramSelector(ProgramSelector* pSelector)
-  {
-    if (pSelector)
-      pProgramSelector = pSelector;
   }
 } // namespace evolution
