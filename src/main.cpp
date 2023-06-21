@@ -46,11 +46,6 @@ int main(int argc, char** argv)
   auto window = evolution::setup(/*enable3D=*/true, width, height);
   setupImgui(window);
 
-  int numTextureSlots;
-  glGetIntegerv(GL_MAX_TEXTURE_IMAGE_UNITS, &numTextureSlots);
-
-  std::cout << "number of texture slots: " << numTextureSlots << std::endl;
-
   auto pDefaultProgram = evolution::ProgramSelector::getProgramSelector()->getProgram("default");
   if (!pDefaultProgram)
     throw std::runtime_error("unable to initialize default program");
