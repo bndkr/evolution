@@ -27,7 +27,8 @@ namespace
       glGetShaderInfoLog(id, length, &length, errorMsg.data());
       std::string errorMsgStr(errorMsg.data(), errorMsg.size());
       glDeleteShader(id);
-      *errMsg = errorMsgStr;
+      if (errMsg)
+        *errMsg = errorMsgStr;
       return 0;
     }
     return id;

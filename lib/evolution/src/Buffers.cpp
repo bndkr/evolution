@@ -1,8 +1,8 @@
 #include "Buffers.hpp"
 #include "Projection.hpp"
 #include "ProgramSelector.hpp"
+#include "TextureManager.hpp"
 #include "Camera.hpp"
-#include "Texture.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -152,7 +152,7 @@ namespace evolution
     m_position.rotation.z += delta.z;
   }
 
-  void Mesh::assignTexture(const Texture& tex)
+  void Mesh::assignTexture(const std::string& texName)
   {
     if (!getProgramSelector()->isProgramValid(m_currProgram))
     {
@@ -160,11 +160,12 @@ namespace evolution
                                ") is not a valid program");
     }
     auto shader = getProgramSelector()->getProgram(m_currProgram);
-    int texSlot[1] = {tex.getSlotNum()};
-    shader->addUniform(texSlot, 1, tex.getName());
-    m_activeTextureSlot = texSlot[0];
-  }
+    auto pTexture = getTextureManager()->getTexture(texName);
+    if (!pTexture)
+      return; // throw error?
 
+
+  }
 
   Float3* Mesh::getPostion()
   {
@@ -204,8 +205,7 @@ namespace evolution
       m_vaoId(other.m_vaoId),
       m_numUniqueVertices(other.m_numUniqueVertices),
       m_numVertices(other.m_numVertices),
-      m_position(other.m_position),
-      m_activeTextureSlot(other.m_activeTextureSlot)
+      m_position(other.m_position)
   {
     other.m_colBufferId = 0;
     other.m_indexBufferId = 0;
@@ -228,15 +228,20 @@ namespace evolution
       std::swap(m_numUniqueVertices, other.m_numUniqueVertices);
       std::swap(m_numVertices, other.m_numVertices);
       std::swap(m_position, other.m_position);
-      std::swap(m_activeTextureSlot, other.m_activeTextureSlot);
     }
     return other;
   }
 
   void Mesh::draw(const Camera& camera)
   {
-    glActiveTexture(GL_TEXTURE0 + m_activeTextureSlot);
+    auto pTexture = getTextureManager()->getTexture(m_currTexture);
     auto pProgram = getProgramSelector()->getProgram(m_currProgram);
+    if (pTexture)
+    {
+      glActiveTexture(GL_TEXTURE0 + pTexture->getSlotNum());
+      int texSlot[1] = {pTexture->getSlotNum()};
+      pProgram->addUniform(texSlot, 1, "un_texture");
+    }
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
     auto eyeMatrix = camera.getEyeSpaceMatrix();

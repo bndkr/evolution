@@ -1,5 +1,6 @@
 #include "MeshManager.hpp"
 #include "ProgramSelector.hpp"
+#include "TextureManager.hpp"
 #include "MeshImporter.hpp"
 
 #include "Buffers.hpp"
@@ -82,6 +83,21 @@ void showMeshManagerWindow(
       {
         selectedShader = key;
         meshes[selectedMesh]->useShader(selectedShader);
+      }
+    }
+
+    ImGui::SeparatorText("Available Textures");
+
+    evolution::Mesh* pTexture = meshes[selectedMesh].get();
+    static std::string selectedTexture = "default";
+    auto availableTextures =
+      evolution::getTextureManager()->getAllTextures();
+    for (const auto& key : availableTextures)
+    {
+      if (ImGui::Selectable(key.c_str(), selectedTexture == key))
+      {
+        selectedTexture = key;
+        meshes[selectedMesh]->assignTexture(selectedTexture);
       }
     }
   }

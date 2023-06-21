@@ -98,7 +98,7 @@ namespace evolution
 
     void rotate(Float3 delta);
 
-    void assignTexture(const Texture& tex);
+    void assignTexture(const std::string& texName);
 
     Float3* getPostion();
     Float3* getRotation();
@@ -118,13 +118,12 @@ namespace evolution
     uint32_t m_vaoId;
 
     std::string m_currProgram;
+    std::string m_currTexture;
 
     size_t m_numUniqueVertices;
     size_t m_numVertices;
 
     PositionInfo m_position;
-
-    uint32_t m_activeTextureSlot = 0;
 
     void release();
   };

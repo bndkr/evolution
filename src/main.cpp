@@ -53,6 +53,8 @@ int main(int argc, char** argv)
 
   pTextureManager->addTexture(
     "tex-lights", "C:/Users/bende/OneDrive/Desktop/meshes/cool-lights.png");
+  pTextureManager->addTexture(
+    "elmo", "C:/Users/bende/OneDrive/Desktop/meshes/ELMO.png");
 
   meshes["my cube"] =
     std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -63,7 +65,7 @@ int main(int argc, char** argv)
 
   meshes["teapot"] = std::make_unique<evolution::Mesh>(
     evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/sphere.obj"));
-  meshes["teapot"]->assignTexture(*pTextureManager->getTexture("tex-lights"));
+  meshes["teapot"]->assignTexture("tex-lights");
 
   meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
