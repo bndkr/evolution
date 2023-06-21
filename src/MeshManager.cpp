@@ -1,5 +1,6 @@
 #include "MeshManager.hpp"
 #include "ProgramSelector.hpp"
+#include "MeshImporter.hpp"
 
 #include "Buffers.hpp"
 
@@ -24,19 +25,32 @@ void showMeshManagerWindow(
         "Create Mesh", &createMeshOpen, ImGuiWindowFlags_AlwaysAutoResize))
   {
     static std::string newName;
+    static std::string filePath;
+    static std::string errMsg;
     ImGui::InputText("Name", &newName);
+    ImGui::InputText("Filepath", &filePath);
 
     if (ImGui::Button("Create Mesh"))
     {
+      errMsg = "";
       if (!newName.empty() && !meshes.count(newName))
       {
-        meshes[newName] = std::make_unique<evolution::Mesh>(
-          evolution::createCubeMesh());
-        ImGui::CloseCurrentPopup();
+        try
+        {
+          meshes[newName] =
+            std::make_unique<evolution::Mesh>(evolution::fromFile(filePath));
+          errMsg = "";
+          ImGui::CloseCurrentPopup();
+        }
+        catch (const std::exception& e)
+        {
+          errMsg = std::string("unable to create mesh: ") + e.what();
+        }
       }
     }
     if (ImGui::Button("Cancel"))
       ImGui::CloseCurrentPopup();
+    ImGui::Text(errMsg.c_str());
     ImGui::EndPopup();
   }
 

@@ -53,7 +53,6 @@ int main(int argc, char** argv)
 
   std::cout << "number of texture slots: " << numTextureSlots << std::endl;
 
-
   auto pDefaultProgram = selector.getProgram("default");
   if (!pDefaultProgram)
     throw std::runtime_error("unable to initialize default program");
@@ -90,16 +89,6 @@ int main(int argc, char** argv)
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
-
-    ImGui::Begin(
-      "yep, it's me again.", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-    static float color[4] = {0};
-    if (ImGui::ColorPicker4("pick a color for the cube!", color))
-    {
-      pDefaultProgram->addUniform(color, 4, "un_color");
-    }
-
-    ImGui::End();
 
     ImGui::ShowDemoWindow();
 

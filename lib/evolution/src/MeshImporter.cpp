@@ -17,7 +17,7 @@ namespace evolution
       aiProcess_CalcTangentSpace | aiProcess_Triangulate |
         aiProcess_JoinIdenticalVertices | aiProcess_SortByPType);
     if (!pScene)
-      throw std::runtime_error("i failed you.");
+      throw std::runtime_error("cannot open file: " + filename);
 
     if (!pScene->mMeshes)
       throw std::runtime_error("scene has no meshes");
@@ -36,10 +36,9 @@ namespace evolution
       posBuffer.push_back(Float4{vertex.x, vertex.y, vertex.z, 1.0f});
       colors.push_back(Float4{1.0f, vertex.x, 1.0f, 1.0f});
 
-      if (mesh->HasTextureCoords((uint32_t) 0)) // what is this index?
+      if (mesh->HasTextureCoords((uint32_t) 0))
       {
         auto texCoord = mesh->mTextureCoords[0][i];
-        // are we sure we can throw away the z?
         texCoords.push_back(Float2{texCoord.x, texCoord.y});
       }
     }

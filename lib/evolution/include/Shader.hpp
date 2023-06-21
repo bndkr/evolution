@@ -37,7 +37,6 @@ in vec4 colorPass;
 in vec2 texCoordsPass;
 out vec4 colorOut;
 
-uniform vec4 un_color;
 uniform sampler2D myTexture;
 void main(void)
 {
