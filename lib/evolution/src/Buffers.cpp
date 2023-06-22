@@ -163,7 +163,7 @@ namespace evolution
     auto pTexture = getTextureManager()->getTexture(texName);
     if (!pTexture)
       return; // throw error?
-
+    m_currTexture = pTexture->getName();
 
   }
 
