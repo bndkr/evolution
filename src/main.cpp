@@ -51,10 +51,12 @@ int main(int argc, char** argv)
 
   auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
+  // pTextureManager->addTexture(
+  //   "tex-lights", "C:/Users/bende/OneDrive/Desktop/meshes/cool-lights.png");
+  // pTextureManager->addTexture(
+  //   "elmo", "C:/Users/bende/OneDrive/Desktop/meshes/ELMO.png");
   pTextureManager->addTexture(
-    "tex-lights", "C:/Users/bende/OneDrive/Desktop/meshes/cool-lights.png");
-  pTextureManager->addTexture(
-    "elmo", "C:/Users/bende/OneDrive/Desktop/meshes/ELMO.png");
+    "deez nuts", "C:/Users/bende/Documents/meshes/mytex.png");
 
   meshes["my cube"] =
     std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -63,11 +65,11 @@ int main(int argc, char** argv)
 
   meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
 
-  meshes["teapot"] = std::make_unique<evolution::Mesh>(
-    evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/sphere.obj"));
-  meshes["teapot"]->assignTexture("tex-lights");
+  // meshes["teapot"] = std::make_unique<evolution::Mesh>(
+  //   evolution::fromFile("C:/Users/bende/OneDrive/Desktop/meshes/sphere.obj"));
+  // meshes["teapot"]->assignTexture("tex-lights");
 
-  meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
+  // meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
   meshes["quad"] =
     std::make_unique<evolution::Mesh>(evolution::createTextureQuad());

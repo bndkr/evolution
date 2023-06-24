@@ -1,0 +1,35 @@
+set(eigen_srcs
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Cholesky
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/CholmodSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Core
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Dense
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Eigen
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Eigenvalues
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Geometry
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Householder
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/IterativeLinearSolvers
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Jacobi
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/KLUSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/LU
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/MetisSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/OrderingMethods
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/PardisoSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/PaStiXSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/QR
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/QtAlignedMalloc
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/Sparse
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SparseCholesky
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SparseCore
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SparseLU
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SparseQR
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SPQRSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/src
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/StdDeque
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/StdList
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/StdVector
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SuperLUSupport
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/SVD
+  ${CMAKE_CURRENT_LIST_DIR}/include/Eigen/UmfPackSupport
+)
+add_library(eigen INTERFACE ${eigen_srcs})
+target_include_directories(eigen INTERFACE ${CMAKE_CURRENT_LIST_DIR}/include)

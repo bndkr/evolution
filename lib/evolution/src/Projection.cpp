@@ -1,6 +1,6 @@
 #include "Projection.hpp"
 
-#include <eigen3/Eigen/Dense>
+#include <Eigen/Dense>
 
 #include <cmath>
 

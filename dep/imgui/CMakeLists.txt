@@ -20,7 +20,6 @@ set(imgui_srcs
 )
 add_library(imgui STATIC ${imgui_srcs})
 source_group("" FILES ${imgui_srcs})
-xpFindPkg(PKGS glew)
 target_include_directories(imgui PUBLIC ${GLFW3_INCLUDE_DIR} ${CMAKE_CURRENT_LIST_DIR}/include)
 target_link_libraries(
   imgui
@@ -28,4 +27,3 @@ target_link_libraries(
   ${OPENGL_LIBRARY}
   ${GLFW3_LIBRARY}
 )
-xpSourceListAppend("${imgui_srcs}")

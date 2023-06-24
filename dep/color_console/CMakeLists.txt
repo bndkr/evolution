@@ -4,4 +4,3 @@ set(color_console_srcs
 add_library(color_console INTERFACE ${color_console_srcs})
 target_include_directories(color_console INTERFACE ${CMAKE_CURRENT_LIST_DIR}/include)
 source_group("" FILES ${color_console_srcs})
-xpSourceListAppend("${color_console_srcs}")
