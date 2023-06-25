@@ -5,5 +5,5 @@ set(${test_name}_srcs
 add_executable(${test_name} ${${test_name}_srcs})
 target_link_libraries(${test_name} PRIVATE Boost::unit_test_framework ${lib_name})
 # test exe breaks without this next line
-set_target_properties(${test_name} PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+# set_target_properties(${test_name} PROPERTIES MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 add_test(NAME ${test_name} COMMAND ${test_name})
