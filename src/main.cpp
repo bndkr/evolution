@@ -44,84 +44,96 @@ int main(int argc, char** argv)
   const uint32_t height = 900;
 
   auto window = evolution::setup(/*enable3D=*/true, width, height);
-  setupImgui(window);
 
-  auto pTextureManager = evolution::getTextureManager();
-  auto pProgramSelector = evolution::getProgramSelector();
-
-  auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
-
-  // pTextureManager->addTexture(
-  //   "tex-lights", "C:/Users/bende/OneDrive/Desktop/meshes/cool-lights.png");
-  // pTextureManager->addTexture(
-  //   "elmo", "C:/Users/bende/OneDrive/Desktop/meshes/ELMO.png");
-  pTextureManager->addTexture(
-    "deez nuts", "../assets/assets/example/textures/pipes.png");
-
-  meshes["my cube"] =
-    std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
-
-  meshes["my cube"]->useShader("default");
-
-  meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
-
-  meshes["teapot"] = std::make_unique<evolution::Mesh>(
-    evolution::fromFile("C:/Users/bende/Documents/meshes/teapot.stl"));
-
-  meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
-
-  meshes["quad"] =
-    std::make_unique<evolution::Mesh>(evolution::createTextureQuad());
-  meshes["quad"]->setPosition(evolution::Float3{0.f, 0.f, -3.f});
-
-  evolution::Camera camera(width, height);
-
-  // Main loop
-  // let's start off leaving the main loop client-side. this allows
-  // the client more flexibility over events and state.
-  while (!glfwWindowShouldClose(window))
+  try
   {
-    glfwPollEvents();
-    ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplGlfw_NewFrame();
-    ImGui::NewFrame();
+    setupImgui(window);
 
-    ImGui::ShowDemoWindow();
+    auto pTextureManager = evolution::getTextureManager();
+    auto pProgramSelector = evolution::getProgramSelector();
 
-    static bool shaderEditorOpen = true;
-    showShaderEditor(&shaderEditorOpen);
+    auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
-    static bool meshManagerOpen = true;
-    showMeshManagerWindow(meshes, meshManagerOpen);
+    pTextureManager->addTexture(
+      "deez nuts", "../assets/example/textures/pipes.png");
 
-    ImGui::Render();
+    meshes["my cube"] =
+      std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
 
-    int displayWidth, displayHeight;
-    glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+    meshes["my cube"]->useShader("default");
 
-    glViewport(0, 0, displayWidth, displayHeight);
-    camera.updateWindowSize(displayWidth, displayHeight);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
 
-    for (const auto& mesh : meshes)
+    meshes["teapot"] = std::make_unique<evolution::Mesh>(
+      evolution::fromFile("C:/Users/bende/Documents/meshes/teapot.stl"));
+
+    meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
+
+    meshes["quad"] =
+      std::make_unique<evolution::Mesh>(evolution::createTextureQuad());
+    meshes["quad"]->setPosition(evolution::Float3{0.f, 0.f, -3.f});
+
+    evolution::Camera camera(width, height);
+
+    // Main loop
+    // let's start off leaving the main loop client-side. this allows
+    // the client more flexibility over events and state.
+    while (!glfwWindowShouldClose(window))
     {
-      if (mesh.first != "quad")
-        mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
-      mesh.second->draw(camera);
+      glfwPollEvents();
+      ImGui_ImplOpenGL3_NewFrame();
+      ImGui_ImplGlfw_NewFrame();
+      ImGui::NewFrame();
+
+      ImGui::ShowDemoWindow();
+
+      static bool shaderEditorOpen = true;
+      showShaderEditor(&shaderEditorOpen);
+
+      static bool meshManagerOpen = true;
+      showMeshManagerWindow(meshes, meshManagerOpen);
+
+      ImGui::Render();
+
+      int displayWidth, displayHeight;
+      glfwGetFramebufferSize(window, &displayWidth, &displayHeight);
+
+      glViewport(0, 0, displayWidth, displayHeight);
+      camera.updateWindowSize(displayWidth, displayHeight);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+      for (const auto& mesh : meshes)
+      {
+        if (mesh.first != "quad")
+          mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+        mesh.second->draw(camera);
+      }
+
+      ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+      glfwSwapBuffers(window);
     }
 
-    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    // Cleanup
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
-    glfwSwapBuffers(window);
+    glfwDestroyWindow(window);
+    glfwTerminate();
+
+    return 0;
   }
+  catch (const std::exception& e)
+  {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
-  // Cleanup
-  ImGui_ImplOpenGL3_Shutdown();
-  ImGui_ImplGlfw_Shutdown();
-  ImGui::DestroyContext();
+    glfwDestroyWindow(window);
+    glfwTerminate();
 
-  glfwDestroyWindow(window);
-  glfwTerminate();
-
-  return 0;
+    std::cout << "exception: " << e.what() << std::endl;
+    std::cin.get();
+  }
 }

@@ -9,6 +9,7 @@ set(${lib_name}_srcs
   include/MeshImporter.hpp
   include/Texture.hpp
   include/TextureManager.hpp
+  include/utils.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
@@ -19,6 +20,7 @@ set(${lib_name}_srcs
   src/MeshImporter.cpp
   src/Texture.cpp
   src/TextureManager.cpp
+  src/utils.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})
@@ -46,6 +48,7 @@ target_link_libraries(
   GLEW::glew_s
   ${GLFW3_LIB}
   PRIVATE
+  Boost::filesystem
   ${ASSIMP_LIB}
   color_console
   eigen

@@ -6,52 +6,11 @@
 
 namespace evolution
 {
-  const std::string defaultVertexShaderSrc = R"(
-#version 440
-
-layout(location=0) in vec4 positionIn;
-layout(location=1) in vec4 colorIn;
-layout(location=2) in vec2 texCoordsIn;
-
-uniform mat4 un_modelMatrix;
-uniform mat4 un_eyeMatrix;
-uniform mat4 un_projMatrix;
-
-out vec4 colorPass;
-out vec2 texCoordsPass;
-
-void main(void)
-{
-  gl_Position = (un_projMatrix * un_eyeMatrix * un_modelMatrix) * positionIn;
-  // gl_Position = (un_eyeMatrix * un_modelMatrix) * positionIn;
-  // gl_Position = positionIn;
-  colorPass = colorIn;
-  texCoordsPass = texCoordsIn;
-}
-)";
-
-  const std::string defaultFragmentShaderSrc = R"(
-#version 440
-
-in vec4 colorPass;
-in vec2 texCoordsPass;
-out vec4 colorOut;
-
-uniform sampler2D un_texture;
-void main(void)
-{
-  // colorOut = colorPass;
-  // colorOut = un_color;
-  // colorOut = vec4(texCoordsPass, 0, 1);
-  colorOut = texture(un_texture, texCoordsPass);
-}
-)";
-
   class Program
   {
   public:
-    Program(const std::string& vertexShaderSrc = defaultVertexShaderSrc,
-            const std::string& fragmentShaderSrc = defaultFragmentShaderSrc,
+    Program(const std::string& vertexShaderSrc,
+            const std::string& fragmentShaderSrc,
             std::string* errMsg = nullptr);
 
     ~Program();
@@ -60,6 +19,7 @@ void main(void)
     Program& operator=(const Program&) = delete;
 
     Program(Program&& other);
+
     Program& operator=(Program&& other);
 
     std::string& getVertexShaderSrc();

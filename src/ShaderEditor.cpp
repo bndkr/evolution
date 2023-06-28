@@ -5,6 +5,44 @@
 #include <imgui/imgui_stdlib.h>
 
 #include <string>
+#include <stdexcept>
+
+namespace
+{
+  const std::string defaultVertShader = R"(
+#version 440
+
+layout(location=0) in vec4 positionIn;
+layout(location=1) in vec4 colorIn;
+layout(location=2) in vec2 texCoordsIn;
+
+uniform mat4 un_modelMatrix;
+uniform mat4 un_eyeMatrix;
+uniform mat4 un_projMatrix;
+
+out vec4 colorPass;
+out vec2 texCoordsPass;
+
+void main(void)
+{
+  gl_Position = (un_projMatrix * un_eyeMatrix * un_modelMatrix) * positionIn;
+  colorPass = colorIn;
+  texCoordsPass = texCoordsIn;
+})";
+  const std::string defaultFragShader = R"(
+#version 440
+
+in vec4 colorPass;
+in vec2 texCoordsPass;
+out vec4 colorOut;
+
+uniform sampler2D un_texture;
+void main(void)
+{
+  colorOut = texture(un_texture, texCoordsPass);
+}
+)";
+} // namespace
 
 void showShaderEditor(bool* showWindow)
 {
@@ -13,7 +51,8 @@ void showShaderEditor(bool* showWindow)
     ImGui::Begin(
       "Shader Editor", showWindow, ImGuiWindowFlags_AlwaysAutoResize);
 
-    auto validShaders = evolution::getProgramSelector()->getAllValidProgramKeys();
+    auto validShaders =
+      evolution::getProgramSelector()->getAllValidProgramKeys();
 
     if (ImGui::Button("Create New Shader"))
       ImGui::OpenPopup("Create Shader");
@@ -30,7 +69,12 @@ void showShaderEditor(bool* showWindow)
       {
         if (!newShaderName.empty())
         {
-          evolution::getProgramSelector()->addProgram(newShaderName);
+          std::string error;
+          evolution::getProgramSelector()->addProgram(
+            defaultVertShader, defaultFragShader, newShaderName, &error);
+          if (!error.empty())
+            throw std::runtime_error("a default shader failed to compile: " +
+                                     error);
           ImGui::CloseCurrentPopup();
         }
       }
@@ -50,7 +94,8 @@ void showShaderEditor(bool* showWindow)
 
     static std::string error = "";
 
-    evolution::Program* currProgram = evolution::getProgramSelector()->getProgram(selectedShader);
+    evolution::Program* currProgram =
+      evolution::getProgramSelector()->getProgram(selectedShader);
     ImGui::Text("Vertex Shader");
     ImGui::InputTextMultiline("##Vertex Shader",
                               &(currProgram->getVertexShaderSrc()),

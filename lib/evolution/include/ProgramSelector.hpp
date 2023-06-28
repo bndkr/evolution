@@ -16,7 +16,7 @@ namespace evolution
   public:
     static ProgramSelector* getProgramSelector();
 
-    ~ProgramSelector() {}
+    ~ProgramSelector() { }
 
     // rule of three
     ProgramSelector(const ProgramSelector&) = delete;
@@ -24,7 +24,10 @@ namespace evolution
 
     Program* getProgram(const std::string& key);
 
-    void addProgram(const std::string& name);
+    void addProgram(const std::string& vertShader,
+                    const std::string& fragShader,
+                    const std::string& name,
+                    std::string* errorStr);
 
     bool isProgramValid(const std::string& key) const;
 

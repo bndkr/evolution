@@ -2,10 +2,7 @@
 
 namespace evolution
 {
-  ProgramSelector::ProgramSelector()
-  {
-    m_programs["default"] = std::make_unique<Program>();
-  }
+  ProgramSelector::ProgramSelector() { }
 
   ProgramSelector* ProgramSelector::getProgramSelector()
   {
@@ -22,9 +19,13 @@ namespace evolution
     return nullptr;
   }
 
-  void ProgramSelector::addProgram(const std::string& name)
+  void ProgramSelector::addProgram(const std::string& vertShader,
+                                   const std::string& fragShader,
+                                   const std::string& name,
+                                   std::string* errorStr)
   {
-    m_programs[name] = std::make_unique<Program>();
+    m_programs[name] =
+      std::make_unique<Program>(vertShader, fragShader, errorStr);
   }
 
   bool ProgramSelector::isProgramValid(const std::string& key) const
@@ -41,7 +42,7 @@ namespace evolution
     }
     return result;
   }
-  
+
   ProgramSelector* getProgramSelector()
   {
     return ProgramSelector::getProgramSelector();

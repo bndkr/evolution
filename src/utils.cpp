@@ -1,6 +1,7 @@
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "utils.hpp"
 
 void createImage()
 {
@@ -41,4 +42,3 @@ void createImage()
                GL_UNSIGNED_BYTE,
                imageBuffer);
 }
-
