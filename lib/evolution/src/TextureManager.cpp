@@ -39,6 +39,12 @@ namespace evolution
     }
   }
 
+  void TextureManager::addTexture(const std::string& name,
+                                  const boost::filesystem::path& filename)
+  {
+    addTexture(name, filename.string());
+  }
+
   Texture* TextureManager::getTexture(const std::string& name)
   {
     if (m_textures.count(name))

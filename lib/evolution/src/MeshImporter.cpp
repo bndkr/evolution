@@ -53,4 +53,9 @@ namespace evolution
     MeshBuffers buffers{posBuffer, colors, texCoords, indexBuffer};
     return Mesh(buffers, DynamicDraw);
   }
+  
+  Mesh fromFile(const boost::filesystem::path& filename)
+  {
+    return fromFile(filename.string());
+  }
 } // namespace evolution

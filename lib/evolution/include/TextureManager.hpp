@@ -1,12 +1,14 @@
 #ifndef EVOLUTION_TEXTURE_MANAGER
 #define EVOLUTION_TEXTURE_MANAGER
 
+#include "Texture.hpp"
+
+#include <boost/filesystem.hpp>
+
 #include <map>
 #include <string>
 #include <memory>
 #include <set>
-
-#include "Texture.hpp"
 
 namespace evolution
 {
@@ -17,6 +19,9 @@ namespace evolution
     ~TextureManager() { }
 
     void addTexture(const std::string& name, const std::string& filename);
+    void addTexture(const std::string& name,
+                    const boost::filesystem::path& filename);
+
     Texture* getTexture(const std::string& name);
 
     std::set<std::string> getAllTextures();
