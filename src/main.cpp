@@ -10,12 +10,14 @@
 #include "MeshManager.hpp"
 #include "MeshImporter.hpp"
 #include "TextureManager.hpp"
+#include "utils.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <boost/filesystem.hpp>
 
 namespace
 {
@@ -45,6 +47,13 @@ int main(int argc, char** argv)
 
   auto window = evolution::setup(/*enable3D=*/true, width, height);
 
+  auto exePath = boost::filesystem::path(argv[0]).parent_path();
+  boost::filesystem::current_path(exePath);
+
+  auto shaderDir = boost::filesystem::current_path().parent_path() / "shaders";
+  auto textureDir = boost::filesystem::current_path().parent_path() / "assets/example/textures";
+  auto meshDir = boost::filesystem::current_path().parent_path() / "assets/example/meshes";
+
   try
   {
     setupImgui(window);
@@ -52,10 +61,13 @@ int main(int argc, char** argv)
     auto pTextureManager = evolution::getTextureManager();
     auto pProgramSelector = evolution::getProgramSelector();
 
+    evolution::addProgramsFromDir(shaderDir.string());
+
     auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
+    // TODO: let this take a boost::filesystem path so this is easier
     pTextureManager->addTexture(
-      "deez nuts", "../assets/example/textures/pipes.png");
+      "deez nuts", (textureDir / boost::filesystem::path("pipes.png")).string());
 
     meshes["my cube"] =
       std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -64,8 +76,9 @@ int main(int argc, char** argv)
 
     meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
 
+    // TODO: let this take a boost::filesystem path so this is easier
     meshes["teapot"] = std::make_unique<evolution::Mesh>(
-      evolution::fromFile("C:/Users/bende/Documents/meshes/teapot.stl"));
+      evolution::fromFile((meshDir / boost::filesystem::path("sphere.obj")).string()));
 
     meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 

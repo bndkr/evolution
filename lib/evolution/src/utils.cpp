@@ -42,7 +42,11 @@ namespace evolution
       if (boost::filesystem::exists(item.path()) &&
           item.path().extension() == ".vert")
       {
-        std::string shaderName = item.path().filename().string();
+        std::string shaderFilename = item.path().filename().string();
+        // remove the extension from the filename to get the name of the shader
+        size_t lastindex = shaderFilename.find_last_of(".");
+        std::string shaderName = shaderFilename.substr(0, lastindex);
+
         if (detectedPrograms.count(shaderName))
         {
           detectedPrograms[shaderName].first =
@@ -57,7 +61,10 @@ namespace evolution
       if (boost::filesystem::exists(item.path()) &&
           item.path().extension() == ".frag")
       {
-        std::string shaderName = item.path().filename().string();
+        std::string shaderFilename = item.path().filename().string();
+        // remove the extension from the filename to get the name of the shader
+        size_t lastindex = shaderFilename.find_last_of(".");
+        std::string shaderName = shaderFilename.substr(0, lastindex);
         if (detectedPrograms.count(shaderName))
         {
           detectedPrograms[shaderName].second =
@@ -82,10 +89,12 @@ namespace evolution
           continue; // shader is already loaded
         }
         std::string errorMsg;
-        getProgramSelector()->addProgram(vertShader, fragShader, name, &errorMsg);
+        getProgramSelector()->addProgram(
+          vertShader, fragShader, name, &errorMsg);
         if (!errorMsg.empty())
         {
-          std::cout << "Error compiling shader " << name << ": " << errorMsg << std::endl;
+          std::cout << "Error compiling shader " << name << ": " << errorMsg
+                    << std::endl;
         }
       }
     }
