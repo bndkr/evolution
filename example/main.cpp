@@ -38,6 +38,16 @@ namespace
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 430");
   }
+
+  void cleanup(GLFWwindow* window)
+  {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
+    glfwTerminate();
+  }
 } // namespace
 
 int main(int argc, char** argv)
@@ -124,25 +134,12 @@ int main(int argc, char** argv)
 
       glfwSwapBuffers(window);
     }
-
-    // Cleanup
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(window);
-    glfwTerminate();
-
+    cleanup(window);
     return 0;
   }
   catch (const std::exception& e)
   {
-    ImGui_ImplOpenGL3_Shutdown();
-    ImGui_ImplGlfw_Shutdown();
-    ImGui::DestroyContext();
-
-    glfwDestroyWindow(window);
-    glfwTerminate();
+    cleanup(window);
 
     std::cout << "exception: " << e.what() << std::endl;
     std::cin.get();

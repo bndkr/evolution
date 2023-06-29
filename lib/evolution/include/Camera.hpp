@@ -28,6 +28,7 @@ namespace evolution
     PositionInfo m_position;
     uint32_t m_width;
     uint32_t m_height;
+    // TODO: add fov
   };
 } // namespace evolution
 
