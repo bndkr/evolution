@@ -22,21 +22,8 @@ namespace evolution
   void TextureManager::addTexture(const std::string& name,
                                   const std::string& filename)
   {
-    // keep track of the current texture slot so each
-    // texture has its own slot.
-    static int32_t currTextureSlot = 0;
-
-    if (currTextureSlot < m_maxTextureSlots)
-    {
-      m_textures[name] =
-        std::make_unique<Texture>(Texture(filename, currTextureSlot, name));
-      currTextureSlot++;
-    }
-    else // we've run out of texture slots...
-    {
-      throw std::runtime_error(
-        "not implemented yet. we've run out of texture slots.");
-    }
+    m_textures[name] =
+      std::make_unique<Texture>(Texture(filename, name));
   }
 
   void TextureManager::addTexture(const std::string& name,

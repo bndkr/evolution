@@ -164,7 +164,6 @@ namespace evolution
     if (!pTexture)
       return; // throw error?
     m_currTexture = pTexture->getName();
-
   }
 
   Float3* Mesh::getPostion()
@@ -240,8 +239,8 @@ namespace evolution
     {
       int texSlot[1] = {0};
       pProgram->addUniform(texSlot, 1, "un_texture");
-      glActiveTexture(GL_TEXTURE0);
       glBindTexture(GL_TEXTURE_2D, pTexture->getId());
+      glActiveTexture(GL_TEXTURE0);
     }
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
@@ -299,7 +298,16 @@ namespace evolution
       {0.f, 0.f, 1.f, 1.f},
     };
 
-    TextureCoordBuffer texture;
+    TextureCoordBuffer texture = {
+      {0.f, 0.f},
+      {1.f, 1.f},
+      {1.f, 0.f},
+      {0.f, 1.f},
+      {1.f, 1.f},
+      {0.f, 1.f},
+      {0.f, 0.f},
+      {1.f, 0.f},
+    };
 
     IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
                                4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,

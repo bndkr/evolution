@@ -12,9 +12,8 @@
 namespace evolution
 {
   Texture::Texture(const std::string& path,
-                   uint32_t slot,
                    const std::string& name)
-    : m_texId(0), m_slot(slot), m_name(name)
+    : m_texId(0), m_name(name)
   {
     int width, height, numChannels;
     stbi_set_flip_vertically_on_load(true);
@@ -23,7 +22,6 @@ namespace evolution
     {
       throw std::runtime_error("could not load file: " + path);
     }
-    glActiveTexture(GL_TEXTURE0 + m_slot);
     glGenTextures(1, &m_texId);
     glBindTexture(GL_TEXTURE_2D, m_texId);
 
@@ -43,10 +41,11 @@ namespace evolution
     glGenerateMipmap(GL_TEXTURE_2D);
 
     stbi_image_free(data);
+    glBindTexture(GL_TEXTURE_2D, 0);
   }
 
   Texture::Texture(Texture&& other)
-    : m_texId(other.m_texId), m_name(other.m_name), m_slot(other.m_slot)
+    : m_texId(other.m_texId), m_name(other.m_name)
   {
     other.m_texId = 0;
   }
@@ -68,7 +67,6 @@ namespace evolution
       release();
       std::swap(m_texId, other.m_texId);
       std::swap(m_name, other.m_name);
-      std::swap(m_slot, other.m_slot);
     }
     return other;
   }
