@@ -39,6 +39,7 @@ namespace evolution
     Float4 position;
     Float4 color;
     Float2 textureCoords;
+    Float4 normals;
   };
 
   Mesh::Mesh(const MeshBuffers& buffers, const BufferDataUsage usage)
@@ -98,7 +99,7 @@ namespace evolution
     for (size_t i = 0; i < m_numUniqueVertices; i++)
     {
       vertices.push_back(
-        Vertex{buffers.positions[i], colors[i], textureCoods[i]});
+        Vertex{buffers.positions[i], colors[i], textureCoods[i], buffers.normals[i]});
     }
 
     // create and bind the vertex array object
@@ -122,15 +123,19 @@ namespace evolution
                  indices.data(),
                  bufferDataUsageToGlType(usage));
 
-    glVertexAttribPointer(
-      0, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)0);
+    size_t vertexSize = 14 * sizeof(float);
+
+    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)0);
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(
-      1, 4, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(4 * sizeof(float)));
+      1, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)(4 * sizeof(float)));
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(
-      2, 2, GL_FLOAT, GL_FALSE, 10 * sizeof(float), (void*)(8 * sizeof(float)));
+      2, 2, GL_FLOAT, GL_FALSE, vertexSize, (void*)(8 * sizeof(float)));
     glEnableVertexAttribArray(2);
+    glVertexAttribPointer(
+      3, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)(10 * sizeof(float)));
+    glEnableVertexAttribArray(3);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -314,11 +319,23 @@ namespace evolution
 
     ColorBuffer colors = {{1.f, 1.f, 0.f, 1.f}};
 
+    // garbage normals.
+    NormalVectorBuffer normals = {
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f, 1.f},
+    };
+
     IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
                                4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,
                                1, 6, 5, 1, 2, 6, 7, 5, 6, 7, 4, 5};
 
-    MeshBuffers buffers{vertices, colors, texture, indexBuffer};
+    MeshBuffers buffers{vertices, colors, texture, normals, indexBuffer};
     return Mesh(buffers);
   }
   Mesh createTextureQuad()
@@ -333,8 +350,15 @@ namespace evolution
     TextureCoordBuffer texture = {
       {1.f, 1.f}, {1.f, 0.f}, {0.f, 0.f}, {0.f, 1.f}};
 
+    NormalVectorBuffer normals = {
+      {0.f, 0.f, 1.f, 1.f},
+      {0.f, 0.f, 1.f, 1.f},
+      {0.f, 0.f, 1.f, 1.f},
+      {0.f, 0.f, 1.f, 1.f},
+    };
+
     IndexBuffer indices = {0, 3, 1, 1, 3, 2};
-    MeshBuffers buffers{vertices, colors, texture, indices};
+    MeshBuffers buffers{vertices, colors, texture, normals, indices};
     return Mesh(buffers);
   }
 } // namespace evolution

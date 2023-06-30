@@ -81,7 +81,7 @@ void showMeshManagerWindow(
       if (!result.empty())
       {
         std::cout << result << std::endl;
-        exit(1);
+        exit(1); // TODO: fail more gracefully
       }
     }
 

@@ -46,7 +46,7 @@ namespace evolution
   typedef std::vector<Float4> PositionBuffer;
   typedef std::vector<Float4> ColorBuffer;
   typedef std::vector<Float2> TextureCoordBuffer;
-  // typedef std::vector<Float4> NormalVectorBuffer;
+  typedef std::vector<Float4> NormalVectorBuffer;
   typedef std::vector<uint32_t> IndexBuffer;
 
   struct MeshBuffers
@@ -54,6 +54,7 @@ namespace evolution
     PositionBuffer positions;
     ColorBuffer colors;
     TextureCoordBuffer texture;
+    NormalVectorBuffer normals;
     IndexBuffer indices;
   };
 
