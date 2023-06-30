@@ -26,8 +26,7 @@ namespace evolution
 
     void addProgram(const std::string& vertShader,
                     const std::string& fragShader,
-                    const std::string& name,
-                    std::string* errorStr);
+                    const std::string& name);
 
     bool isProgramValid(const std::string& key) const;
 

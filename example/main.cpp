@@ -6,10 +6,12 @@
 #include "ProgramSelector.hpp"
 #include "Setup.hpp"
 #include "Camera.hpp"
-#include "MeshManager.hpp"
 #include "MeshImporter.hpp"
 #include "TextureManager.hpp"
 #include "utils.hpp"
+
+#include "MeshManager.hpp"
+#include "CameraControls.hpp"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -75,18 +77,25 @@ int main(int argc, char** argv)
 
     auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
+    evolution::Float3 lightPos{0.f, 0.f, 0.f};
+    evolution::getProgramSelector()->getProgram("default")->addUniform(&lightPos.x, 3, "un_lightPos");
+
     meshes["my cube"] =
       std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
     meshes["my cube"]->useShader("default");
     meshes["my cube"]->movePostion(evolution::Float3{0.f, 0.f, -3.f});
+    meshes["my cube"]->assignTexture("pipes.png");
+
 
     meshes["teapot"] = std::make_unique<evolution::Mesh>(
       evolution::fromFile(meshDir / "sphere.obj"));
     meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
+    meshes["teapot"]->assignTexture("neon.png");
 
     meshes["quad"] =
       std::make_unique<evolution::Mesh>(evolution::createTextureQuad());
     meshes["quad"]->setPosition(evolution::Float3{0.f, 0.f, -3.f});
+    meshes["quad"]->assignTexture("fur.png");
 
     evolution::Camera camera(width, height);
 
@@ -105,6 +114,9 @@ int main(int argc, char** argv)
       static bool meshManagerOpen = true;
       showMeshManagerWindow(meshes, shaderDir.string(), meshManagerOpen);
 
+      static bool cameraControlOpen = true;
+      showCameraControlWindow(&cameraControlOpen, camera);
+
       ImGui::Render();
 
       int displayWidth, displayHeight;
@@ -116,8 +128,8 @@ int main(int argc, char** argv)
 
       for (const auto& mesh : meshes)
       {
-        if (mesh.first != "quad")
-          mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+        // if (mesh.first != "quad")
+        //   mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
         mesh.second->draw(camera);
       }
 

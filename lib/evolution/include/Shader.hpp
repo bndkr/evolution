@@ -10,8 +10,7 @@ namespace evolution
   {
   public:
     Program(const std::string& vertexShaderSrc,
-            const std::string& fragmentShaderSrc,
-            std::string* errMsg = nullptr);
+            const std::string& fragmentShaderSrc);
 
     ~Program();
 
@@ -28,16 +27,13 @@ namespace evolution
     void bind();
     void unbind();
 
-    void recompileFragShader(const std::string& fragmentShaderSrc,
-                             std::string* errMsg = nullptr);
-    void recompileVertexShader(const std::string& vertexShaderSrc,
-                               std::string* errMsg = nullptr);
+    void recompileFragShader(const std::string& fragmentShaderSrc);
+    void recompileVertexShader(const std::string& vertexShaderSrc);
 
     void recompileProgram(const std::string& fragmentShaderSrc,
-                          const std::string& vertexShaderSrc,
-                          std::string* errMsg);
+                          const std::string& vertexShaderSrc);
 
-    void recompileProgram(std::string* errMsg);
+    void recompileProgram();
 
     void addUniform(const float* vals, size_t num, std::string name);
     void addUniform(const uint32_t* vals, size_t num, std::string name);

@@ -32,6 +32,11 @@ namespace evolution
     return (float)m_width / (float)m_height;
   }
 
+  PositionInfo& Camera::getPositionInfo()
+  {
+    return m_position;
+  }
+
   Mat4 Camera::getEyeSpaceMatrix() const
   {
     auto mat = identityMatrix();

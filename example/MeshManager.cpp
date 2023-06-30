@@ -72,17 +72,14 @@ void showMeshManagerWindow(
 
     ImGui::SliderFloat3(
       "##position", &(meshes[selectedMesh]->getPostion()->x), -10.f, 10.f);
+    ImGui::SliderFloat3(
+      "##rotation", &(meshes[selectedMesh]->getRotation()->x), 0.f, 3.14);
 
     ImGui::SeparatorText("Available Shaders");
 
     if (ImGui::Button("Reload Shaders"))
     {
-      auto result = evolution::addProgramsFromDir(shaderPath);
-      if (!result.empty())
-      {
-        std::cout << result << std::endl;
-        exit(1); // TODO: fail more gracefully
-      }
+      evolution::addProgramsFromDir(shaderPath);
     }
 
     evolution::Mesh* pMesh = meshes[selectedMesh].get();

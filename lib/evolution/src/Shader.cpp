@@ -9,8 +9,7 @@
 namespace
 {
   uint32_t compileShader(uint32_t type,
-                         const std::string& src,
-                         std::string* errMsg)
+                         const std::string& src)
   {
     uint32_t id = glCreateShader(type);
     auto srcStr = src.c_str();
@@ -27,30 +26,30 @@ namespace
       glGetShaderInfoLog(id, length, &length, errorMsg.data());
       std::string errorMsgStr(errorMsg.data(), errorMsg.size());
       glDeleteShader(id);
-      if (errMsg)
-        *errMsg = errorMsgStr;
+      throw std::runtime_error(errorMsgStr);
       return 0;
     }
     return id;
   }
 
   uint32_t createProgram(const std::string& vertexStc,
-                         const std::string& fragSrc,
-                         std::string* errMsg)
+                         const std::string& fragSrc)
   {
-    if (errMsg)
-      errMsg->clear();
     uint32_t programId = glCreateProgram();
-    auto vertexShaderId = compileShader(GL_VERTEX_SHADER, vertexStc, errMsg);
-    auto fragmentShaderId = compileShader(GL_FRAGMENT_SHADER, fragSrc, errMsg);
-
-    if (errMsg && !errMsg->empty())
-      return 0;
+    auto vertexShaderId = compileShader(GL_VERTEX_SHADER, vertexStc);
+    auto fragmentShaderId = compileShader(GL_FRAGMENT_SHADER, fragSrc);
 
     glAttachShader(programId, vertexShaderId);
     glAttachShader(programId, fragmentShaderId);
     glLinkProgram(programId);
     glValidateProgram(programId);
+
+    GLint status;
+    glGetProgramiv(programId, GL_VALIDATE_STATUS, &status);
+    if (status != GL_TRUE)
+    {
+      throw std::runtime_error("did not link program");
+    }
 
     glDeleteShader(vertexShaderId);
     glDeleteShader(fragmentShaderId);
@@ -62,12 +61,11 @@ namespace
 namespace evolution
 {
   Program::Program(const std::string& vertexShaderSrc,
-                   const std::string& fragmentShaderSrc,
-                   std::string* errMsg)
+                   const std::string& fragmentShaderSrc)
     : m_vertexSrc(vertexShaderSrc), m_fragSrc(fragmentShaderSrc)
   {
 
-    m_programID = createProgram(vertexShaderSrc, fragmentShaderSrc, errMsg);
+    m_programID = createProgram(vertexShaderSrc, fragmentShaderSrc);
   }
 
   Program::~Program()
@@ -114,35 +112,32 @@ namespace evolution
     glUseProgram(0);
   }
 
-  void Program::recompileFragShader(const std::string& fragmentShaderSrc,
-                                    std::string* errMsg)
+  void Program::recompileFragShader(const std::string& fragmentShaderSrc)
   {
     glDeleteProgram(m_programID);
     m_fragSrc = fragmentShaderSrc;
-    m_programID = createProgram(m_vertexSrc, fragmentShaderSrc, errMsg);
+    m_programID = createProgram(m_vertexSrc, fragmentShaderSrc);
   }
 
-  void Program::recompileVertexShader(const std::string& vertexShaderSrc,
-                                      std::string* errMsg)
+  void Program::recompileVertexShader(const std::string& vertexShaderSrc)
   {
     glDeleteProgram(m_programID);
     m_vertexSrc = vertexShaderSrc;
-    m_programID = createProgram(vertexShaderSrc, m_fragSrc, errMsg);
+    m_programID = createProgram(vertexShaderSrc, m_fragSrc);
   }
 
   void Program::recompileProgram(const std::string& fragmentShaderSrc,
-                                 const std::string& vertexShaderSrc,
-                                 std::string* errMsg)
+                                 const std::string& vertexShaderSrc)
   {
     glDeleteProgram(m_programID);
     m_vertexSrc = vertexShaderSrc;
     m_fragSrc = fragmentShaderSrc;
-    m_programID = createProgram(vertexShaderSrc, fragmentShaderSrc, errMsg);
+    m_programID = createProgram(vertexShaderSrc, fragmentShaderSrc);
   }
 
-  void Program::recompileProgram(std::string* errMsg)
+  void Program::recompileProgram()
   {
-    recompileProgram(m_fragSrc, m_vertexSrc, errMsg);
+    recompileProgram(m_fragSrc, m_vertexSrc);
   }
 
   void Program::addUniform(const float* vals, size_t num, std::string name)

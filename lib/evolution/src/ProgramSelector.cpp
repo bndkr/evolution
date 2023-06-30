@@ -21,11 +21,10 @@ namespace evolution
 
   void ProgramSelector::addProgram(const std::string& vertShader,
                                    const std::string& fragShader,
-                                   const std::string& name,
-                                   std::string* errorStr)
+                                   const std::string& name)
   {
     m_programs[name] =
-      std::make_unique<Program>(vertShader, fragShader, errorStr);
+      std::make_unique<Program>(vertShader, fragShader);
   }
 
   bool ProgramSelector::isProgramValid(const std::string& key) const
