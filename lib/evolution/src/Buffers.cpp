@@ -36,10 +36,10 @@ namespace evolution
 {
   struct Vertex
   {
-    Float4 position;
+    Float3 position;
     Float4 color;
     Float2 textureCoords;
-    Float4 normals;
+    Float3 normals;
   };
 
   Mesh::Mesh(const MeshBuffers& buffers, const BufferDataUsage usage)
@@ -98,8 +98,8 @@ namespace evolution
     std::vector<Vertex> vertices;
     for (size_t i = 0; i < m_numUniqueVertices; i++)
     {
-      vertices.push_back(
-        Vertex{buffers.positions[i], colors[i], textureCoods[i], buffers.normals[i]});
+      vertices.push_back(Vertex{
+        buffers.positions[i], colors[i], textureCoods[i], buffers.normals[i]});
     }
 
     // create and bind the vertex array object
@@ -123,18 +123,22 @@ namespace evolution
                  indices.data(),
                  bufferDataUsageToGlType(usage));
 
-    size_t vertexSize = 14 * sizeof(float);
+    size_t vertexSize = 12 * sizeof(float);
 
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)0);
+    // position
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, (void*)0);
     glEnableVertexAttribArray(0);
+    // color
     glVertexAttribPointer(
-      1, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)(4 * sizeof(float)));
+      1, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    // texture coords
     glVertexAttribPointer(
-      2, 2, GL_FLOAT, GL_FALSE, vertexSize, (void*)(8 * sizeof(float)));
+      2, 2, GL_FLOAT, GL_FALSE, vertexSize, (void*)(7 * sizeof(float)));
     glEnableVertexAttribArray(2);
+    // normals
     glVertexAttribPointer(
-      3, 4, GL_FLOAT, GL_FALSE, vertexSize, (void*)(10 * sizeof(float)));
+      3, 3, GL_FLOAT, GL_FALSE, vertexSize, (void*)(9 * sizeof(float)));
     glEnableVertexAttribArray(3);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -296,14 +300,14 @@ namespace evolution
   Mesh createCubeMesh()
   {
     PositionBuffer vertices = {
-      {-.5f, -.5f, .5f, 1.f},
-      {-.5f, .5f, .5f, 1.f},
-      {.5f, .5f, .5f, 1.f},
-      {.5f, -.5f, .5f, 1.f},
-      {-.5f, -.5f, -.5f, 1.f},
-      {-.5f, .5f, -.5f, 1.f},
-      {.5f, .5f, -.5f, 1.f},
-      {.5f, -.5f, -.5f, 1.f},
+      {-.5f, -.5f, .5f},
+      {-.5f, .5f, .5f},
+      {.5f, .5f, .5f},
+      {.5f, -.5f, .5f},
+      {-.5f, -.5f, -.5f},
+      {-.5f, .5f, -.5f},
+      {.5f, .5f, -.5f},
+      {.5f, -.5f, -.5f},
     };
 
     TextureCoordBuffer texture = {
@@ -321,14 +325,14 @@ namespace evolution
 
     // garbage normals.
     NormalVectorBuffer normals = {
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
-      {0.f, 0.f, 0.f, 1.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
+      {0.f, 0.f, 0.f},
     };
 
     IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
@@ -340,10 +344,12 @@ namespace evolution
   }
   Mesh createTextureQuad()
   {
-    PositionBuffer vertices = {{1.f, 1.f, 0.f, 1.f},
-                               {1.f, -1.f, 0.f, 1.f},
-                               {-1.f, -1.f, 0.f, 1.f},
-                               {-1.f, 1.f, 0.f, 1.f}};
+    PositionBuffer vertices = {
+      {1.f, 1.f, 0.f},
+      {1.f, -1.f, 0.f},
+      {-1.f, -1.f, 0.f},
+      {-1.f, 1.f, 0.f},
+    };
 
     ColorBuffer colors = {{1.f, 1.f, 0.f, 1.f}};
 
@@ -351,10 +357,10 @@ namespace evolution
       {1.f, 1.f}, {1.f, 0.f}, {0.f, 0.f}, {0.f, 1.f}};
 
     NormalVectorBuffer normals = {
-      {0.f, 0.f, 1.f, 1.f},
-      {0.f, 0.f, 1.f, 1.f},
-      {0.f, 0.f, 1.f, 1.f},
-      {0.f, 0.f, 1.f, 1.f},
+      {0.f, 0.f, 1.f},
+      {0.f, 0.f, 1.f},
+      {0.f, 0.f, 1.f},
+      {0.f, 0.f, 1.f},
     };
 
     IndexBuffer indices = {0, 3, 1, 1, 3, 2};

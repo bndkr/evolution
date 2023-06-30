@@ -43,10 +43,10 @@ namespace evolution
     // add scale?
   };
 
-  typedef std::vector<Float4> PositionBuffer;
+  typedef std::vector<Float3> PositionBuffer;
   typedef std::vector<Float4> ColorBuffer;
   typedef std::vector<Float2> TextureCoordBuffer;
-  typedef std::vector<Float4> NormalVectorBuffer;
+  typedef std::vector<Float3> NormalVectorBuffer;
   typedef std::vector<uint32_t> IndexBuffer;
 
   struct MeshBuffers
@@ -106,8 +106,7 @@ namespace evolution
 
     Mat4 getWorldSpaceTransformation();
 
-    // draws the mesh using a program and a viewpoint. Assumes the program is
-    // already bound.
+    // draws the mesh using a viewpoint.
     void draw(const Camera& camera);
 
   private:

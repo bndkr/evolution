@@ -35,7 +35,7 @@ namespace
   }
 
   uint32_t createProgram(const std::string& vertexStc,
-                         const std::string fragSrc,
+                         const std::string& fragSrc,
                          std::string* errMsg)
   {
     if (errMsg)

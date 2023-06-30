@@ -77,14 +77,11 @@ int main(int argc, char** argv)
 
     meshes["my cube"] =
       std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
-
     meshes["my cube"]->useShader("default");
-
-    meshes["my cube"]->movePostion(evolution::Float3{0.0f, 0.0f, -3.0f});
+    meshes["my cube"]->movePostion(evolution::Float3{0.f, 0.f, -3.f});
 
     meshes["teapot"] = std::make_unique<evolution::Mesh>(
       evolution::fromFile(meshDir / "sphere.obj"));
-
     meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
 
     meshes["quad"] =

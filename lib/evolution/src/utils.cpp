@@ -84,7 +84,7 @@ namespace evolution
       std::string fragShader = item.second.second;
       if (!vertShader.empty() && !fragShader.empty())
       {
-        std::string errorMsg;
+        std::string errorMsg("");
         getProgramSelector()->addProgram(
           vertShader, fragShader, name, &errorMsg);
         if (!errorMsg.empty())
