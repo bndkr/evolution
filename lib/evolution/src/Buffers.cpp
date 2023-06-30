@@ -196,8 +196,7 @@ namespace evolution
   }
 
   Mesh::Mesh(Mesh&& other)
-    : m_colBufferId(other.m_colBufferId),
-      m_posBufferId(other.m_posBufferId),
+    : m_posBufferId(other.m_posBufferId),
       m_textureBufferId(other.m_textureBufferId),
       m_currProgram(other.m_currProgram),
       m_indexBufferId(other.m_indexBufferId),
@@ -206,7 +205,6 @@ namespace evolution
       m_numVertices(other.m_numVertices),
       m_position(other.m_position)
   {
-    other.m_colBufferId = 0;
     other.m_indexBufferId = 0;
     other.m_textureBufferId = 0;
     other.m_posBufferId = 0;
@@ -218,7 +216,6 @@ namespace evolution
     if (this != &other)
     {
       release();
-      std::swap(m_colBufferId, other.m_colBufferId);
       std::swap(m_posBufferId, other.m_posBufferId);
       std::swap(m_textureBufferId, other.m_textureBufferId);
       std::swap(m_currProgram, other.m_currProgram);
@@ -267,7 +264,6 @@ namespace evolution
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_posBufferId);
-    glDeleteBuffers(1, &m_colBufferId);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_indexBufferId);

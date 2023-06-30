@@ -112,7 +112,6 @@ namespace evolution
   private:
     // Keep track of OpenGL buffer IDs
     uint32_t m_posBufferId;
-    uint32_t m_colBufferId;
     uint32_t m_textureBufferId;
     uint32_t m_indexBufferId;
     uint32_t m_vaoId;
