@@ -84,10 +84,6 @@ namespace evolution
       std::string fragShader = item.second.second;
       if (!vertShader.empty() && !fragShader.empty())
       {
-        if (getProgramSelector()->isProgramValid(name))
-        {
-          continue; // shader is already loaded
-        }
         std::string errorMsg;
         getProgramSelector()->addProgram(
           vertShader, fragShader, name, &errorMsg);

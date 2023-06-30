@@ -1,8 +1,6 @@
 set(${exe_name}_srcs
   main.cpp
   utils.cpp
-  ShaderEditor.cpp
-  ShaderEditor.hpp
   MeshManager.cpp
   MeshManager.hpp
   )

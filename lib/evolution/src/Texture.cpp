@@ -56,9 +56,9 @@ namespace evolution
     return m_name;
   }
 
-  int32_t Texture::getSlotNum() const
+  uint32_t Texture::getId() const
   {
-    return m_slot;
+    return m_texId;
   }
 
   Texture& Texture::operator=(Texture&& other)

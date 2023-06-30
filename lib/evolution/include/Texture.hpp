@@ -26,7 +26,7 @@ namespace evolution
     // assignment operator
     Texture& operator=(Texture&& other);
 
-    int32_t getSlotNum() const;
+    uint32_t getId() const;
     std::string getName() const;
 
   private:

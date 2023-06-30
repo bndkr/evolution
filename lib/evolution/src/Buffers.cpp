@@ -238,9 +238,10 @@ namespace evolution
     auto pProgram = getProgramSelector()->getProgram(m_currProgram);
     if (pTexture)
     {
-      glActiveTexture(GL_TEXTURE0 + pTexture->getSlotNum());
-      int texSlot[1] = {pTexture->getSlotNum()};
+      int texSlot[1] = {0};
       pProgram->addUniform(texSlot, 1, "un_texture");
+      glActiveTexture(GL_TEXTURE0);
+      glBindTexture(GL_TEXTURE_2D, pTexture->getId());
     }
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
@@ -255,6 +256,7 @@ namespace evolution
     glDrawElements(GL_TRIANGLES, (GLsizei)m_numVertices, GL_UNSIGNED_INT, 0);
     pProgram->unbind();
     glBindVertexArray(0);
+    glBindTexture(GL_TEXTURE_2D, 0);
   }
 
   void Mesh::release()

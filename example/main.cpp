@@ -6,7 +6,6 @@
 #include "ProgramSelector.hpp"
 #include "Setup.hpp"
 #include "Camera.hpp"
-#include "ShaderEditor.hpp"
 #include "MeshManager.hpp"
 #include "MeshImporter.hpp"
 #include "TextureManager.hpp"
@@ -72,11 +71,9 @@ int main(int argc, char** argv)
     auto pProgramSelector = evolution::getProgramSelector();
 
     evolution::addProgramsFromDir(shaderDir.string());
+    evolution::addTexturesFromDir(textureDir.string());
 
     auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
-
-    pTextureManager->addTexture(
-      "deez nuts", textureDir / "pipes.png");
 
     meshes["my cube"] =
       std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -107,9 +104,6 @@ int main(int argc, char** argv)
       ImGui::NewFrame();
 
       ImGui::ShowDemoWindow();
-
-      static bool shaderEditorOpen = true;
-      showShaderEditor(&shaderEditorOpen);
 
       static bool meshManagerOpen = true;
       showMeshManagerWindow(meshes, meshManagerOpen);
