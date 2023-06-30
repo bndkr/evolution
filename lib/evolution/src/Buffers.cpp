@@ -240,7 +240,6 @@ namespace evolution
       int texSlot[1] = {0};
       pProgram->addUniform(texSlot, 1, "un_texture");
       glBindTexture(GL_TEXTURE_2D, pTexture->getId());
-      glActiveTexture(GL_TEXTURE0);
     }
     auto im = getWorldSpaceTransformation();
     pProgram->addUniform(&im.m[0], 16, "un_modelMatrix");
