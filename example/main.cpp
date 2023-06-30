@@ -106,7 +106,7 @@ int main(int argc, char** argv)
       ImGui::ShowDemoWindow();
 
       static bool meshManagerOpen = true;
-      showMeshManagerWindow(meshes, meshManagerOpen);
+      showMeshManagerWindow(meshes, shaderDir.string(), meshManagerOpen);
 
       ImGui::Render();
 

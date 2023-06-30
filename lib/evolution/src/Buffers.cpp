@@ -46,6 +46,7 @@ namespace evolution
   {
     auto indices = buffers.indices;
     auto textureCoods = buffers.texture;
+    auto colors = buffers.colors;
     if (indices.size() == 0) // no index buffer
     {
       // generate a default one
@@ -60,12 +61,30 @@ namespace evolution
       // generate a default one
       for (uint32_t i = 0; i < buffers.positions.size(); i++)
       {
-        textureCoods.push_back(Float2{0.f, 0.f});
+        textureCoods.push_back(Float2{});
+      }
+    }
+
+    if (colors.size() == 0) // no colors
+    {
+      for (uint32_t i = 0; i < buffers.positions.size(); i++)
+      {
+        colors.push_back(Float4{});
+      }
+    }
+
+    if (colors.size() == 1) // use this color for the entire object
+    {
+      auto solidColor = colors[0];
+      colors.clear();
+      for (uint32_t i = 0; i < buffers.positions.size(); i++)
+      {
+        colors.push_back(solidColor);
       }
     }
 
     // all vectors need to have the same number of elements
-    if (buffers.positions.size() != buffers.colors.size() ||
+    if (buffers.positions.size() != colors.size() ||
         textureCoods.size() != buffers.positions.size())
     {
       throw std::runtime_error(
@@ -79,7 +98,7 @@ namespace evolution
     for (size_t i = 0; i < m_numUniqueVertices; i++)
     {
       vertices.push_back(
-        Vertex{buffers.positions[i], buffers.colors[i], textureCoods[i]});
+        Vertex{buffers.positions[i], colors[i], textureCoods[i]});
     }
 
     // create and bind the vertex array object
@@ -282,17 +301,6 @@ namespace evolution
       {.5f, -.5f, -.5f, 1.f},
     };
 
-    ColorBuffer colors = {
-      {0.f, 0.f, 1.f, 1.f},
-      {1.f, 0.f, 0.f, 1.f},
-      {0.f, 1.f, 0.f, 1.f},
-      {1.f, 1.f, 0.f, 1.f},
-      {1.f, 1.f, 1.f, 1.f},
-      {1.f, 0.f, 0.f, 1.f},
-      {1.f, 0.f, 1.f, 1.f},
-      {0.f, 0.f, 1.f, 1.f},
-    };
-
     TextureCoordBuffer texture = {
       {0.f, 0.f},
       {1.f, 1.f},
@@ -303,6 +311,8 @@ namespace evolution
       {0.f, 0.f},
       {1.f, 0.f},
     };
+
+    ColorBuffer colors = {{1.f, 1.f, 0.f, 1.f}};
 
     IndexBuffer indexBuffer = {0, 2, 1, 0, 3, 2, 4, 3, 0, 4, 7, 3,
                                4, 1, 5, 4, 0, 1, 3, 6, 2, 3, 7, 6,
@@ -318,10 +328,7 @@ namespace evolution
                                {-1.f, -1.f, 0.f, 1.f},
                                {-1.f, 1.f, 0.f, 1.f}};
 
-    ColorBuffer colors = {{1.f, 0.f, 0.f, 1.f},
-                          {1.f, 1.f, 1.f, 1.f},
-                          {0.f, 1.f, 0.f, 1.f},
-                          {0.f, 0.f, 1.f, 1.f}};
+    ColorBuffer colors = {{1.f, 1.f, 0.f, 1.f}};
 
     TextureCoordBuffer texture = {
       {1.f, 1.f}, {1.f, 0.f}, {0.f, 0.f}, {0.f, 1.f}};

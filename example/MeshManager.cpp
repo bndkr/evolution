@@ -2,6 +2,7 @@
 #include "ProgramSelector.hpp"
 #include "TextureManager.hpp"
 #include "MeshImporter.hpp"
+#include "utils.hpp"
 
 #include "Buffers.hpp"
 
@@ -9,9 +10,10 @@
 #include <imgui/imgui_stdlib.h>
 
 #include <string>
+#include <iostream>
 
 void showMeshManagerWindow(
-  std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes, bool& open)
+  std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes, const std::string shaderPath,  bool& open)
 {
   ImGui::Begin("Mesh Manager", &open, ImGuiWindowFlags_AlwaysAutoResize);
 
@@ -72,6 +74,16 @@ void showMeshManagerWindow(
       "##position", &(meshes[selectedMesh]->getPostion()->x), -10.f, 10.f);
 
     ImGui::SeparatorText("Available Shaders");
+
+    if (ImGui::Button("Reload Shaders"))
+    {
+      auto result = evolution::addProgramsFromDir(shaderPath);
+      if (!result.empty())
+      {
+        std::cout << result << std::endl;
+        exit(1);
+      }
+    }
 
     evolution::Mesh* pMesh = meshes[selectedMesh].get();
     static std::string selectedShader = "default";

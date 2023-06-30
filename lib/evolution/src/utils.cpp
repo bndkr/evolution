@@ -34,7 +34,7 @@ namespace evolution
     }
   }
 
-  void addProgramsFromDir(const std::string& dir)
+  std::string addProgramsFromDir(const std::string& dir)
   {
     std::map<std::string, std::pair<std::string, std::string>> detectedPrograms;
     for (const auto& item : boost::filesystem::directory_iterator(dir))
@@ -89,11 +89,11 @@ namespace evolution
           vertShader, fragShader, name, &errorMsg);
         if (!errorMsg.empty())
         {
-          std::cout << "Error compiling shader " << name << ": " << errorMsg
-                    << std::endl;
+          return std::string("Error compiling shader ") + name + ": " + errorMsg;
         }
       }
     }
+    return "";
   }
 
 } // namespace evolution

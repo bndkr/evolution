@@ -34,7 +34,7 @@ namespace evolution
     {
       auto vertex = mesh->mVertices[i];
       posBuffer.push_back(Float4{vertex.x, vertex.y, vertex.z, 1.0f});
-      colors.push_back(Float4{1.0f, vertex.x, 1.0f, 1.0f});
+      colors.push_back(Float4{vertex.z, vertex.x, vertex.y, 1.0f});
 
       if (mesh->HasTextureCoords((uint32_t) 0))
       {

@@ -6,7 +6,7 @@
 namespace evolution
 {
   void addTexturesFromDir(const std::string& dir);
-  void addProgramsFromDir(const std::string& dir);
+  std::string addProgramsFromDir(const std::string& dir);
 } // namespace evolution
 
 #endif
