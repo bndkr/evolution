@@ -78,7 +78,7 @@ int main(int argc, char** argv)
     auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
 
     evolution::Float3 lightPos{0.f, 0.f, 0.f};
-    evolution::getProgramSelector()->getProgram("default")->addUniform(&lightPos.x, 3, "un_lightPos");
+    
 
     meshes["my cube"] =
       std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
@@ -125,6 +125,9 @@ int main(int argc, char** argv)
       glViewport(0, 0, displayWidth, displayHeight);
       camera.updateWindowSize(displayWidth, displayHeight);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+      evolution::getProgramSelector()->getProgram("default")->addUniform(
+        &meshes["my cube"]->getPostion()->x, 3, "un_lightPos");
 
       for (const auto& mesh : meshes)
       {

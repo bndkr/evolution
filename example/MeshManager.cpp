@@ -73,7 +73,7 @@ void showMeshManagerWindow(
     ImGui::SliderFloat3(
       "##position", &(meshes[selectedMesh]->getPostion()->x), -10.f, 10.f);
     ImGui::SliderFloat3(
-      "##rotation", &(meshes[selectedMesh]->getRotation()->x), 0.f, 3.14);
+      "##rotation", &(meshes[selectedMesh]->getRotation()->x), -3.14f, 3.14);
 
     ImGui::SeparatorText("Available Shaders");
 

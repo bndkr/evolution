@@ -8,20 +8,17 @@ layout(location=3) in vec3 normalIn;
 uniform mat4 un_modelMatrix;
 uniform mat4 un_eyeMatrix;
 uniform mat4 un_projMatrix;
-uniform vec3 un_lightPos;
-
 
 out vec4 colorPass;
 out vec2 texCoordsPass;
-out float lightIntensityPass;
+out vec3 normalPass;
+out vec3 vertexPosPass;
 
 void main(void)
 {
-  gl_Position = (un_projMatrix * un_eyeMatrix * un_modelMatrix) * vec4(positionIn.xyz, 1);
-
-  vec3 worldLocation = ((un_modelMatrix) * vec4(positionIn.xyz, 1)).xyz;
-  vec3 lightVec = normalize(un_lightPos - worldLocation);
-  lightIntensityPass = max(dot(lightVec, normalize(normalIn)), 0.0);
-  colorPass = vec4(worldLocation.xyz, 1);
+  gl_Position = (un_projMatrix * un_eyeMatrix * un_modelMatrix) * vec4(positionIn, 1);
+  colorPass = colorIn;
   texCoordsPass = texCoordsIn;
+  vertexPosPass = (un_modelMatrix * vec4(positionIn, 1)).xyz;
+  normalPass = (un_modelMatrix * vec4(normalIn, 0)).xyz;
 }
