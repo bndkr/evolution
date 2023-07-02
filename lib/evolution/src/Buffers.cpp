@@ -34,14 +34,6 @@ namespace
 
 namespace evolution
 {
-  struct Vertex
-  {
-    Float3 position;
-    Float4 color;
-    Float2 textureCoords;
-    Float3 normals;
-  };
-
   Mesh::Mesh(const MeshBuffers& buffers, const BufferDataUsage usage)
     : m_currProgram("default") // initialize m_posinfo
   {
@@ -145,6 +137,8 @@ namespace evolution
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
   }
+
+  Mesh::Mesh() { }
 
   void Mesh::useShader(const std::string& shader)
   {

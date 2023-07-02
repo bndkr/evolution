@@ -10,6 +10,7 @@ set(${lib_name}_srcs
   include/Texture.hpp
   include/TextureManager.hpp
   include/utils.hpp
+  include/Batch.hpp
   src/Buffers.cpp
   src/Projection.cpp
   src/Setup.cpp
@@ -21,6 +22,7 @@ set(${lib_name}_srcs
   src/Texture.cpp
   src/TextureManager.cpp
   src/utils.cpp
+  src/Batch.cpp
 )
 add_library(${lib_name} STATIC ${${lib_name}_srcs})
 source_group("" FILES ${${lib_name}_srcs})

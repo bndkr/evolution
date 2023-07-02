@@ -58,6 +58,14 @@ namespace evolution
     IndexBuffer indices;
   };
 
+  struct Vertex
+  {
+    Float3 position;
+    Float4 color;
+    Float2 textureCoords;
+    Float3 normals;
+  };
+
   // hint to OpenGL about how buffer data will be accessed
   enum BufferDataUsage
   {
@@ -71,13 +79,13 @@ namespace evolution
     DynamicCopy,
   };
 
-  // for now: force location types to be floats. is there rationale in
-  // supporting other types?
   class Mesh
   {
   public:
     Mesh(const MeshBuffers& buffers,
          const BufferDataUsage usage = BufferDataUsage::DynamicDraw);
+
+    Mesh();
 
     ~Mesh();
 
@@ -109,18 +117,18 @@ namespace evolution
     // draws the mesh using a viewpoint.
     void draw(const Camera& camera);
 
-  private:
+  protected:
     // Keep track of OpenGL buffer IDs
-    uint32_t m_posBufferId;
-    uint32_t m_textureBufferId;
-    uint32_t m_indexBufferId;
-    uint32_t m_vaoId;
+    uint32_t m_posBufferId = 0;
+    uint32_t m_textureBufferId = 0;
+    uint32_t m_indexBufferId = 0;
+    uint32_t m_vaoId = 0;
 
-    std::string m_currProgram;
-    std::string m_currTexture;
+    std::string m_currProgram = "";
+    std::string m_currTexture = "";
 
-    size_t m_numUniqueVertices;
-    size_t m_numVertices;
+    size_t m_numUniqueVertices = 0;
+    size_t m_numVertices = 0;
 
     PositionInfo m_position;
 
