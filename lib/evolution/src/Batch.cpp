@@ -58,14 +58,33 @@ namespace evolution
         "invalid mesh setup, buffer count not consistent");
     }
 
-    m_numUniqueVertices = buffers.positions.size();
-    m_numVertices = indices.size();
+    m_numUniqueVertices = buffers.positions.size() * objects.size();
+    m_numVertices = indices.size() * objects.size();
 
     std::vector<Vertex> vertices;
-    for (size_t i = 0; i < m_numUniqueVertices; i++)
+    IndexBuffer batchedIndices;
+
+    // TODO: make this just another Mesh constructor. this is too much code duplication.
+    for (size_t objectIdx = 0; objectIdx < objects.size(); objectIdx++)
     {
-      vertices.push_back(Vertex{
-        buffers.positions[i], colors[i], textureCoods[i], buffers.normals[i]});
+      for (size_t i = 0; i < indices.size(); i++)
+      {
+        batchedIndices.push_back(indices[i] + (objectIdx * indices.size()));
+      }
+
+
+      for (size_t i = 0; i < buffers.positions.size(); i++)
+      {
+        Float3 newPosition{buffers.positions[i].x + objects[objectIdx].position.x,
+                           buffers.positions[i].y + objects[objectIdx].position.y,
+                           buffers.positions[i].z + objects[objectIdx].position.z};
+        // TODO: support rotation
+
+        vertices.push_back(Vertex{newPosition,
+                                  colors[i],
+                                  textureCoods[i],
+                                  buffers.normals[i]});
+      }
     }
 
     // create and bind the vertex array object
