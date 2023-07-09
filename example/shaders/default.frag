@@ -17,5 +17,8 @@ void main(void)
   vec3 lightDir = normalize(un_lightPos - vertexPosPass);
   float diffuseIntensity = max(dot(normalize(normalPass), lightDir), 0);
 
-  colorOut = vec4(texture(un_texture, texCoordsPass).xyz * diffuseIntensity, 1);
+  colorOut = vec4(texture(un_texture, texCoordsPass).xyz, 1);
+
+  // diffuse lighting
+  // colorOut = vec4(texture(un_texture, texCoordsPass).xyz * diffuseIntensity, 1);
 }

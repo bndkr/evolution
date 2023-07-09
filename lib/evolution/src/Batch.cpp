@@ -69,7 +69,8 @@ namespace evolution
     {
       for (size_t i = 0; i < indices.size(); i++)
       {
-        batchedIndices.push_back(indices[i] + (objectIdx * indices.size()));
+        batchedIndices.push_back(indices[i] +
+                                 (objectIdx * buffers.positions.size()));
       }
 
 
@@ -104,8 +105,8 @@ namespace evolution
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBufferId);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 sizeof(uint32_t) * indices.size(),
-                 indices.data(),
+                 sizeof(uint32_t) * batchedIndices.size(),
+                 batchedIndices.data(),
                  GL_DYNAMIC_DRAW);
 
     size_t vertexSize = 12 * sizeof(float);
