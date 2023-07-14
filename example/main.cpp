@@ -125,11 +125,9 @@ int main(int argc, char** argv)
 
     auto buffers = getQuadBuffers();
     auto batch1 = evolution::BatchObject{"object",
-                                         0,
                                          evolution::Float3{0.f, 0.f, 0.f},
                                          evolution::Float3{0.f, 0.f, 0.f}};
     auto batch2 = evolution::BatchObject{"object2",
-                                         1,
                                          evolution::Float3{0.f, 3.f, 0.f},
                                          evolution::Float3{0.f, 0.f, 0.f}};
 

@@ -10,10 +10,11 @@ namespace evolution
 {
   Batch::Batch(const MeshBuffers& buffers,
                const std::vector<BatchObject>& objects)
+    : m_buffers(buffers), m_objects(objects)
   {
     auto indices = buffers.indices;
-    auto textureCoods = buffers.texture;
     auto colors = buffers.colors;
+    auto textureCoods = buffers.texture;
     if (indices.size() == 0) // no index buffer
     {
       // generate a default one
@@ -60,11 +61,11 @@ namespace evolution
 
     m_numUniqueVertices = buffers.positions.size() * objects.size();
     m_numVertices = indices.size() * objects.size();
-
+    size_t vertexSize = 12 * sizeof(float);
+    m_objectSize = buffers.positions.size() * vertexSize;
     std::vector<Vertex> vertices;
     IndexBuffer batchedIndices;
 
-    // TODO: make this just another Mesh constructor. this is too much code duplication.
     for (size_t objectIdx = 0; objectIdx < objects.size(); objectIdx++)
     {
       for (size_t i = 0; i < indices.size(); i++)
@@ -73,20 +74,21 @@ namespace evolution
                                  (objectIdx * buffers.positions.size()));
       }
 
-
       for (size_t i = 0; i < buffers.positions.size(); i++)
       {
-        Float3 newPosition{buffers.positions[i].x + objects[objectIdx].position.x,
-                           buffers.positions[i].y + objects[objectIdx].position.y,
-                           buffers.positions[i].z + objects[objectIdx].position.z};
+        Float3 newPosition{
+          buffers.positions[i].x + objects[objectIdx].position.x,
+          buffers.positions[i].y + objects[objectIdx].position.y,
+          buffers.positions[i].z + objects[objectIdx].position.z};
         // TODO: support rotation
 
-        vertices.push_back(Vertex{newPosition,
-                                  colors[i],
-                                  textureCoods[i],
-                                  buffers.normals[i]});
+        vertices.push_back(
+          Vertex{newPosition, colors[i], textureCoods[i], buffers.normals[i]});
       }
     }
+
+    m_data.resize(m_objectSize * objects.size());
+    std::memcpy(m_data.data(), vertices.data(), m_objectSize * objects.size());
 
     // create and bind the vertex array object
     glGenVertexArrays(1, &m_vaoId);
@@ -109,8 +111,6 @@ namespace evolution
                  batchedIndices.data(),
                  GL_DYNAMIC_DRAW);
 
-    size_t vertexSize = 12 * sizeof(float);
-
     // position
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, vertexSize, (void*)0);
     glEnableVertexAttribArray(0);
@@ -130,5 +130,22 @@ namespace evolution
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+  }
+
+  void Batch::moveObject(const std::string& key, const Float3& delta)
+  {
+    // get the index of the object
+    int32_t objectIdx = -1;
+    uint32_t i = 0;
+    for (const auto& item : m_objects)
+    {
+      if (item.name == key)
+        objectIdx = i;
+      i++;
+    }
+
+    if (objectIdx == -1)
+      throw std::runtime_error("batched object with key (" + key +
+                               ") does not exist.");
   }
 } // namespace evolution

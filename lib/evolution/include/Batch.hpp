@@ -10,7 +10,6 @@ namespace evolution
   struct BatchObject
   {
     std::string name;
-    uint32_t index;
     Float3 position;
     Float3 rotation;
     // color, texture...
@@ -29,6 +28,12 @@ namespace evolution
 
     void rotateObject(const std::string& key, const Float3& delta);
     void setObjectRotation(const std::string& key, const Float3& newRotation);
+
+  private:
+    MeshBuffers m_buffers;
+    size_t m_objectSize;
+    std::vector<BatchObject> m_objects;
+    std::vector<float> m_data;
   };
 } // namespace evolution
 
