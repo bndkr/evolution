@@ -30,7 +30,7 @@ namespace evolution
     void setObjectRotation(const std::string& key, const Float3& newRotation);
 
   private:
-    MeshBuffers m_buffers;
+    MeshBuffers m_buffers; // redundant
     size_t m_objectSize;
     std::vector<BatchObject> m_objects;
     std::vector<float> m_data;

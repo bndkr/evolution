@@ -147,5 +147,13 @@ namespace evolution
     if (objectIdx == -1)
       throw std::runtime_error("batched object with key (" + key +
                                ") does not exist.");
+
+    size_t objectOffset = m_objectSize * objectIdx;
+    for (size_t i = 0; i < m_numUniqueVertices; i++)
+    {
+      m_data[objectOffset + (i * sizeof(Vertex))] += delta.x;
+      m_data[objectOffset + (i * sizeof(Vertex)) + 1] += delta.x;
+      m_data[objectOffset + (i * sizeof(Vertex)) + 2] += delta.x;
+    }
   }
 } // namespace evolution
