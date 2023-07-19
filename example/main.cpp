@@ -131,11 +131,12 @@ int main(int argc, char** argv)
                                          evolution::Float3{0.f, 3.f, 0.f},
                                          evolution::Float3{0.f, 0.f, 0.f}};
 
-    meshes["batch"] = std::make_unique<evolution::Batch>(
+    auto pBatch = std::make_unique<evolution::Batch>(
       buffers, std::vector<evolution::BatchObject>{batch1, batch2});
-    meshes["batch"]->useShader("default");
-    meshes["batch"]->assignTexture("sand.png");
+    pBatch->useShader("default");
+    pBatch->assignTexture("sand.png");
 
+    pBatch->moveObject("object", evolution::Float3{1.f, 0.f, 0.f});
     evolution::Camera camera(width, height);
 
     // Main loop
@@ -173,6 +174,7 @@ int main(int argc, char** argv)
         // if (mesh.first != "quad")
         //   mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
         mesh.second->draw(camera);
+        pBatch->draw(camera);
       }
 
       ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

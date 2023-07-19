@@ -6,6 +6,9 @@
 #include <GL/glew.h>
 #include <stdexcept>
 
+// temp
+#include <iostream>
+
 namespace evolution
 {
   Batch::Batch(const MeshBuffers& buffers,
@@ -144,6 +147,8 @@ namespace evolution
       i++;
     }
 
+    std::cout << "object:" << objectIdx << std::endl;
+
     if (objectIdx == -1)
       throw std::runtime_error("batched object with key (" + key +
                                ") does not exist.");
@@ -155,5 +160,14 @@ namespace evolution
       m_data[objectOffset + (i * sizeof(Vertex)) + 1] += delta.x;
       m_data[objectOffset + (i * sizeof(Vertex)) + 2] += delta.x;
     }
+
+    // create and bind the vertex array object
+    glBindVertexArray(m_vaoId);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_posBufferId);
+    glBufferData(GL_ARRAY_BUFFER,
+                 sizeof(Vertex) * m_numUniqueVertices,
+                 m_data.data(),
+                 GL_DYNAMIC_DRAW);
   }
 } // namespace evolution
