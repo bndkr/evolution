@@ -30,12 +30,11 @@ set(GLFW3_INCLUDE_DIR "${GLFW3_ROOT}/include" CACHE PATH "path of GLFW3 include 
 set(GLFW3_LIB "${GLFW3_ROOT}/lib/glfw3.lib" CACHE PATH "path of GLFW3 lib")
 set(ASSIMP_DIR "C:/Program Files (x86)/Assimp")
 set(ASSIMP_INCLUDE_DIR "${ASSIMP_DIR}/include")
-# we'll link the debug libs for now. make sure to switch this when performance is relevant.
 set(ASSIMP_LIB
-#  "${ASSIMP_DIR}/lib/assimp-vc143-mt.lib"
-  "${ASSIMP_DIR}/lib/assimp-vc143-mtd.lib"
-#  "${ASSIMP_DIR}/lib/zlibstatic.lib"
-  "${ASSIMP_DIR}/lib/zlibstaticd.lib"
+ "${ASSIMP_DIR}/lib/assimp-vc143-mt.lib"
+  # "${ASSIMP_DIR}/lib/assimp-vc143-mtd.lib"
+ "${ASSIMP_DIR}/lib/zlibstatic.lib"
+  # "${ASSIMP_DIR}/lib/zlibstaticd.lib"
 )
 target_include_directories(
   ${lib_name}
