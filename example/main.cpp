@@ -50,31 +50,6 @@ namespace
     glfwDestroyWindow(window);
     glfwTerminate();
   }
-
-  evolution::MeshBuffers getQuadBuffers()
-  {
-    evolution::PositionBuffer vertices = {
-      {1.f, 1.f, 0.f},
-      {1.f, -1.f, 0.f},
-      {-1.f, -1.f, 0.f},
-      {-1.f, 1.f, 0.f},
-    };
-
-    evolution::ColorBuffer colors = {{1.f, 1.f, 0.f, 1.f}};
-
-    evolution::TextureCoordBuffer texture = {
-      {1.f, 1.f}, {1.f, 0.f}, {0.f, 0.f}, {0.f, 1.f}};
-
-    evolution::NormalVectorBuffer normals = {
-      {0.f, 0.f, 1.f},
-      {0.f, 0.f, 1.f},
-      {0.f, 0.f, 1.f},
-      {0.f, 0.f, 1.f},
-    };
-
-    evolution::IndexBuffer indices = {0, 3, 1, 1, 3, 2};
-    return evolution::MeshBuffers{vertices, colors, texture, normals, indices};
-  }
 } // namespace
 
 int main(int argc, char** argv)
@@ -123,7 +98,7 @@ int main(int argc, char** argv)
     meshes["quad"]->setPosition(evolution::Float3{0.f, 0.f, -3.f});
     meshes["quad"]->assignTexture("fur.png");
 
-    auto buffers = getQuadBuffers();
+    auto buffers = evolution::getQuadBuffers();
     auto batch1 = evolution::BatchObject{"object",
                                          evolution::Float3{0.f, 0.f, 0.f},
                                          evolution::Float3{0.f, 0.f, 0.f}};

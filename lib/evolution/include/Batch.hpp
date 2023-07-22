@@ -15,7 +15,6 @@ namespace evolution
     // color, texture...
   };
 
-
   class Batch : public Mesh
   {
   public:
@@ -33,7 +32,7 @@ namespace evolution
     MeshBuffers m_buffers; // redundant
     size_t m_objectSize;
     std::vector<BatchObject> m_objects;
-    std::vector<float> m_data;
+    std::vector<Vertex> m_data;
   };
 } // namespace evolution
 

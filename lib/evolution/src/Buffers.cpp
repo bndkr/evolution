@@ -361,4 +361,29 @@ namespace evolution
     MeshBuffers buffers{vertices, colors, texture, normals, indices};
     return Mesh(buffers);
   }
+
+  evolution::MeshBuffers getQuadBuffers()
+  {
+    evolution::PositionBuffer vertices = {
+      {1.f, 1.f, 0.f},
+      {1.f, -1.f, 0.f},
+      {-1.f, -1.f, 0.f},
+      {-1.f, 1.f, 0.f},
+    };
+
+    evolution::ColorBuffer colors = {{1.f, 1.f, 0.f, 1.f}};
+
+    evolution::TextureCoordBuffer texture = {
+      {1.f, 1.f}, {1.f, 0.f}, {0.f, 0.f}, {0.f, 1.f}};
+
+    evolution::NormalVectorBuffer normals = {
+      {0.f, 0.f, 1.f},
+      {0.f, 0.f, 1.f},
+      {0.f, 0.f, 1.f},
+      {0.f, 0.f, 1.f},
+    };
+
+    evolution::IndexBuffer indices = {0, 3, 1, 1, 3, 2};
+    return evolution::MeshBuffers{vertices, colors, texture, normals, indices};
+  }
 } // namespace evolution

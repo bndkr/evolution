@@ -140,6 +140,8 @@ namespace evolution
 
   Mesh createTextureQuad();
 
+  MeshBuffers getQuadBuffers();
+
 } // namespace evolution
 
 #endif

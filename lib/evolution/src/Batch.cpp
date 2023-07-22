@@ -11,6 +11,7 @@
 
 namespace evolution
 {
+
   Batch::Batch(const MeshBuffers& buffers,
                const std::vector<BatchObject>& objects)
     : m_buffers(buffers), m_objects(objects)
@@ -90,8 +91,8 @@ namespace evolution
       }
     }
 
-    m_data.resize(m_objectSize * objects.size());
-    std::memcpy(m_data.data(), vertices.data(), m_objectSize * objects.size());
+    m_data.resize(m_numUniqueVertices);
+    std::memcpy(m_data.data(), vertices.data(), vertices.size() * sizeof(Vertex));
 
     // create and bind the vertex array object
     glGenVertexArrays(1, &m_vaoId);
@@ -153,12 +154,14 @@ namespace evolution
       throw std::runtime_error("batched object with key (" + key +
                                ") does not exist.");
 
-    size_t objectOffset = m_objectSize * objectIdx;
-    for (size_t i = 0; i < m_numUniqueVertices; i++)
+    size_t numVerticesPerObject = m_numUniqueVertices / m_objects.size();
+
+    size_t objectOffset = numVerticesPerObject * objectIdx;
+    for (size_t i = 0; i < numVerticesPerObject; i++)
     {
-      m_data[objectOffset + (i * sizeof(Vertex))] += delta.x;
-      m_data[objectOffset + (i * sizeof(Vertex)) + 1] += delta.x;
-      m_data[objectOffset + (i * sizeof(Vertex)) + 2] += delta.x;
+      m_data[objectOffset + i].position.x += delta.x;
+      m_data[objectOffset + i].position.y += delta.y;
+      m_data[objectOffset + i].position.z += delta.z;
     }
 
     // create and bind the vertex array object
