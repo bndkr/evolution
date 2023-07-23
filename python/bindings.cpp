@@ -1,16 +1,34 @@
 #define BOOST_PYTHON_STATIC_LIB
 #include <boost/python.hpp>
-#include <iostream>
 
-class Hello
+#include "Setup.hpp"
+
+// #define GLEW_STATIC
+// #include <GL/glew.h>
+// #include <GLFW/glfw3.h>
+
+namespace
 {
-public:
-  Hello() { }
-  void sayHi() { std::cout << "hi." << std::endl; }
-};
+  struct pyGlfwWindow
+  {
+    GLFWwindow* pWindow;
+  };
 
+  // helper function to return a wrapped glfwWindow object
+  pyGlfwWindow pySetup(const bool enable3DMode,
+                       unsigned int width,
+                       unsigned int height)
+  {
+    return pyGlfwWindow{evolution::setup(enable3DMode, width, height)};
+  }
 
-BOOST_PYTHON_MODULE(pyEvolution) {
+} // namespace
+
+BOOST_PYTHON_MODULE(pyEvolution)
+{
   using namespace boost::python;
-  class_<Hello>("Hello", init<>()).def("sayHi", &Hello::sayHi);
+
+  class_<pyGlfwWindow>("Window", no_init);
+
+  def("_setup", &pySetup);
 }
