@@ -3,10 +3,6 @@
 
 #include "Setup.hpp"
 
-// #define GLEW_STATIC
-// #include <GL/glew.h>
-// #include <GLFW/glfw3.h>
-
 namespace
 {
   struct pyGlfwWindow
