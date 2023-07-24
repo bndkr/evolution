@@ -1,5 +1,5 @@
 
-import _pyEvolution
+from . import _pyEvolution
 
 def setup(enable_3d : bool, width : int, height : int):
     '''

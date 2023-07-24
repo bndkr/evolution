@@ -24,7 +24,7 @@ namespace
 
 } // namespace
 
-BOOST_PYTHON_MODULE(pyEvolution)
+BOOST_PYTHON_MODULE(_pyEvolution)
 {
   using namespace boost::python;
 
