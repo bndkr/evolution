@@ -1,6 +1,10 @@
 
 from . import _pyEvolution
 
+Float2 = _pyEvolution.Float2
+Float3 = _pyEvolution.Float3
+Float4 = _pyEvolution.Float4
+
 def setup(enable_3d : bool, width : int, height : int):
     '''
     :param enable_3d: (bool) setup the engine for 3D rendering
@@ -20,4 +24,12 @@ def add_textures_from_dir(dir : str) -> None:
     '''
     _pyEvolution.add_textures_from_dir(dir)
 
-Float3 = _pyEvolution.Float3
+def create_cube_mesh() -> _pyEvolution.Mesh:
+    '''
+    '''
+    return _pyEvolution.create_cube_mesh()
+
+def create_texture_quad() -> _pyEvolution.Mesh:
+    '''
+    '''
+    return _pyEvolution.create_texture_quad()
