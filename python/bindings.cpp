@@ -1,11 +1,14 @@
 #define BOOST_PYTHON_STATIC_LIB
 #include <boost/python.hpp>
 
+#include "Buffers.hpp"
+#include "ProgramSelector.hpp"
 #include "Setup.hpp"
-
-// #define GLEW_STATIC
-// #include <GL/glew.h>
-// #include <GLFW/glfw3.h>
+#include "Camera.hpp"
+#include "MeshImporter.hpp"
+#include "TextureManager.hpp"
+#include "utils.hpp"
+#include "Batch.hpp"
 
 namespace
 {
@@ -29,6 +32,15 @@ BOOST_PYTHON_MODULE(_pyEvolution)
   using namespace boost::python;
 
   class_<pyGlfwWindow>("Window", no_init);
+  class_<evolution::Float2>("Float2");
+  class_<evolution::Float3>("Float3");
+  class_<evolution::Float4>("Float4");
+  // class_<std::unique_ptr<evolution::Mesh>>("Mesh");
 
-  def("_setup", &pySetup);
+  def("setup", &pySetup);
+
+  def("add_programs_from_dir", &evolution::addProgramsFromDir);
+  def("add_textures_from_dir", &evolution::addTexturesFromDir);
+
+  
 }

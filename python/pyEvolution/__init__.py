@@ -8,5 +8,16 @@ def setup(enable_3d : bool, width : int, height : int):
     :param height: (uint) height of the window in pixels
     :returns: a glfw window object
     '''
-    _pyEvolution._setup(enable_3d, width, height)
+    _pyEvolution.setup(enable_3d, width, height)
 
+def add_programs_from_dir(dir : str) -> None:
+    '''
+    '''
+    _pyEvolution.add_programs_from_dir(dir)
+
+def add_textures_from_dir(dir : str) -> None:
+    '''
+    '''
+    _pyEvolution.add_textures_from_dir(dir)
+
+Float3 = _pyEvolution.Float3
