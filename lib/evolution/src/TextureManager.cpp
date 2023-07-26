@@ -23,7 +23,7 @@ namespace evolution
                                   const std::string& filename)
   {
     m_textures[name] =
-      std::make_unique<Texture>(Texture(filename, name));
+      std::make_shared<Texture>(Texture(filename, name));
   }
 
   void TextureManager::addTexture(const std::string& name,

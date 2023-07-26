@@ -33,7 +33,7 @@ namespace evolution
   private:
     TextureManager();
 
-    std::map<std::string, std::unique_ptr<Texture>> m_textures;
+    std::map<std::string, std::shared_ptr<Texture>> m_textures;
 
     int32_t m_maxTextureSlots;
   };

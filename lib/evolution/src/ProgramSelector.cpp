@@ -24,7 +24,7 @@ namespace evolution
                                    const std::string& name)
   {
     m_programs[name] =
-      std::make_unique<Program>(vertShader, fragShader);
+      std::make_shared<Program>(vertShader, fragShader);
   }
 
   bool ProgramSelector::isProgramValid(const std::string& key) const

@@ -33,7 +33,7 @@ namespace evolution
     std::set<std::string> getAllValidProgramKeys() const;
 
   private:
-    std::map<std::string, std::unique_ptr<Program>> m_programs;
+    std::map<std::string, std::shared_ptr<Program>> m_programs;
     ProgramSelector();
   };
 

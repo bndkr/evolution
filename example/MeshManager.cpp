@@ -13,7 +13,7 @@
 #include <iostream>
 
 void showMeshManagerWindow(
-  std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes, const std::string shaderPath,  bool& open)
+  std::map<std::string, std::shared_ptr<evolution::Mesh>>& meshes, const std::string shaderPath,  bool& open)
 {
   ImGui::Begin("Mesh Manager", &open, ImGuiWindowFlags_AlwaysAutoResize);
 
@@ -39,7 +39,7 @@ void showMeshManagerWindow(
         try
         {
           meshes[newName] =
-            std::make_unique<evolution::Mesh>(evolution::fromFile(filePath));
+            std::make_shared<evolution::Mesh>(evolution::fromFile(filePath));
           errMsg = "";
           ImGui::CloseCurrentPopup();
         }

@@ -78,23 +78,23 @@ int main(int argc, char** argv)
     evolution::addProgramsFromDir(shaderDir.string());
     evolution::addTexturesFromDir(textureDir.string());
 
-    auto meshes = std::map<std::string, std::unique_ptr<evolution::Mesh>>();
+    auto meshes = std::map<std::string, std::shared_ptr<evolution::Mesh>>();
 
     evolution::Float3 lightPos{0.f, 0.f, 0.f};
 
     meshes["my cube"] =
-      std::make_unique<evolution::Mesh>(evolution::createCubeMesh());
+      std::make_shared<evolution::Mesh>(evolution::createCubeMesh());
     meshes["my cube"]->useShader("default");
     meshes["my cube"]->movePostion(evolution::Float3{0.f, 0.f, -3.f});
     meshes["my cube"]->assignTexture("pipes.png");
 
-    meshes["teapot"] = std::make_unique<evolution::Mesh>(
+    meshes["teapot"] = std::make_shared<evolution::Mesh>(
       evolution::fromFile(meshDir / "sphere.obj"));
     meshes["teapot"]->setPosition(evolution::Float3{0.f, 0.f, -15.f});
     meshes["teapot"]->assignTexture("neon.png");
 
     meshes["quad"] =
-      std::make_unique<evolution::Mesh>(evolution::createTextureQuad());
+      std::make_shared<evolution::Mesh>(evolution::createTextureQuad());
     meshes["quad"]->setPosition(evolution::Float3{0.f, 0.f, -3.f});
     meshes["quad"]->assignTexture("fur.png");
 
@@ -106,7 +106,7 @@ int main(int argc, char** argv)
                                          evolution::Float3{0.f, 3.f, 0.f},
                                          evolution::Float3{0.f, 0.f, 0.f}};
 
-    auto pBatch = std::make_unique<evolution::Batch>(
+    auto pBatch = std::make_shared<evolution::Batch>(
       buffers, std::vector<evolution::BatchObject>{batch1, batch2});
     pBatch->useShader("default");
     pBatch->assignTexture("sand.png");

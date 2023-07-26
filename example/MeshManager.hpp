@@ -12,7 +12,7 @@ namespace evolution
 } // namespace evolution
 
 void showMeshManagerWindow(
-  std::map<std::string, std::unique_ptr<evolution::Mesh>>& meshes,
+  std::map<std::string, std::shared_ptr<evolution::Mesh>>& meshes,
   const std::string shaderPath,
   bool& open);
 

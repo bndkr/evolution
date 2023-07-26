@@ -35,7 +35,7 @@ BOOST_PYTHON_MODULE(_pyEvolution)
   class_<evolution::Float2>("Float2");
   class_<evolution::Float3>("Float3");
   class_<evolution::Float4>("Float4");
-  // class_<std::unique_ptr<evolution::Mesh>>("Mesh");
+  class_<std::shared_ptr<evolution::Mesh>>("Mesh", no_init);
 
   def("setup", &pySetup);
 
