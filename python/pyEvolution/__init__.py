@@ -1,4 +1,5 @@
 from . import _pyEvolution
+from typing import Tuple
 
 Float2 = _pyEvolution.Float2
 Float3 = _pyEvolution.Float3
@@ -50,3 +51,19 @@ def poll_events() -> None:
 def update_viewport(width: int, height: int) -> None:
     """ """
     _pyEvolution.update_viewport(0, 0, width, height)
+
+
+def get_window_size(window: _pyEvolution.Window) -> Tuple[int, int]:
+    """ """
+    window_size = _pyEvolution.get_window_size(window)
+    return (window_size.width, window_size.height)
+
+
+def clear_buffer() -> None:
+    """ """
+    _pyEvolution.clear_buffer()
+
+
+def swap_buffers(window: _pyEvolution.Window) -> None:
+    """ """
+    _pyEvolution.swap_buffers(window)

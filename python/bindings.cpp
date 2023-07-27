@@ -44,6 +44,29 @@ namespace
     return glfwWindowShouldClose(window.pWindow);
   }
 
+  struct WindowSize
+  {
+    int width;
+    int height;
+  };
+
+  WindowSize getWindowSize(pyGlfwWindow window)
+  {
+    int width, height;
+    glfwGetFramebufferSize(window.pWindow, &width, &height);
+    return WindowSize{width, height};
+  }
+
+  void pyClearBuffer()
+  {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  }
+
+  void pySwapBuffers(pyGlfwWindow window)
+  {
+    glfwSwapBuffers(window.pWindow);
+  }
+
 } // namespace
 
 BOOST_PYTHON_MODULE(_pyEvolution)
@@ -56,7 +79,11 @@ BOOST_PYTHON_MODULE(_pyEvolution)
   class_<evolution::Float4>("Float4");
   class_<std::shared_ptr<evolution::Mesh>>("Mesh", no_init);
   class_<evolution::Camera>(
-    "Camera", init<evolution::Float3, evolution::Float3, int, int>());
+    "Camera", init<evolution::Float3, evolution::Float3, int, int>())
+    .def("update_aspect", &evolution::Camera::updateWindowSize);
+  class_<WindowSize>("_WindowSize")
+    .def_readwrite("width", &WindowSize::width)
+    .def_readwrite("height", &WindowSize::height);
 
   def("setup", &pySetup);
 
@@ -69,4 +96,7 @@ BOOST_PYTHON_MODULE(_pyEvolution)
   def("window_should_close", &pyGlfwWindowShouldClose);
   def("poll_events", &glfwPollEvents);
   def("update_viewport", &glViewport);
+  def("get_window_size", &getWindowSize);
+  def("clear_buffer", &pyClearBuffer);
+  def("swap_buffers", &pySwapBuffers);
 }

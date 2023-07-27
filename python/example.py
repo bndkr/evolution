@@ -14,4 +14,9 @@ camera = evolution.Camera(evolution.Float3(), evolution.Float3(), width, height)
 
 while not evolution.window_should_close(window):
     evolution.poll_events()
-    evolution.update_viewport(width, height)
+    curr_width, curr_height = evolution.get_window_size(window)
+    evolution.update_viewport(curr_width, curr_height)
+    camera.update_aspect(curr_width, curr_height)
+    evolution.clear_buffer()
+
+    evolution.swap_buffers(window)
