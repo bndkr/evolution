@@ -1,6 +1,10 @@
 #define BOOST_PYTHON_STATIC_LIB
 #include <boost/python.hpp>
 
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
 #include "Buffers.hpp"
 #include "ProgramSelector.hpp"
 #include "Setup.hpp"
@@ -35,6 +39,11 @@ namespace
     return std::make_shared<evolution::Mesh>(evolution::createTextureQuad());
   }
 
+  int pyGlfwWindowShouldClose(pyGlfwWindow window)
+  {
+    return glfwWindowShouldClose(window.pWindow);
+  }
+
 } // namespace
 
 BOOST_PYTHON_MODULE(_pyEvolution)
@@ -56,4 +65,8 @@ BOOST_PYTHON_MODULE(_pyEvolution)
 
   def("create_cube_mesh", &pyCreateCubeMesh);
   def("create_texture_quad", &pycreateTextureQuad);
+
+  def("window_should_close", &pyGlfwWindowShouldClose);
+  def("poll_events", &glfwPollEvents);
+  def("update_viewport", &glViewport);
 }

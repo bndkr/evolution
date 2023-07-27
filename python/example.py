@@ -12,5 +12,6 @@ quad = evolution.create_texture_quad()
 # todo: make this a default constructor
 camera = evolution.Camera(evolution.Float3(), evolution.Float3(), width, height)
 
-while True:
-    pass
+while not evolution.window_should_close(window):
+    evolution.poll_events()
+    evolution.update_viewport(width, height)
