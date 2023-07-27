@@ -1,9 +1,10 @@
-
 from . import _pyEvolution
 
 Float2 = _pyEvolution.Float2
 Float3 = _pyEvolution.Float3
 Float4 = _pyEvolution.Float4
+
+Camera = _pyEvolution.Camera
 
 def setup(enable_3d : bool, width : int, height : int):
     '''

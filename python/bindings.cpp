@@ -46,7 +46,8 @@ BOOST_PYTHON_MODULE(_pyEvolution)
   class_<evolution::Float3>("Float3");
   class_<evolution::Float4>("Float4");
   class_<std::shared_ptr<evolution::Mesh>>("Mesh", no_init);
-
+  class_<evolution::Camera>(
+    "Camera", init<evolution::Float3, evolution::Float3, int, int>());
 
   def("setup", &pySetup);
 
