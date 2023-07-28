@@ -15,23 +15,33 @@ namespace evolution
 
   struct Float4
   {
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-    float w = 0.0f;
+    Float4() : x(0.f), y(0.f), z(0.f), w(0.f) { }
+    Float4(const float x, const float y, const float z, const float w)
+      : x(x), y(y), z(z), w(w)
+    {
+    }
+    float x;
+    float y;
+    float z;
+    float w;
   };
 
   struct Float3
   {
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
+    Float3() : x(0.f), y(0.f), z(0.f) { }
+
+    Float3(const float x, const float y, const float z) : x(x), y(y), z(z) { }
+    float x;
+    float y;
+    float z;
   };
 
   struct Float2
   {
-    float x = 0.0f;
-    float y = 0.0f;
+    Float2() : x(0.f), y(0.f) { }
+    Float2(const float x, const float y) : x(x), y(y) { }
+    float x;
+    float y;
   };
 
   struct Mat4;

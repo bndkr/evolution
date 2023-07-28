@@ -6,8 +6,13 @@ height = 512
 window = evolution.setup(True, width, height)
 
 evolution.add_textures_from_dir("C:/dev/evolution/example/assets/example/textures")
+evolution.add_programs_from_dir("C:/dev/evolution/example/shaders")
 
 quad = evolution.create_texture_quad()
+# quad.move(evolution.Float3(0, 0, -5))
+
+vec = evolution.Float3(0, 0, 0)
+evolution.move_vector(vec)
 
 # todo: make this a default constructor
 camera = evolution.Camera(evolution.Float3(), evolution.Float3(), width, height)

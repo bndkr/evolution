@@ -67,6 +67,11 @@ namespace
     glfwSwapBuffers(window.pWindow);
   }
 
+  void moveVector(evolution::Float3& toMove)
+  {
+    toMove.x += 5;
+  }
+
 } // namespace
 
 BOOST_PYTHON_MODULE(_pyEvolution)
@@ -75,15 +80,23 @@ BOOST_PYTHON_MODULE(_pyEvolution)
 
   class_<pyGlfwWindow>("Window", no_init);
   class_<evolution::Float2>("Float2");
-  class_<evolution::Float3>("Float3");
+  class_<evolution::Float3>("Float3", init<float, float, float>());
   class_<evolution::Float4>("Float4");
-  class_<std::shared_ptr<evolution::Mesh>>("Mesh", no_init);
+  class_<std::shared_ptr<evolution::Mesh>>("Mesh", no_init)
+    .def("draw", &evolution::Mesh::draw)
+    .def("move", &evolution::Mesh::movePostion)
+    .def("set_position", &evolution::Mesh::setPosition)
+    .def("rotate", &evolution::Mesh::rotate)
+    .def("set_rotation", &evolution::Mesh::setRotation)
+    .def("assign_texture", &evolution::Mesh::assignTexture);
   class_<evolution::Camera>(
     "Camera", init<evolution::Float3, evolution::Float3, int, int>())
     .def("update_aspect", &evolution::Camera::updateWindowSize);
   class_<WindowSize>("_WindowSize")
     .def_readwrite("width", &WindowSize::width)
     .def_readwrite("height", &WindowSize::height);
+
+  def("move_vector", &moveVector);
 
   def("setup", &pySetup);
 

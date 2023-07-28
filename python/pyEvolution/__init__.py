@@ -5,18 +5,16 @@ Float2 = _pyEvolution.Float2
 Float3 = _pyEvolution.Float3
 Float4 = _pyEvolution.Float4
 
+Mesh = _pyEvolution.Mesh
+
 Camera = _pyEvolution.Camera
 
+def move_vector(vector: Float3):
+    _pyEvolution.move_vector(vector)
 
 def setup(enable_3d: bool, width: int, height: int):
-    """
-    :param enable_3d: (bool) setup the engine for 3D rendering
-    :param width: (uint) width of the window in pixels
-    :param height: (uint) height of the window in pixels
-    :returns: a glfw window object
-    """
+    """ """
     return _pyEvolution.setup(enable_3d, width, height)
-
 
 def add_programs_from_dir(dir: str) -> None:
     """ """
