@@ -2,7 +2,6 @@
 #define EVOLUTION_BUFFERS_HPP
 
 #include <vector>
-#include <stdexcept>
 
 #include <string>
 
@@ -21,15 +20,6 @@ namespace evolution
       : x(x), y(y), z(z), w(w)
     {
     }
-    Float4(std::initializer_list<float> list)
-    {
-      if (list.size() != 4)
-        throw std::runtime_error("Float4 not initialized with 4 floats");
-      x = *list.begin();
-      y = *list.begin() + 1;
-      z = *list.begin() + 2;
-      w = *list.begin() + 3;
-    }
     float x;
     float y;
     float z;
@@ -41,14 +31,6 @@ namespace evolution
     Float3() : x(0.f), y(0.f), z(0.f) { }
 
     Float3(const float x, const float y, const float z) : x(x), y(y), z(z) { }
-    Float3(std::initializer_list<float> list)
-    {
-      if (list.size() != 3)
-        throw std::runtime_error("Float4 not initialized with 3 floats");
-      x = *list.begin();
-      y = *list.begin() + 1;
-      z = *list.begin() + 2;
-    }
     float x;
     float y;
     float z;
@@ -58,13 +40,6 @@ namespace evolution
   {
     Float2() : x(0.f), y(0.f) { }
     Float2(const float x, const float y) : x(x), y(y) { }
-    Float2(std::initializer_list<float> list)
-    {
-      if (list.size() != 2)
-        throw std::runtime_error("Float4 not initialized with 2 floats");
-      x = *list.begin();
-      y = *list.begin() + 1;
-    }
     float x;
     float y;
   };
