@@ -20,16 +20,13 @@ def add_programs_from_dir(dir: str) -> None:
     """ """
     _pyEvolution.add_programs_from_dir(dir)
 
-
 def add_textures_from_dir(dir: str) -> None:
     """ """
     _pyEvolution.add_textures_from_dir(dir)
 
-
 def create_cube_mesh() -> _pyEvolution.Mesh:
     """ """
     return _pyEvolution.create_cube_mesh()
-
 
 def create_texture_quad() -> _pyEvolution.Mesh:
     """ """
