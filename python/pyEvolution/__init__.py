@@ -35,32 +35,26 @@ def create_texture_quad() -> _pyEvolution.Mesh:
     """ """
     return _pyEvolution.create_texture_quad()
 
-
 def window_should_close(window: _pyEvolution.Window) -> bool:
     """ """
     return _pyEvolution.window_should_close(window)
-
 
 def poll_events() -> None:
     """ """
     _pyEvolution.poll_events()
 
-
 def update_viewport(width: int, height: int) -> None:
     """ """
     _pyEvolution.update_viewport(0, 0, width, height)
-
 
 def get_window_size(window: _pyEvolution.Window) -> Tuple[int, int]:
     """ """
     window_size = _pyEvolution.get_window_size(window)
     return (window_size.width, window_size.height)
 
-
 def clear_buffer() -> None:
     """ """
     _pyEvolution.clear_buffer()
-
 
 def swap_buffers(window: _pyEvolution.Window) -> None:
     """ """
