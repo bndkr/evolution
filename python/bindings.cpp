@@ -73,20 +73,17 @@ BOOST_PYTHON_MODULE(pyEvolution)
   using namespace boost::python;
 
   class_<pyGlfwWindow>("Window", no_init);
-  class_<evolution::Float2>("Float2").def(init<float, float>()).def(init<>());
-  class_<evolution::Float3>("Float3")
-    .def(init<float, float, float>())
-    .def(init<>());
-  class_<evolution::Float4>("Float4")
-    .def(init<float, float, float, float>())
-    .def(init<>());
+  class_<evolution::Float2>("Float2", init<>()).def(init<float, float>());
+  class_<evolution::Float3>("Float3", init<>())
+    .def(init<float, float, float>());
+  class_<evolution::Float4>("Float4", init<>())
+    .def(init<float, float, float, float>());
 
   class_<evolution::MeshBuffers>("MeshBuffers");
 
   class_<evolution::Mesh,
          boost::shared_ptr<evolution::Mesh>,
-         boost::noncopyable>("Mesh")
-    .def(init<evolution::MeshBuffers>())
+         boost::noncopyable>("Mesh", init<evolution::MeshBuffers>())
     .def("draw", &evolution::Mesh::draw)
     .def("move", &evolution::Mesh::movePostion)
     .def("set_position", &evolution::Mesh::setPosition)
@@ -94,8 +91,8 @@ BOOST_PYTHON_MODULE(pyEvolution)
     .def("set_rotation", &evolution::Mesh::setRotation)
     .def("assign_texture", &evolution::Mesh::assignTexture);
 
-  class_<evolution::Camera>(
-    "Camera", init<evolution::Float3, evolution::Float3, int, int>())
+  class_<evolution::Camera>("Camera", init<uint32_t, uint32_t>())
+    .def(init<evolution::Float3, evolution::Float3, uint32_t, uint32_t>())
     .def("update_aspect", &evolution::Camera::updateWindowSize);
   class_<WindowSize>("_WindowSize")
     .def_readwrite("width", &WindowSize::width)

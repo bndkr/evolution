@@ -18,8 +18,6 @@ namespace evolution
 
     Camera(const uint32_t screenWidth, const uint32_t screenHeight);
 
-    
-
     void updateWindowSize(const uint32_t width, const uint32_t height);
 
     float getAspectRatio() const;

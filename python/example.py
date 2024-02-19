@@ -13,12 +13,10 @@ def getMesh():
     return ev.Mesh(ev.get_quad_buffers())
 
 quad = getMesh()
-f = ev.Float3(0, 0, -5)
-quad.set_position(f)
+quad.set_position(ev.Float3(0, 0, -5))
 quad.assign_texture("neon.png")
 
-# todo: make this a default constructor
-camera = ev.Camera(ev.Float3(), ev.Float3(), width, height)
+camera = ev.Camera(width, height)
 
 while not ev.window_should_close(window):
     ev.poll_events()

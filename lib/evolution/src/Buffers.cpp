@@ -281,9 +281,6 @@ namespace evolution
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &m_vaoId);
 
-    glDisableVertexAttribArray(1);
-    glDisableVertexAttribArray(0);
-
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glDeleteBuffers(1, &m_posBufferId);
 
