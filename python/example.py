@@ -20,7 +20,6 @@ quad.assign_texture("neon.png")
 # todo: make this a default constructor
 camera = ev.Camera(ev.Float3(), ev.Float3(), width, height)
 
-time = 0
 while not ev.window_should_close(window):
     ev.poll_events()
     windowSize = ev.get_window_size(window)
@@ -29,5 +28,4 @@ while not ev.window_should_close(window):
     ev.clear_buffer()
     quad.draw(camera)
     quad.rotate(ev.Float3(0, 0, 0.1))
-    time += 0.01
     ev.swap_buffers(window)
