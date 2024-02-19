@@ -68,7 +68,7 @@ namespace
   }
 } // namespace
 
-BOOST_PYTHON_MODULE(_pyEvolution)
+BOOST_PYTHON_MODULE(pyEvolution)
 {
   using namespace boost::python;
 
@@ -80,13 +80,15 @@ BOOST_PYTHON_MODULE(_pyEvolution)
   class_<evolution::Float4>("Float4")
     .def(init<float, float, float, float>())
     .def(init<>());
-  class_<std::shared_ptr<evolution::Mesh>>("Mesh", no_init)
+
+  class_<evolution::Mesh, boost::shared_ptr<evolution::Mesh>, boost::noncopyable>("Mesh", no_init)
     .def("draw", &evolution::Mesh::draw)
     .def("move", &evolution::Mesh::movePostion)
     .def("set_position", &evolution::Mesh::setPosition)
     .def("rotate", &evolution::Mesh::rotate)
     .def("set_rotation", &evolution::Mesh::setRotation)
     .def("assign_texture", &evolution::Mesh::assignTexture);
+
   class_<evolution::Camera>(
     "Camera", init<evolution::Float3, evolution::Float3, int, int>())
     .def("update_aspect", &evolution::Camera::updateWindowSize);

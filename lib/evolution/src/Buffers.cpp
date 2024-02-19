@@ -138,7 +138,7 @@ namespace evolution
     glBindVertexArray(0);
   }
 
-  Mesh::Mesh() { }
+  // Mesh::Mesh() { }
 
   void Mesh::useShader(const std::string& shader)
   {

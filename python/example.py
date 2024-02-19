@@ -1,25 +1,25 @@
-import pyEvolution as evolution
+import pyEvolution as ev
 
 width = 760
 height = 512
 
-window = evolution.setup(True, width, height)
+window = ev.setup(True, width, height)
 
-evolution.add_textures_from_dir("C:/dev/evolution/example/assets/example/textures")
-evolution.add_programs_from_dir("C:/dev/evolution/example/shaders")
+ev.add_textures_from_dir("C:/dev/evolution/example/assets/example/textures")
+ev.add_programs_from_dir("C:/dev/evolution/example/shaders")
 
-quad = evolution.create_texture_quad()
-f = evolution.Float3(0, 0, -5)
-quad.set_position(f)
+# quad = ev.create_texture_quad()
+f = ev.Float3(0, 0, -5)
+# quad.set_position(f)
 
 # todo: make this a default constructor
-camera = evolution.Camera(evolution.Float3(), evolution.Float3(), width, height)
+camera = ev.Camera(ev.Float3(), ev.Float3(), width, height)
 
-while not evolution.window_should_close(window):
-    evolution.poll_events()
-    curr_width, curr_height = evolution.get_window_size(window)
-    evolution.update_viewport(curr_width, curr_height)
-    camera.update_aspect(curr_width, curr_height)
-    evolution.clear_buffer()
+while not ev.window_should_close(window):
+    ev.poll_events()
+    windowSize = ev.get_window_size(window)
+    ev.update_viewport(0, 0, windowSize.width, windowSize.height)
+    camera.update_aspect(windowSize.width, windowSize.height)
+    ev.clear_buffer()
 
-    evolution.swap_buffers(window)
+    ev.swap_buffers(window)
