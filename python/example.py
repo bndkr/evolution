@@ -9,10 +9,8 @@ evolution.add_textures_from_dir("C:/dev/evolution/example/assets/example/texture
 evolution.add_programs_from_dir("C:/dev/evolution/example/shaders")
 
 quad = evolution.create_texture_quad()
-# quad.move(evolution.Float3(0, 0, -5))
-
-vec = evolution.Float3(0, 0, 0)
-evolution.move_vector(vec)
+f = evolution.Float3(0, 0, -5)
+quad.set_position(f)
 
 # todo: make this a default constructor
 camera = evolution.Camera(evolution.Float3(), evolution.Float3(), width, height)

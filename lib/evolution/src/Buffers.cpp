@@ -150,24 +150,24 @@ namespace evolution
     m_currProgram = shader;
   }
 
-  void Mesh::setPosition(Float3 newPos)
+  void Mesh::setPosition(const Float3& newPos)
   {
     m_position.position = newPos;
   }
 
-  void Mesh::movePostion(Float3 delta)
+  void Mesh::movePostion(const Float3& delta)
   {
     m_position.position.x += delta.x;
     m_position.position.y += delta.y;
     m_position.position.z += delta.z;
   }
 
-  void Mesh::setRotation(Float3 rotation)
+  void Mesh::setRotation(const Float3& rotation)
   {
     m_position.rotation = rotation;
   }
 
-  void Mesh::rotate(Float3 delta)
+  void Mesh::rotate(const Float3& delta)
   {
     m_position.rotation.x += delta.x;
     m_position.rotation.y += delta.y;

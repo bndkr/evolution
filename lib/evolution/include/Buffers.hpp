@@ -110,12 +110,12 @@ namespace evolution
 
     void useShader(const std::string& shader);
 
-    void setPosition(Float3 newPos);
-    void movePostion(Float3 delta);
+    void setPosition(const Float3& newPos);
+    void movePostion(const Float3& delta);
 
-    void setRotation(Float3 rotation);
+    void setRotation(const Float3& rotation);
 
-    void rotate(Float3 delta);
+    void rotate(const Float3& delta);
 
     void assignTexture(const std::string& texName);
 

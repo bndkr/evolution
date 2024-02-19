@@ -11,8 +11,8 @@ namespace evolution
   class Camera
   {
   public:
-    Camera(const Float3 position,
-           const Float3 direction,
+    Camera(const Float3& position,
+           const Float3& direction,
            const uint32_t screenWidth,
            const uint32_t screenHeight);
 

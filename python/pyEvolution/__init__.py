@@ -9,9 +9,6 @@ Mesh = _pyEvolution.Mesh
 
 Camera = _pyEvolution.Camera
 
-def move_vector(vector: Float3):
-    _pyEvolution.move_vector(vector)
-
 def setup(enable_3d: bool, width: int, height: int):
     """ """
     return _pyEvolution.setup(enable_3d, width, height)

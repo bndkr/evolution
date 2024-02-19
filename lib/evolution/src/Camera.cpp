@@ -3,8 +3,8 @@
 
 namespace evolution
 {
-  Camera::Camera(Float3 position,
-                 Float3 direction,
+  Camera::Camera(const Float3& position,
+                 const Float3& direction,
                  const uint32_t screenWidth,
                  const uint32_t screenHeight)
     : m_width(screenWidth), m_height(screenHeight)
