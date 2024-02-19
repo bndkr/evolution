@@ -95,7 +95,7 @@ namespace evolution
     Mesh(const MeshBuffers& buffers,
          const BufferDataUsage usage = BufferDataUsage::DynamicDraw);
 
-    // Mesh();
+    Mesh();
 
     ~Mesh();
 

@@ -11,7 +11,6 @@
 
 namespace evolution
 {
-
   Batch::Batch(const MeshBuffers& buffers,
                const std::vector<BatchObject>& objects)
     : m_buffers(buffers), m_objects(objects)

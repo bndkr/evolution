@@ -81,7 +81,12 @@ BOOST_PYTHON_MODULE(pyEvolution)
     .def(init<float, float, float, float>())
     .def(init<>());
 
-  class_<evolution::Mesh, boost::shared_ptr<evolution::Mesh>, boost::noncopyable>("Mesh", no_init)
+  class_<evolution::MeshBuffers>("MeshBuffers");
+
+  class_<evolution::Mesh,
+         boost::shared_ptr<evolution::Mesh>,
+         boost::noncopyable>("Mesh")
+    .def(init<evolution::MeshBuffers>())
     .def("draw", &evolution::Mesh::draw)
     .def("move", &evolution::Mesh::movePostion)
     .def("set_position", &evolution::Mesh::setPosition)
@@ -101,8 +106,10 @@ BOOST_PYTHON_MODULE(pyEvolution)
   def("add_programs_from_dir", &evolution::addProgramsFromDir);
   def("add_textures_from_dir", &evolution::addTexturesFromDir);
 
-  def("create_cube_mesh", &pyCreateCubeMesh);
-  def("create_texture_quad", &pycreateTextureQuad);
+  def("get_quad_buffers", &evolution::getQuadBuffers);
+
+  // def("create_cube_mesh", &pyCreateCubeMesh);
+  // def("create_texture_quad", &pycreateTextureQuad);
 
   def("window_should_close", &pyGlfwWindowShouldClose);
   def("poll_events", &glfwPollEvents);
