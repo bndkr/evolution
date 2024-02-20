@@ -1,5 +1,6 @@
 #include "Setup.hpp"
 
+
 #include "color_console/color.hpp"
 
 #define GLEW_STATIC
@@ -95,13 +96,19 @@ namespace
 namespace evolution
 {
   GLFWwindow* setup(const bool enable3DMode,
-                    unsigned int width,
-                    unsigned int height)
+                    const unsigned int width,
+                    const unsigned int height)
   {
     auto* window = setupGlfwWindow(width, height, "Evolution Game Engine");
     setupOpenGL();
     if (enable3DMode)
       enable3D();
     return window;
+  }
+
+  InputManager* getInputManager(GLFWwindow* window)
+  {
+    static InputManager inputManager(window);
+    return &inputManager;
   }
 } // namespace evolution

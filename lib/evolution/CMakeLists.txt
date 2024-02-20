@@ -5,6 +5,7 @@ set(${lib_name}_srcs
   include/Engine.hpp
   include/Shader.hpp
   include/Camera.hpp
+  include/Input.hpp
   include/ProgramSelector.hpp
   include/MeshImporter.hpp
   include/Texture.hpp
@@ -17,6 +18,7 @@ set(${lib_name}_srcs
   src/Engine.cpp
   src/Shader.cpp
   src/Camera.cpp
+  src/Input.cpp
   src/ProgramSelector.cpp
   src/MeshImporter.cpp
   src/Texture.cpp

@@ -147,8 +147,6 @@ namespace evolution
       i++;
     }
 
-    std::cout << "object:" << objectIdx << std::endl;
-
     if (objectIdx == -1)
       throw std::runtime_error("batched object with key (" + key +
                                ") does not exist.");

@@ -1,5 +1,4 @@
 import pyEvolution as ev
-import math
 
 width = 760
 height = 512

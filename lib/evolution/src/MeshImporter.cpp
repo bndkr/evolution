@@ -54,6 +54,8 @@ namespace evolution
       }
     }
     MeshBuffers buffers{posBuffer, colors, texCoords, normals, indexBuffer};
+    // TODO: make this return the meshbuffers, not the mesh, so it can be
+    // exposed via python
     return Mesh(buffers, DynamicDraw);
   }
 

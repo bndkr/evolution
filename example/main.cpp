@@ -32,7 +32,7 @@ namespace
     io.ConfigFlags |=
       ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |=
-      ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+      ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
 
     ImGui::StyleColorsDark();
 
@@ -50,6 +50,19 @@ namespace
     glfwDestroyWindow(window);
     glfwTerminate();
   }
+
+  // void keyCallback(
+  //   GLFWwindow* window, int key, int scancode, int action, int mods)
+  //   {
+  //     std::string actionStr = "unknown";
+  //     if (action == GLFW_PRESS)
+  //       actionStr = "pressed";
+  //     if (action == GLFW_RELEASE) 
+  //       actionStr = "released";
+  //     if (action == GLFW_REPEAT)  
+  //       actionStr = "repeated";
+  //     std::cout << "key: " << key << " scancode: " << scancode << " action: " << actionStr << " mods: " << mods << std::endl;
+  //   }
 } // namespace
 
 int main(int argc, char** argv)
