@@ -15,10 +15,9 @@ find_package(GLEW REQUIRED)
 # dependency order
 add_subdirectory(dep)
 set(project_name EvolutionGameEngine)
-
-
 set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(dep/assimp)
+add_subdirectory(dep/glew/build/cmake)
 add_subdirectory(dep/glfw)
 add_subdirectory(lib)
 add_subdirectory(example)
