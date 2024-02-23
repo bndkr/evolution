@@ -1,3 +1,4 @@
+set(lib_name ${project_name}Lib)
 set(${lib_name}_srcs
   include/Buffers.hpp
   include/Projection.hpp
