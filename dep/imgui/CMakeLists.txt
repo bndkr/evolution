@@ -25,5 +25,5 @@ target_link_libraries(
   imgui
   PRIVATE
   ${OPENGL_LIBRARY}
-  ${GLFW3_LIBRARY}
+  glfw
 )

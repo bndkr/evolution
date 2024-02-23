@@ -12,15 +12,17 @@ python/ - the python bindings for the game engine
 ```
 
 ### Dependencies
+Most dependencies are packaged with this repository.
+Only Boost and glew must be installed to build.
 Evolution Game Engine depends on other C++ libraries:
  - imgui: for example frontent. Packaged in `dep/`.
  - eigen: packaged in `dep/`.
  - [color-console](https://github.com/aafulei/color-console) for colored console output, included in `dep/`.
  - stb_image: for png loading, packaged in `dep/`.
+ - glfw: for window creation. Packaged as a submodule in `dep/`.
+ - assimp: for asset loading. Packaged as a submodule in `dep/`.
  - boost: for filesystem, unit testing, and python module creation. Must be built and installed on the target system.
  - glew: for opengl extention wrangling. Must be installed on the target system.
- - glfw: for window creation. Must be installed on the target system.
- - assimp: for asset loading. Must be installed on the target system.
 
 ### Build instructions
 Once all dependencies are installed, use CMake to create projects. Currently only windows projects are supported. Plans
