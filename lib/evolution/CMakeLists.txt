@@ -33,7 +33,7 @@ target_include_directories(${lib_name} PUBLIC ${CMAKE_CURRENT_LIST_DIR}/include)
 target_link_libraries(
   ${lib_name}
   PUBLIC
-  GLEW::glew_s
+  glew_s
   glfw
   PRIVATE
   Boost::filesystem
