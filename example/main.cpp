@@ -10,6 +10,7 @@
 #include "TextureManager.hpp"
 #include "utils.hpp"
 #include "Batch.hpp"
+#include "Input.hpp"
 
 #include "MeshManager.hpp"
 #include "CameraControls.hpp"
@@ -50,19 +51,6 @@ namespace
     glfwDestroyWindow(window);
     glfwTerminate();
   }
-
-  // void keyCallback(
-  //   GLFWwindow* window, int key, int scancode, int action, int mods)
-  //   {
-  //     std::string actionStr = "unknown";
-  //     if (action == GLFW_PRESS)
-  //       actionStr = "pressed";
-  //     if (action == GLFW_RELEASE) 
-  //       actionStr = "released";
-  //     if (action == GLFW_REPEAT)  
-  //       actionStr = "repeated";
-  //     std::cout << "key: " << key << " scancode: " << scancode << " action: " << actionStr << " mods: " << mods << std::endl;
-  //   }
 } // namespace
 
 int main(int argc, char** argv)
@@ -80,6 +68,9 @@ int main(int argc, char** argv)
     boost::filesystem::current_path().parent_path() / "assets/example/textures";
   auto meshDir =
     boost::filesystem::current_path().parent_path() / "assets/example/meshes";
+
+  
+  auto input = evolution::InputManager(window);
 
   try
   {
@@ -145,6 +136,31 @@ int main(int argc, char** argv)
       static bool cameraControlOpen = true;
       showCameraControlWindow(&cameraControlOpen, camera);
 
+      if (input.isKeyPressed(GLFW_KEY_W))
+      {
+        camera.getPositionInfo().position.z += 0.1f;
+      }
+      if (input.isKeyPressed(GLFW_KEY_S))
+      {
+        camera.getPositionInfo().position.z -= 0.1f;
+      }
+      if (input.isKeyPressed(GLFW_KEY_A))
+      {
+        camera.getPositionInfo().position.x -= 0.1f;
+      }
+      if (input.isKeyPressed(GLFW_KEY_D))
+      {
+        camera.getPositionInfo().position.x += 0.1f;
+      }
+      if (input.isKeyPressed(GLFW_KEY_Q))
+      {
+        camera.getPositionInfo().position.y -= 0.1f;
+      }
+      if (input.isKeyPressed(GLFW_KEY_E))
+      {
+        camera.getPositionInfo().position.y += 0.1f;
+      }
+
       ImGui::Render();
 
       int displayWidth, displayHeight;
@@ -159,8 +175,8 @@ int main(int argc, char** argv)
 
       for (const auto& mesh : meshes)
       {
-        // if (mesh.first != "quad")
-        //   mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
+        if (mesh.first != "quad")
+          mesh.second->rotate(evolution::Float3{0.01f, 0.008f, 0.009f});
         mesh.second->draw(camera);
         pBatch->draw(camera);
       }
