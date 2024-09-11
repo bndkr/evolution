@@ -15,7 +15,7 @@ find_package(GLEW REQUIRED)
 # dependency order
 add_subdirectory(dep)
 set(project_name EvolutionGameEngine)
-set(BUILD_SHARED_LIBS OFF)
+set(BUILD_SHARED_LIBS OFF) # build assimp as static library
 add_subdirectory(dep/assimp EXCLUDE_FROM_ALL)
 add_subdirectory(dep/glfw EXCLUDE_FROM_ALL)
 add_subdirectory(lib)
