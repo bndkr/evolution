@@ -9,7 +9,7 @@ if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
   set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/dist CACHE PATH "installation path" FORCE)
 endif()
 find_package(Boost REQUIRED COMPONENTS unit_test_framework filesystem python PATHS C:/Boost)
-find_package(Python REQUIRED COMPONENTS Development.Module)
+find_package(Python3 REQUIRED COMPONENTS Interpreter Development.Module)
 find_package(GLEW REQUIRED)
 ################################
 # dependency order

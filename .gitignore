@@ -1,4 +1,5 @@
 _bld/
+build/
 .vscode/
 imgui.ini
 *.bat
