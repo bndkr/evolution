@@ -19,6 +19,7 @@ endif()
 add_custom_target(PyPackageBuild
         COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/${pylib_name}
         COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_FILE:${pylib_name}> ${CMAKE_CURRENT_BINARY_DIR}/${pylib_name}
+        COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_SOURCE_DIR}/__init__.py ${CMAKE_CURRENT_BINARY_DIR}/${pylib_name}
         COMMAND "${Python3_EXECUTABLE}" -m pip wheel .
         WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
         COMMENT "Building python wheel package"
