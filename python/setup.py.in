@@ -13,10 +13,10 @@ class BinaryDistribution(Distribution):
 setup(
     name='@TARGET_NAME@',
     version='@EVOLUTION_VERSION@',
-    packages=find_packages(),
+    packages=['@pylib_name@'],
     include_package_data=True,
     package_data={
-        '': ['@TARGET_PYMODULE_NAME@']
+        '': ['*.pyd']
     },
     # install_requires=['pandas', 'numpy'],
     distclass=BinaryDistribution
